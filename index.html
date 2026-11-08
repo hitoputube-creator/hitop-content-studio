@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive">
 <title>컨텐츠 제작실</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
 <style>
@@ -54,11 +55,12 @@ input:focus,select:focus,textarea:focus{outline:2px solid #9fc2ee;outline-offset
 .part-img canvas{width:100%;height:auto;display:block;border-radius:10px;border:1px solid #dce5ef}.part-img .btn{margin-top:8px}
 .thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.thumbs figure{margin:0;font-size:11px;color:#617286;text-align:center;line-height:1.3}.thumbs img{width:100%;border-radius:6px;border:1px solid #dce5ef;display:block;margin-bottom:3px}
 @media(max-width:860px){.part{grid-template-columns:1fr}.part-img{max-width:320px}}
+body.lock .page>*:not(#loginNeed){display:none!important}
 [hidden]{display:none!important}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 </head>
-<body>
+<body class="lock">
 <div class="page">
   <header class="topbar">
     <div class="brand"><span class="brand-mark" aria-hidden="true" id="brandMark">H</span><div><div class="brand-name" id="brandName">컨텐츠 제작실</div><div class="brand-sub">블로그 · 유튜브 · 스레드 · 인스타</div></div></div>
@@ -614,6 +616,7 @@ $('btnZip').addEventListener('click', async function () { var b = this, old = b.
   document.getElementById('loginLink').href = REALTY_BASE + 'login.html?office=' + O.key;
   document.getElementById('btnLogout').onclick = async function () { try { await authClient.auth.signOut(); } finally { location.href = REALTY_BASE + 'login.html?office=' + O.key; } };
   if (!(await ensureAuth())) { document.getElementById('loginNeed').hidden = false; document.getElementById('stepPick').hidden = true; return; }
+  document.body.classList.remove('lock');
   try {
     var all = await getListings();
     S.items = (all || []).filter(function (it) { return it && it.status !== '거래완료' && it.listingKind !== '명단'; });
