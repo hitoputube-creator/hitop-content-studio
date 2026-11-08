@@ -181,8 +181,8 @@ async function getListingById(id) {
 }
 
 var OFFICES = {
-  hitop: { key:'hitop', name:'하이탑부동산공인중개사사무소', short:'하이탑부동산', phone:'031-949-8969', rep:'주현희', fax:'031-944-1108', addr:'경기도 파주시 책향기로 830, 1층', reg:'41480-2016-00026', biz:'305-48-62183', email:'newpajucity@naver.com', c1:'#1d5149', c2:'#2f8176', accent:'#ffd36b', pal: { bg: '#0a1b42', bg2: '#142f6a', gold: '#d4a84a', goldL: '#f6e2a4', mono: 'HT', slogan: '운정신도시 전문, 친절상담' } },
-  ktop:  { key:'ktop',  name:'케이탑부동산', short:'케이탑부동산', phone:'031-943-8000', rep:'주세진', fax:'031-943-8050', addr:'경기 파주시 양지로 112 단지내상가 108', reg:'41480-2024-00005', biz:'527-75-00406', email:'k-top1@naver.com', c1:'#193860', c2:'#2465ba', accent:'#ffd166', pal: { bg: '#0c2550', bg2: '#1b4c9c', gold: '#86b8ff', goldL: '#d6e8ff', mono: 'KT', slogan: '파주 부동산 전문, 친절상담' } }
+  hitop: { key:'hitop', name:'하이탑부동산공인중개사사무소', short:'하이탑부동산', phone:'031-949-8969', rep:'주현희', fax:'031-944-1108', addr:'경기도 파주시 책향기로 830, 1층', reg:'41480-2016-00026', biz:'305-48-62183', email:'newpajucity@naver.com', c1:'#1d5149', c2:'#2f8176', accent:'#ffd36b', pal: { bg: '#0a1b42', bg2: '#142f6a', gold: '#d4a84a', goldL: '#f6e2a4', mono: 'HT', slogan: '운정신도시 전문, 친절상담', panelA: '#142f6a', panelB: '#0a1b42', ink: '#ffffff', inkSub: 'rgba(255,255,255,.85)', pillInk: '#0a1b42', footA: '#142f6a', footB: '#0a1b42', footSub: '#f6e2a4', logoFill: '#0a1b42', dark: true } },
+  ktop:  { key:'ktop',  name:'케이탑부동산', short:'케이탑부동산', phone:'031-943-8000', rep:'주세진', fax:'031-943-8050', addr:'경기 파주시 양지로 112 단지내상가 108', reg:'41480-2024-00005', biz:'527-75-00406', email:'k-top1@naver.com', c1:'#193860', c2:'#2465ba', accent:'#ffd166', pal: { bg: '#ffffff', bg2: '#f1f6fd', gold: '#1767d2', goldL: '#5b9af0', mono: 'KT', slogan: '파주 부동산 전문, 친절상담', panelA: '#ffffff', panelB: '#eef4fc', ink: '#1c344f', inkSub: '#52667b', pillInk: '#ffffff', footA: '#193860', footB: '#2465ba', footSub: '#d6e8ff', footAccent: '#ffd166', footLine: '#8fbaf5', logoFill: '#ffffff', dark: false } }
 };
 
 var O = OFFICES[officeId] || OFFICES.hitop;
@@ -395,19 +395,20 @@ function priceLines(f, o) { return o.price && f.price ? f.price.split(' / ') : [
 function PAL() { return O.pal; }
 function rrect(x, px, py, pw, ph, r) { x.beginPath(); x.moveTo(px + r, py); x.arcTo(px + pw, py, px + pw, py + ph, r); x.arcTo(px + pw, py + ph, px, py + ph, r); x.arcTo(px, py + ph, px, py, r); x.arcTo(px, py, px + pw, py, r); x.closePath(); }
 function goldGrad(x, x0, x1) { var p = PAL(), g = x.createLinearGradient(x0, 0, x1, 0); g.addColorStop(0, p.goldL); g.addColorStop(0.5, p.gold); g.addColorStop(1, p.goldL); return g; }
-function navyGrad(x, y0, y1) { var p = PAL(), g = x.createLinearGradient(0, y0, 0, y1); g.addColorStop(0, p.bg2); g.addColorStop(1, p.bg); return g; }
+function navyGrad(x, y0, y1) { var p = PAL(), g = x.createLinearGradient(0, y0, 0, y1); g.addColorStop(0, p.panelA); g.addColorStop(1, p.panelB); return g; }
+function footGrad(x, y0, y1) { var p = PAL(), g = x.createLinearGradient(0, y0, 0, y1); g.addColorStop(0, p.footA); g.addColorStop(1, p.footB); return g; }
 function goldFrame(x, px, py, pw, ph, u, r) { var p = PAL(); x.strokeStyle = p.gold; x.lineWidth = 3.2 * u; rrect(x, px, py, pw, ph, r); x.stroke(); x.lineWidth = 1.3 * u; rrect(x, px + 8 * u, py + 8 * u, pw - 16 * u, ph - 16 * u, Math.max(r - 4 * u, 2)); x.stroke(); }
 function navyBox(x, px, py, pw, ph, u, alpha, r) { x.save(); x.globalAlpha = alpha; rrect(x, px, py, pw, ph, r); x.fillStyle = navyGrad(x, py, py + ph); x.fill(); x.restore(); goldFrame(x, px, py, pw, ph, u, r); }
-function bgNavy(x, w, h) { var p = PAL(), g = x.createLinearGradient(0, 0, w, h); g.addColorStop(0, p.bg); g.addColorStop(1, p.bg2); x.fillStyle = g; x.fillRect(0, 0, w, h); x.save(); x.globalAlpha = 0.06; x.strokeStyle = p.goldL; x.lineWidth = 2; for (var i = -h; i < w; i += 70) { x.beginPath(); x.moveTo(i, h); x.lineTo(i + h, 0); x.stroke(); } x.restore(); }
-function monoLogo(x, px, py, s, u) { var p = PAL(); rrect(x, px, py, s, s, s * 0.16); x.fillStyle = p.bg; x.fill(); x.strokeStyle = p.gold; x.lineWidth = 2.6 * u; x.stroke(); x.fillStyle = goldGrad(x, px, px + s); x.font = '800 ' + Math.round(s * 0.52) + 'px Georgia, "Times New Roman", serif'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(p.mono, px + s / 2, py + s / 2 + s * 0.03); x.textBaseline = 'alphabetic'; x.textAlign = 'left'; }
+function bgNavy(x, w, h) { var p = PAL(), g = x.createLinearGradient(0, 0, w, h); g.addColorStop(0, p.bg); g.addColorStop(1, p.bg2); x.fillStyle = g; x.fillRect(0, 0, w, h); x.save(); x.globalAlpha = p.dark ? 0.06 : 0.05; x.strokeStyle = p.dark ? p.goldL : p.gold; x.lineWidth = 2; for (var i = -h; i < w; i += 70) { x.beginPath(); x.moveTo(i, h); x.lineTo(i + h, 0); x.stroke(); } x.restore(); }
+function monoLogo(x, px, py, s, u) { var p = PAL(); rrect(x, px, py, s, s, s * 0.16); x.fillStyle = p.logoFill; x.fill(); x.strokeStyle = p.gold; x.lineWidth = 2.6 * u; x.stroke(); x.fillStyle = goldGrad(x, px, px + s); x.font = '800 ' + Math.round(s * 0.52) + 'px Georgia, "Times New Roman", serif'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(p.mono, px + s / 2, py + s / 2 + s * 0.03); x.textBaseline = 'alphabetic'; x.textAlign = 'left'; }
 function drawFooter(x, w, h, u, fh) {
-  var p = PAL(), y = h - fh; x.fillStyle = navyGrad(x, y, h); x.fillRect(0, y, w, fh); x.fillStyle = goldGrad(x, 0, w); x.fillRect(0, y, w, 3.5 * u);
+  var p = PAL(), y = h - fh; x.fillStyle = footGrad(x, y, h); x.fillRect(0, y, w, fh); x.fillStyle = p.footLine || goldGrad(x, 0, w); x.fillRect(0, y, w, 3.5 * u);
   var pad = 38 * u, ls = fh * 0.64, tx = pad + ls + 22 * u, mid = y + fh / 2; monoLogo(x, pad, y + (fh - ls) / 2, ls, u);
   x.textBaseline = 'middle'; x.textAlign = 'left';
   x.fillStyle = '#fff'; var ns = fit(x, O.short, 800, fh * 0.28, w * 0.46 - tx); x.font = font(800, ns); x.fillText(O.short, tx, mid - fh * 0.22);
-  var sub = '대표 ' + O.rep + '  |  등록번호 ' + O.reg, ss = fit(x, sub, 500, fh * 0.135, w * 0.56 - tx); x.fillStyle = p.goldL; x.font = font(500, ss); x.fillText(sub, tx, mid + fh * 0.06);
+  var sub = '대표 ' + O.rep + '  |  등록번호 ' + O.reg, ss = fit(x, sub, 500, fh * 0.135, w * 0.56 - tx); x.fillStyle = p.footSub; x.font = font(500, ss); x.fillText(sub, tx, mid + fh * 0.06);
   var ad = fit(x, O.addr, 500, fh * 0.125, w * 0.56 - tx); x.fillStyle = 'rgba(255,255,255,.82)'; x.font = font(500, ad); x.fillText(O.addr, tx, mid + fh * 0.26);
-  x.textAlign = 'right'; var ps = fit(x, O.phone, 800, fh * 0.4, w * 0.36); x.fillStyle = goldGrad(x, w - pad - w * 0.36, w - pad); x.font = font(800, ps); x.fillText(O.phone, w - pad, mid - fh * 0.1);
+  x.textAlign = 'right'; var ps = fit(x, O.phone, 800, fh * 0.4, w * 0.36); x.fillStyle = p.footAccent || goldGrad(x, w - pad - w * 0.36, w - pad); x.font = font(800, ps); x.fillText(O.phone, w - pad, mid - fh * 0.1);
   x.fillStyle = 'rgba(255,255,255,.85)'; x.font = font(500, fh * 0.14); x.fillText(p.slogan, w - pad, mid + fh * 0.26);
   x.textAlign = 'left'; x.textBaseline = 'alphabetic';
 }
@@ -417,7 +418,7 @@ function drawBanner(x, w, u, y, text, tag, hMax) {
   for (;;) { x.font = font(800, size); lines = wrap(x, text, bw - 100 * u, 2); var ok = !/…$/.test(lines[lines.length - 1]) && lines.every(function (l) { return x.measureText(l).width <= bw - 100 * u; }); if (ok || size < 26 * u) break; size -= 2 * u; }
   var tagH = tag ? 40 * u : 0, blockH = lines.length * size * 1.18 + tagH, top = y + (bh - blockH) / 2;
   navyBox(x, bx, y, bw, bh, u, 0.94, 12 * u); x.textAlign = 'center';
-  if (tag) { x.fillStyle = 'rgba(255,255,255,.88)'; x.font = font(600, 28 * u); x.fillText(tag, w / 2, top + 28 * u); }
+  if (tag) { x.fillStyle = PAL().inkSub; x.font = font(600, 28 * u); x.fillText(tag, w / 2, top + 28 * u); }
   x.fillStyle = goldGrad(x, bx, bx + bw); x.font = font(800, size); lines.forEach(function (l, i) { x.fillText(l, w / 2, top + tagH + size * 0.95 + i * size * 1.18); });
   x.textAlign = 'left';
 }
@@ -435,7 +436,7 @@ function drawCover(c, f, o, kind) {
   navyBox(x, cx, cy, cw, chh, u, 0.9, 12 * u); x.textAlign = 'center';
   var yy = cy + 34 * u; x.fillStyle = goldGrad(x, cx, cx + cw);
   pls.forEach(function (l) { var s = fit(x, l, 800, pls.length > 1 ? ps * 0.82 : ps, cw - 60 * u); x.font = font(800, s); x.fillStyle = goldGrad(x, cx, cx + cw); x.fillText(l, w / 2, yy + s * 0.85); yy += s * 1.2; });
-  if (sub) { x.fillStyle = '#fff'; x.font = font(600, ss); x.fillText(sub, w / 2, yy + ss * 0.9); }
+  if (sub) { x.fillStyle = p.ink; x.font = font(600, ss); x.fillText(sub, w / 2, yy + ss * 0.9); }
   x.textAlign = 'left'; drawFooter(x, w, h, u, fh);
 }
 function drawInfo(c, f, o) {
@@ -446,8 +447,8 @@ function drawInfo(c, f, o) {
   rows.forEach(function (r, i) {
     var ry = top + i * rh, bh = rh - gap; navyBox(x, 66 * u, ry, w - 132 * u, bh, u, 0.85, 12 * u);
     var pw = 230 * u, ph = bh * 0.6, py = ry + (bh - ph) / 2; rrect(x, 100 * u, py, pw, ph, ph / 2); x.fillStyle = goldGrad(x, 100 * u, 100 * u + pw); x.fill();
-    x.textBaseline = 'middle'; x.textAlign = 'center'; x.fillStyle = p.bg; var ls = fit(x, r[0], 800, ph * 0.5, pw - 30 * u); x.font = font(800, ls); x.fillText(r[0], 100 * u + pw / 2, py + ph / 2 + 1);
-    x.textAlign = 'left'; var isPrice = r[0] === '가격'; x.fillStyle = isPrice ? goldGrad(x, 360 * u, w - 100 * u) : '#fff'; var vs = fit(x, r[1], 800, bh * 0.42, w - 360 * u - 100 * u); x.font = font(800, vs); x.fillText(r[1], 360 * u, ry + bh / 2 + 1); x.textBaseline = 'alphabetic';
+    x.textBaseline = 'middle'; x.textAlign = 'center'; x.fillStyle = p.pillInk; var ls = fit(x, r[0], 800, ph * 0.5, pw - 30 * u); x.font = font(800, ls); x.fillText(r[0], 100 * u + pw / 2, py + ph / 2 + 1);
+    x.textAlign = 'left'; var isPrice = r[0] === '가격'; x.fillStyle = isPrice ? goldGrad(x, 360 * u, w - 100 * u) : p.ink; var vs = fit(x, r[1], 800, bh * 0.42, w - 360 * u - 100 * u); x.font = font(800, vs); x.fillText(r[1], 360 * u, ry + bh / 2 + 1); x.textBaseline = 'alphabetic';
   });
   drawFooter(x, w, h, u, fh);
 }
@@ -461,22 +462,22 @@ function drawTextCard(c, pt, f, o, idx, total) {
   function height(bl, s) { var t = 0; bl.forEach(function (b) { t += b.length * s * 1.42 + s * 0.6; }); return t; }
   blocks = layout(size); while (height(blocks, size) > avail && size > 26 * u) { size -= 2 * u; blocks = layout(size); }
   var used = height(blocks, size), y = top + Math.max(0, (avail - used) / 2) * 0.8 + size * 1.05;
-  blocks.forEach(function (b) { x.fillStyle = goldGrad(x, 80 * u, 120 * u); var d = size * 0.22, dx = 98 * u, dy = y - size * 0.32; x.beginPath(); x.moveTo(dx, dy - d); x.lineTo(dx + d, dy); x.lineTo(dx, dy + d); x.lineTo(dx - d, dy); x.closePath(); x.fill(); x.fillStyle = '#fff'; x.font = font(600, size); b.forEach(function (l, i) { x.fillText(l, 136 * u, y + i * size * 1.42); }); y += b.length * size * 1.42 + size * 0.6; });
-  if (pt.note) { x.fillStyle = 'rgba(255,255,255,.62)'; x.font = font(500, 22 * u); x.fillText(pt.note, 66 * u, h - fh - 40 * u); }
+  blocks.forEach(function (b) { x.fillStyle = goldGrad(x, 80 * u, 120 * u); var d = size * 0.22, dx = 98 * u, dy = y - size * 0.32; x.beginPath(); x.moveTo(dx, dy - d); x.lineTo(dx + d, dy); x.lineTo(dx, dy + d); x.lineTo(dx - d, dy); x.closePath(); x.fill(); x.fillStyle = p.ink; x.font = font(600, size); b.forEach(function (l, i) { x.fillText(l, 136 * u, y + i * size * 1.42); }); y += b.length * size * 1.42 + size * 0.6; });
+  if (pt.note) { x.fillStyle = p.inkSub; x.font = font(500, 22 * u); x.fillText(pt.note, 66 * u, h - fh - 40 * u); }
   drawFooter(x, w, h, u, fh);
 }
 function drawContact(c, f, o) {
   var w = c.width, h = c.height, x = c.getContext('2d'), u = w / 1080, p = PAL();
   bgNavy(x, w, h); goldFrame(x, 22 * u, 22 * u, w - 44 * u, h - 44 * u, u, 14 * u);
   monoLogo(x, w / 2 - 80 * u, 110 * u, 160 * u, u); x.textAlign = 'center';
-  x.fillStyle = 'rgba(255,255,255,.88)'; x.font = font(600, 38 * u); x.fillText('상담 · 문의', w / 2, 340 * u);
-  x.fillStyle = '#fff'; fit(x, O.short, 800, 98 * u, w - 160 * u); x.fillText(O.short, w / 2, 450 * u);
+  x.fillStyle = p.inkSub; x.font = font(600, 38 * u); x.fillText('상담 · 문의', w / 2, 340 * u);
+  x.fillStyle = p.ink; fit(x, O.short, 800, 98 * u, w - 160 * u); x.fillText(O.short, w / 2, 450 * u);
   x.fillStyle = goldGrad(x, 60 * u, w - 60 * u); fit(x, O.phone, 800, 120 * u, w - 120 * u); x.fillText(O.phone, w / 2, 590 * u);
-  x.fillStyle = p.goldL; x.font = font(600, 32 * u); x.fillText(p.slogan, w / 2, 650 * u);
+  x.fillStyle = p.dark ? p.goldL : p.gold; x.font = font(600, 32 * u); x.fillText(p.slogan, w / 2, 650 * u);
   var rows = [['대표', O.rep], ['소재지', O.addr], ['등록번호', O.reg], ['사업자번호', O.biz], ['팩스', O.fax], ['이메일', O.email]].filter(function (r) { return r[1]; }), rh = 72 * u, bx = 80 * u, bw = w - 160 * u, by = 716 * u, bh = rows.length * rh + 40 * u;
   navyBox(x, bx, by, bw, bh, u, 0.9, 20 * u); x.textAlign = 'left'; x.textBaseline = 'middle';
-  rows.forEach(function (r, i) { var ry = by + 20 * u + i * rh + rh / 2; x.fillStyle = goldGrad(x, bx, bx + 200 * u); x.font = font(800, 30 * u); x.fillText(r[0], bx + 40 * u, ry); x.fillStyle = '#fff'; fit(x, r[1], 700, 32 * u, bw - 300 * u); x.fillText(r[1], bx + 250 * u, ry); if (i < rows.length - 1) { x.fillStyle = 'rgba(212,168,74,.35)'; x.fillRect(bx + 36 * u, ry + rh / 2, bw - 72 * u, 1.5 * u); } });
-  x.textBaseline = 'alphabetic'; x.textAlign = 'center'; x.fillStyle = 'rgba(255,255,255,.85)'; x.font = font(500, 28 * u); x.fillText('편하게 연락 주세요. 자세히 안내해 드립니다.', w / 2, h - 66 * u); x.textAlign = 'left';
+  rows.forEach(function (r, i) { var ry = by + 20 * u + i * rh + rh / 2; x.fillStyle = goldGrad(x, bx, bx + 200 * u); x.font = font(800, 30 * u); x.fillText(r[0], bx + 40 * u, ry); x.fillStyle = p.ink; fit(x, r[1], 700, 32 * u, bw - 300 * u); x.fillText(r[1], bx + 250 * u, ry); if (i < rows.length - 1) { x.save(); x.globalAlpha = 0.35; x.fillStyle = p.gold; x.fillRect(bx + 36 * u, ry + rh / 2, bw - 72 * u, 1.5 * u); x.restore(); } });
+  x.textBaseline = 'alphabetic'; x.textAlign = 'center'; x.fillStyle = p.inkSub; x.font = font(500, 28 * u); x.fillText('편하게 연락 주세요. 자세히 안내해 드립니다.', w / 2, h - 66 * u); x.textAlign = 'left';
 }
 function mk(wd, ht) { var c = document.createElement('canvas'); c.width = wd; c.height = ht; return c; }
 function download(blob, name) { var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1500); }
