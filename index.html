@@ -389,6 +389,7 @@ var TEMPLATES = {
     pals: {
       hitop: { bg: '#fbfaf6', bg2: '#f3f0e6', gold: '#1f4fd8', goldL: '#6c93f2', panelA: '#ffffff', panelB: '#f7f7f2', ink: '#14213d', inkSub: '#5a6478', pillInk: '#ffffff', hiInk: '#ffffff', footA: '#14213d', footB: '#1f3566', footSub: '#cdd8f5', footAccent: '#ffd24d', footLine: '#1f4fd8', logoFill: '#ffffff', dark: false },
       ktop: { bg: '#f6fbfa', bg2: '#e9f5f2', gold: '#0e8a6a', goldL: '#4fc3a1', panelA: '#ffffff', panelB: '#f3faf8', ink: '#12303a', inkSub: '#4d6670', pillInk: '#ffffff', hiInk: '#ffffff', footA: '#0c4a3e', footB: '#0e8a6a', footSub: '#c9f1e4', footAccent: '#ffe08a', footLine: '#4fc3a1', logoFill: '#ffffff', dark: false } } },
+  thumb: { label: '블로그 썸네일형 · 큰 제목 정사각', desc: '하이탑 블로그 목록 썸네일처럼 큰 제목 + 강조 가격 + 하단 큰 전화번호 (네이버 목록에서 정사각으로 보이는 비율)', cover: 'thumb', text: 'standard', pals: {} },
   bold: { label: '블루 포스터형 · 큰 제목', desc: '흰 바탕에 굵은 파란 제목과 노란 가격 강조, 하단 큰 전화번호 (블로그 "부가세" 시리즈 스타일)', cover: 'bold', info: 'tiles', text: 'standard', head: 'plain', bullet: 'num', minimal: true,
     pals: {
       hitop: { bg: '#ffffff', bg2: '#eef3ff', gold: '#ffc928', goldL: '#ffe07a', panelA: '#ffffff', panelB: '#eef3ff', ink: '#0b2a8a', inkSub: '#4b5b8c', pillInk: '#ffffff', hiInk: '#0b2a8a', hl: '#e85d04', footA: '#0b2a8a', footB: '#1442c8', footSub: '#cdd9ff', footAccent: '#ffd84d', footLine: '#ffc928', logoFill: '#ffffff', dark: false },
@@ -541,7 +542,7 @@ function drawBanner(x, w, u, y, text, tag, hMax) {
   x.fillStyle = bp.bannerSolid ? (bp.bannerInk || '#ffffff') : goldGrad(x, bx, bx + bw); x.font = font(800, size); lines.forEach(function (l, i) { x.fillText(l, w / 2, top + tagH + size * 0.95 + i * size * 1.18); });
   x.textAlign = 'left';
 }
-function drawCover(c, f, o, kind) { var L = (TEMPLATES[S.tpl] || TEMPLATES.classic).cover; if (L === 'poster') return drawCoverPoster(c, f, o, kind); if (L === 'split') return drawCoverSplit(c, f, o, kind); if (L === 'bold') return drawCoverBold(c, f, o, kind); return drawCoverBanner(c, f, o, kind); }
+function drawCover(c, f, o, kind) { var L = (TEMPLATES[S.tpl] || TEMPLATES.classic).cover; if (L === 'poster') return drawCoverPoster(c, f, o, kind); if (L === 'split') return drawCoverSplit(c, f, o, kind); if (L === 'bold') return drawCoverBold(c, f, o, kind); if (L === 'thumb') return drawCoverThumb(c, f, o, kind); return drawCoverBanner(c, f, o, kind); }
 function drawCoverBanner(c, f, o, kind) {
   var w = c.width, h = c.height, x = c.getContext('2d'), wide = kind === 'wide', u = wide ? h / 720 : w / 1080, p = PAL();
   if (S.bg) coverFit(x, S.bg, w, h); else bgNavy(x, w, h);
@@ -602,6 +603,35 @@ function drawInfo(c, f, o) {
     x.textAlign = 'left'; var isPrice = r[0] === '가격'; x.fillStyle = isPrice ? (p.dark ? goldGrad(x, 360 * u, w - 100 * u) : p.gold) : p.ink; var vs = fit(x, r[1], 800, bh * 0.42, w - 360 * u - 100 * u); x.font = font(800, vs); x.fillText(r[1], 360 * u, ry + bh / 2 + 1); x.textBaseline = 'alphabetic';
   });
   drawFooter(x, w, h, u, fh);
+}
+function lumOf(c) { var m = String(c || '').match(/^#([0-9a-f]{6})$/i); if (!m) return 0.2; var n = parseInt(m[1], 16); return (0.299 * (n >> 16) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255)) / 255; }
+function drawCoverThumb(c, f, o, kind) {
+  var w = c.width, h = c.height, x = c.getContext('2d'), wide = kind === 'wide', u = wide ? h / 720 : w / 1080, p = PAL(), fh = Math.round(h * (wide ? 0.15 : 0.13)), pad = 54 * u;
+  var photo = !!S.bg, light = !photo && lumOf(p.bg) > 0.6, ink = light ? p.ink : '#ffffff', acc = light ? (p.hl || p.gold) : (p.goldL || p.gold);
+  if (photo) { coverFit(x, S.bg, w, h); var og = x.createLinearGradient(0, 0, 0, h); og.addColorStop(0, 'rgba(6,16,40,.84)'); og.addColorStop(0.6, 'rgba(6,16,40,.58)'); og.addColorStop(1, 'rgba(6,16,40,.38)'); x.fillStyle = og; x.fillRect(0, 0, w, h); }
+  else { bgNavy(x, w, h); x.save(); x.globalAlpha = 0.12; x.fillStyle = p.gold; x.beginPath(); x.arc(w * (wide ? 0.82 : 0.9), h * 0.6, h * 0.34, 0, Math.PI * 2); x.fill(); x.restore(); }
+  var tw = (wide ? w * 0.64 : w) - pad * 2, top = 44 * u, avail = (h - fh - 34 * u) - top;
+  var chip = ovv('chip', [f.deal || '매물', f.typeLabel].join(' · ')), cs = (wide ? 24 : 30) * u, chH = cs * 1.9;
+  var head = ovv('head', f.pubTitle || f.typeLabel), pls = ovv('price', priceLines(f, o)), place = ovv('sub', placeOf(f, { addr: false })), meta = ovv('meta', [f.floor, f.area].filter(Boolean).join('  ·  '));
+  var sc = 1.7, L1, hs, ps, sizes, ss, total, nsub = (place ? 1 : 0) + (meta ? 1 : 0);
+  for (;;) {
+    hs = (wide ? 78 : 122) * u * sc; ps = (wide ? 70 : 108) * u * sc; ss = (wide ? 28 : 38) * u * sc;
+    x.font = font(800, hs); L1 = wrap(x, head, tw, 2);
+    sizes = pls.map(function (l) { return fit(x, l, 800, pls.length > 1 ? ps * 0.78 : ps, tw); });
+    total = chH + 26 * u + L1.length * hs * 1.12 + 14 * u + sizes.reduce(function (a, s) { return a + s * 1.2; }, 0) + 18 * u + ss * 1.5 * nsub;
+    if ((total <= avail && !/…$/.test(L1[L1.length - 1])) || sc < 0.4) break; sc -= 0.05;
+  }
+  x.textAlign = 'left'; x.textBaseline = 'alphabetic'; var y = top + Math.max(0, (avail - total) * 0.3);
+  drawChip(x, chip, pad, y, cs, p.gold, lumOf(p.gold) > 0.55 ? '#10203a' : '#ffffff'); x.textAlign = 'left'; y += chH + 26 * u;
+  x.save(); if (photo) { x.shadowColor = 'rgba(0,0,0,.45)'; x.shadowBlur = 14 * u; x.shadowOffsetY = 4 * u; }
+  x.fillStyle = ink; x.font = font(800, hs); L1.forEach(function (l) { x.fillText(l, pad, y + hs * 0.88); y += hs * 1.12; }); y += 14 * u;
+  x.fillStyle = acc; pls.forEach(function (l, i) { x.font = font(800, sizes[i]); x.fillText(l, pad, y + sizes[i] * 0.9); y += sizes[i] * 1.2; });
+  x.restore(); y += 18 * u;
+  [place, meta].filter(Boolean).forEach(function (t, i) { x.font = font(i ? 600 : 700, ss * (i ? 0.92 : 1)); x.fillStyle = i ? (light ? p.inkSub : 'rgba(255,255,255,.86)') : ink; x.fillText(t, pad, y + ss * 0.9); y += ss * 1.5; });
+  var fy = h - fh; x.fillStyle = footGrad(x, fy, h); x.fillRect(0, fy, w, fh); x.fillStyle = p.footLine || p.gold; x.fillRect(0, fy, w, 5 * u);
+  var nm = O.short, ph = 'T.' + String(O.phone).replace(/-/g, '.'), fs = fh * 0.44, gap = fs * 0.5; x.font = font(800, fs); var tw2 = x.measureText(nm).width + gap + x.measureText(ph).width;
+  if (tw2 > w - pad * 2) { fs *= (w - pad * 2) / tw2; gap = fs * 0.5; x.font = font(800, fs); tw2 = x.measureText(nm).width + gap + x.measureText(ph).width; }
+  var sx = (w - tw2) / 2, my = fy + fh / 2 + fs * 0.35; x.fillStyle = '#ffffff'; x.fillText(nm, sx, my); x.fillStyle = p.footAccent || p.gold; x.fillText(ph, sx + x.measureText(nm).width + gap, my);
 }
 function drawCoverBold(c, f, o, kind) {
   var w = c.width, h = c.height, x = c.getContext('2d'), wide = kind === 'wide', u = wide ? h / 720 : w / 1080, p = PAL(), fh = Math.round(h * (wide ? 0.17 : 0.115)), pad = 56 * u;
@@ -816,8 +846,8 @@ function paintPartList() {
 
 /* 블로그 대표·유튜브 썸네일(가로) */
 function drawWide() {
-  var f = S.f, o = opts(), b = mk(1200, 675), y = mk(1280, 720); S.ov = (S.parts[0] && S.parts[0].ov) || {}; try { drawCover(b, f, o, 'wide'); drawCover(y, f, o, 'wide'); } finally { S.ov = {}; }
-  S.canvases = { blog: [{ c: b, label: '블로그 대표 이미지 (1200×675)', name: 'blog_cover' }], youtube: [{ c: y, label: '유튜브 썸네일 (1280×720)', name: 'youtube_thumbnail' }] };
+  var f = S.f, o = opts(), b = mk(1080, 1080), y = mk(1280, 720); S.ov = (S.parts[0] && S.parts[0].ov) || {}; try { drawCoverThumb(b, f, o, 'square'); drawCover(y, f, o, 'wide'); } finally { S.ov = {}; }
+  S.canvases = { blog: [{ c: b, label: '블로그 대표 이미지 (1080×1080 정사각 · 네이버 목록 썸네일 비율)', name: 'blog_cover' }], youtube: [{ c: y, label: '유튜브 썸네일 (1280×720)', name: 'youtube_thumbnail' }] };
   ['blog', 'youtube'].forEach(function (ch) {
     var box = $('imgs-' + ch); if (!box) return; box.innerHTML = '';
     S.canvases[ch].forEach(function (it) {
