@@ -982,7 +982,7 @@ document.addEventListener('input', function (e) {
 $('q').addEventListener('input', renderList);
 var sloganT = null; $('gSlogan').addEventListener('input', function () { var v = this.value; clearTimeout(sloganT); sloganT = setTimeout(function () { S.slogan = v; drawAllParts(); drawWide(); }, 300); });
 $('btnManual').addEventListener('click', async function () {
-  var btn = this, g = function (id) { var s = $(id).value.trim(); return /^\d{4,}$/.test(s) && /^m(Sale|Dep|Rent)$/.test(id) ? Number(s).toLocaleString('ko-KR') : s; }, place = scrubPublic(g('mPlace')), title = scrubPublic(g('mTitle')), msg = $('mMsg');
+  var btn = this, g = function (id) { var s = $(id).value.trim().replace(/,/g, ''); if (/^m(Sale|Dep|Rent)$/.test(id) && /^\d+$/.test(s)) { var n = Number(s), uk = Math.floor(n / 10000), mn = n % 10000; return ((uk ? uk + '억' : '') + (mn ? (uk ? ' ' : '') + mn.toLocaleString('ko-KR') + '만' : '')) || s; } return s; }, place = scrubPublic(g('mPlace')), title = scrubPublic(g('mTitle')), msg = $('mMsg');
   if (!place && !title) { msg.style.color = '#b42318'; msg.textContent = '소재지(또는 제목)를 입력해 주세요.'; return; }
   if (!g('mSale') && !g('mDep') && !g('mRent')) { msg.style.color = '#b42318'; msg.textContent = '가격(매매가·보증금·월세 중 하나 이상)을 입력해 주세요.'; return; }
   msg.textContent = ''; btn.disabled = true; btn.textContent = '만드는 중...';
