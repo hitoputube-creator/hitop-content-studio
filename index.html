@@ -110,7 +110,7 @@ html[data-office-theme='hitop'] .thumbs img{border:1px solid #deedec!important}<
 
   <p class="eyebrow">CONTENT STUDIO</p>
   <h1>컨텐츠 제작실</h1>
-  <p class="page-intro">먼저 마음에 드는 템플릿을 고르세요. 매물관리 목록에서 매물 하나를 체크해 "컨텐츠 보내기"를 누르면, 고른 템플릿으로 블로그·유튜브·스레드·인스타용 제목, 내용, 태그, 상호·연락처가 들어간 이미지를 한 번에 만들고 합쳐서 내려받습니다.</p>
+  <p class="page-intro">먼저 마음에 드는 템플릿을 고르세요. 매물관리 목록에서 매물 하나를 체크해 "컨텐츠 보내기"를 누르거나 아래에 내용을 직접 입력하면, 고른 템플릿으로 블로그·유튜브·스레드·인스타용 제목, 내용, 태그, 상호·연락처가 들어간 이미지를 한 번에 만들고 합쳐서 내려받습니다.</p>
 
   <section class="card" id="loginNeed" hidden>
     <h2>로그인이 필요합니다</h2>
@@ -120,10 +120,28 @@ html[data-office-theme='hitop'] .thumbs img{border:1px solid #deedec!important}<
 
   <section class="card" id="stepTpl">
     <h2>1. 템플릿 고르기</h2>
-    <p class="note" style="margin:0 0 4px">아래는 가상의 샘플 매물로 만든 미리보기입니다 (표지 · 매물 정보 · 상권 설명 카드). 모양을 보고 고르면, 매물관리에서 보낸 매물이 이 템플릿으로 만들어집니다.</p>
+    <p class="note" style="margin:0 0 4px">아래는 가상의 샘플 매물로 만든 미리보기입니다 (표지 · 매물 정보 · 상권 설명 카드). 모양을 보고 고르면, 매물관리에서 보낸 매물이나 직접 입력한 내용이 이 템플릿으로 만들어집니다.</p>
     <div class="tpl-gallery big" id="tplStudio"><div class="empty">템플릿을 그리는 중입니다.</div></div>
     <div class="tpl-pickbar"><span>선택한 템플릿: <b id="tplPicked"></b></span><button type="button" class="btn primary" id="btnTplGo">이 템플릿으로 만들기 → 매물관리에서 매물 고르기 ↗</button></div>
     <p class="note">매물관리 목록에서 매물 하나를 체크하고 "🎬 컨텐츠 보내기"를 누르면 이 제작실이 그 매물로 열리고, 방금 고른 템플릿이 그대로 적용됩니다.</p>
+  </section>
+
+  <section class="card" id="stepManual">
+    <h2>2. 내용 입력 <span class="note" style="font-weight:500">(직접 입력하거나, 위 버튼으로 매물관리에서 매물을 보내세요)</span></h2>
+    <div class="opts">
+      <label>매물 종류<select id="mType"><option value="shop">상가</option><option value="office">사무실</option><option value="officetel">오피스텔</option><option value="apartment">아파트</option><option value="villa">빌라</option><option value="house">주택</option><option value="multifamily">다가구</option><option value="building">건물</option><option value="factory">공장·창고</option><option value="land">토지</option></select></label>
+      <label>거래 형태<select id="mDeal"><option value="월세">월세</option><option value="매매">매매</option><option value="전세">전세</option><option value="매매·월세">매매·월세</option></select></label>
+      <label>소재지 (동 단위까지)<input type="text" id="mPlace" placeholder="예) 와동동" autocomplete="off"></label>
+      <label>공개용 제목 (비우면 자동)<input type="text" id="mTitle" placeholder="예) 운정역 대로변 1층 상가" autocomplete="off"></label>
+      <label>매매가<input type="text" id="mSale" placeholder="예) 35000 (=3억 5,000만)" autocomplete="off"></label>
+      <label>보증금 · 전세금<input type="text" id="mDep" placeholder="예) 3000" autocomplete="off"></label>
+      <label>월세<input type="text" id="mRent" placeholder="예) 250" autocomplete="off"></label>
+      <label>면적 (평)<input type="text" id="mPy" placeholder="예) 30.7" autocomplete="off"></label>
+      <label>층<input type="text" id="mFloor" placeholder="예) 1층" autocomplete="off"></label>
+      <label>추천 업종 (쉼표로)<input type="text" id="mBiz" placeholder="예) 카페, 미용실, 학원" autocomplete="off"></label>
+    </div>
+    <p class="note">금액은 만원 단위 숫자로 적으세요 (3000 → 3,000만, 35000 → 3억 5,000만). "3억 5천"처럼 글자로 써도 됩니다. 건물명·호수는 적지 마세요. 사진은 만들어진 뒤 "내 사진 올리기"로 넣을 수 있습니다.</p>
+    <div style="margin-top:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button type="button" class="btn primary" id="btnManual">이 내용으로 만들기</button><span class="note" id="mMsg" style="margin:0"></span></div>
   </section>
 
   <section class="card" id="stepPick" hidden style="display:none">
@@ -133,7 +151,7 @@ html[data-office-theme='hitop'] .thumbs img{border:1px solid #deedec!important}<
   </section>
 
   <section class="card" id="stepOpts" hidden>
-    <h2><span id="optTitle">2. 옵션</span> <a class="btn" id="goDetail" target="_blank" rel="noopener" href="#" style="margin-left:auto" hidden>이 매물 상세 보기 ↗</a><a class="btn" id="repick" href="#" style="margin-left:6px" hidden>다른 매물 고르기</a></h2>
+    <h2><span id="optTitle">3. 옵션</span> <a class="btn" id="goDetail" target="_blank" rel="noopener" href="#" style="margin-left:auto" hidden>이 매물 상세 보기 ↗</a><a class="btn" id="repick" href="#" style="margin-left:6px" hidden>다른 매물 고르기</a></h2>
     <div class="opts">
       <label>공개용 제목 (건물명·호수 없이 동 단위로)<input type="text" id="oTitle" placeholder="매물 이름"></label>
       <select id="oTpl" hidden></select>
@@ -151,21 +169,21 @@ html[data-office-theme='hitop'] .thumbs img{border:1px solid #deedec!important}<
   </section>
 
   <section class="card" id="stepParts" hidden>
-    <h2>3. 파트별 구성과 이미지</h2>
+    <h2>4. 파트별 구성과 이미지</h2>
     <p class="note" style="margin:0 0 12px">글을 파트(표지 · 매물 정보 · 상권 설명 · 추천 · 상담)로 나누고 파트마다 상호·연락처가 들어간 이미지를 만듭니다. 내용을 고치면 이미지가 바로 바뀌고, 인스타·스레드는 이 이미지를 번호 순서대로 올리면 됩니다.</p>
     <label class="mini" style="max-width:460px">하단 띠 문구 (모든 이미지 오른쪽 아래 작은 글)<input type="text" id="gSlogan"></label>
     <div id="partList"></div>
   </section>
 
   <section class="card" id="stepOut" hidden>
-    <h2>4. 채널별 글 <button type="button" class="btn" id="btnRegen" style="margin-left:auto">글 다시 만들기</button></h2>
+    <h2>5. 채널별 글 <button type="button" class="btn" id="btnRegen" style="margin-left:auto">글 다시 만들기</button></h2>
     <p class="note" id="pubWarn" style="color:#b42318;font-weight:700;margin:0 0 10px" hidden></p>
     <div class="tabs" role="tablist" id="tabs"></div>
     <div id="panels"></div>
   </section>
 
   <section class="card" id="stepAll" hidden>
-    <h2>5. 전체 합쳐서 올리기</h2>
+    <h2>6. 전체 합쳐서 올리기</h2>
     <div class="all-actions">
       <button type="button" class="btn primary" id="btnZip">전체 패키지 내려받기 (글 + 이미지 ZIP)</button>
       <button type="button" class="btn" id="btnAllCopy">전체 글 한 번에 복사</button>
@@ -757,7 +775,7 @@ function blobBytes(blob) { return new Promise(function (res) { var r = new FileR
 function canvasBlob(c) { return new Promise(function (res) { c.toBlob(res, 'image/png'); }); }
 
 S.parts = []; S.partCanvases = []; S.dirty = {}; S.tpl = 'classic'; S.ov = {}; S.slogan = null;
-(function () { var sel = document.getElementById('oTpl'), saved = null; try { saved = localStorage.getItem('cs_tpl'); } catch (e) {} Object.keys(TEMPLATES).forEach(function (k) { var op = document.createElement('option'); op.value = k; op.textContent = TEMPLATES[k].label; sel.appendChild(op); }); if (saved && TEMPLATES[saved]) { sel.value = saved; S.tpl = saved; } document.getElementById('tplDesc').textContent = TEMPLATES[S.tpl].desc; })();
+(function () { var sel = document.getElementById('oTpl'), saved = null; try { saved = localStorage.getItem('cs_tpl'); } catch (e) {} Object.keys(TEMPLATES).forEach(function (k) { var op = document.createElement('option'); op.value = k; op.textContent = TEMPLATES[k].label; sel.appendChild(op); }); var qt = new URLSearchParams(location.search).get('tpl'); if (qt && TEMPLATES[qt]) saved = qt; if (saved && TEMPLATES[saved]) { sel.value = saved; S.tpl = saved; } document.getElementById('tplDesc').textContent = TEMPLATES[S.tpl].desc; })();
 var CHANNELS = [['blog', '블로그'], ['youtube', '유튜브'], ['threads', '스레드'], ['insta', '인스타그램']];
 function opts() { return { tpl: $('oTpl').value, title: scrubPublic($('oTitle').value.trim()), tone: $('oTone').value, point: scrubPublic($('oPoint').value.trim()), area: $('oArea').value, price: $('oPrice').checked, addr: false }; }
 function pfile(i, p) { return pfileName(i, p); }
@@ -963,6 +981,18 @@ document.addEventListener('input', function (e) {
 ['oTpl', 'oTitle', 'oTone', 'oPoint', 'oArea', 'oPrice'].forEach(function (id) { $(id).addEventListener('change', regenerate); });
 $('q').addEventListener('input', renderList);
 var sloganT = null; $('gSlogan').addEventListener('input', function () { var v = this.value; clearTimeout(sloganT); sloganT = setTimeout(function () { S.slogan = v; drawAllParts(); drawWide(); }, 300); });
+$('btnManual').addEventListener('click', async function () {
+  var btn = this, g = function (id) { var s = $(id).value.trim(); return /^\d{4,}$/.test(s) && /^m(Sale|Dep|Rent)$/.test(id) ? Number(s).toLocaleString('ko-KR') : s; }, place = scrubPublic(g('mPlace')), title = scrubPublic(g('mTitle')), msg = $('mMsg');
+  if (!place && !title) { msg.style.color = '#b42318'; msg.textContent = '소재지(또는 제목)를 입력해 주세요.'; return; }
+  if (!g('mSale') && !g('mDep') && !g('mRent')) { msg.style.color = '#b42318'; msg.textContent = '가격(매매가·보증금·월세 중 하나 이상)을 입력해 주세요.'; return; }
+  msg.textContent = ''; btn.disabled = true; btn.textContent = '만드는 중...';
+  try {
+    var it = { id: 'manual', type: $('mType').value, title: title || place, address: place, dealType: $('mDeal').value, salePrice: g('mSale'), deposit: g('mDep'), monthlyRent: g('mRent'), exclusiveAreaPy: g('mPy'), areaPy: g('mPy'), floorInfo: g('mFloor'), shop_recommendBiz: g('mBiz') };
+    await pickItem(it); $('goDetail').hidden = true;
+    if (title) { $('oTitle').value = title; await regenerate(); }
+  } catch (err) { msg.style.color = '#b42318'; msg.textContent = '만들지 못했습니다: ' + (err && err.message || err); }
+  btn.disabled = false; btn.textContent = '이 내용으로 만들기';
+});
 $('btnRegen').addEventListener('click', function () { S.dirty = {}; refreshTexts(true); });
 $('ownPhoto').addEventListener('change', function () { var file = this.files && this.files[0]; if (!file) return; var url = URL.createObjectURL(file); loadImage(url).then(function (im) { S.bg = im; document.querySelectorAll('#photos img').forEach(function (x) { x.classList.remove('on'); }); drawAllParts(); drawWide(); }); this.value = ''; });
 $('btnAllCopy').addEventListener('click', function () { copyText(allText(), this); });
@@ -979,7 +1009,7 @@ $('btnZip').addEventListener('click', async function () { var b = this, old = b.
   document.body.classList.remove('lock');
   try {
     var id = new URLSearchParams(location.search).get('id');
-    if (id) { var one = await getListingById(id); if (one) { pickItem(one); document.getElementById('stepTpl').hidden = true; document.getElementById('optTitle').textContent = '옵션'; var rp = document.getElementById('repick'); rp.hidden = false; rp.href = REALTY_BASE + 'properties.html?office=' + O.key; rp.target = '_blank'; rp.rel = 'noopener'; rp.textContent = '다른 매물 고르기 (매물관리)'; } }
+    if (id) { var one = await getListingById(id); if (one) { pickItem(one); document.getElementById('stepTpl').hidden = true; document.getElementById('stepManual').hidden = true; document.getElementById('optTitle').textContent = '옵션'; var rp = document.getElementById('repick'); rp.hidden = false; rp.href = REALTY_BASE + 'properties.html?office=' + O.key; rp.target = '_blank'; rp.rel = 'noopener'; rp.textContent = '다른 매물 고르기 (매물관리)'; } }
   } catch (err) { $('stepTpl').hidden = false; document.querySelector('.tpl-pickbar').insertAdjacentHTML('afterend', '<p class="note" style="color:#b42318">매물을 불러오지 못했습니다: ' + esc(err && err.message || err) + '</p>'); }
 })();
 })();
