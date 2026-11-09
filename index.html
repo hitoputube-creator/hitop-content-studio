@@ -50,6 +50,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid #9fc2ee;outline-offset
 .all-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .go{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
 .empty{padding:18px;text-align:center;color:#617286}
+.tpl-gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:14px;margin-top:10px}.tpl{border:2px solid #dce5ef;border-radius:14px;background:#fff;padding:10px;text-align:left;cursor:pointer;font:inherit;color:inherit}.tpl:hover{border-color:#9fc2ee}.tpl.on{border-color:#1767d2;box-shadow:0 0 0 3px rgba(23,103,210,.15)}.tpl-th{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.tpl-th img{width:100%;height:auto;border-radius:6px;border:1px solid #e3eaf3;display:block}.tpl b{display:block;margin-top:8px;font-size:13px;color:#193860}.tpl small{display:block;color:#617286;font-size:11.5px;line-height:1.5;margin-top:2px}
 .part{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:18px;padding:14px 0;border-top:1px solid #e8eef5}.part:first-child{border-top:0}
 .part-head{display:flex;align-items:center;gap:8px;margin-bottom:8px}.mini{display:grid;gap:4px;font-size:12px;color:#52667b;font-weight:600;margin-bottom:8px}
 .part-img canvas{width:100%;height:auto;display:block;border-radius:10px;border:1px solid #dce5ef}.part-img .btn{margin-top:8px}
@@ -87,13 +88,14 @@ body.lock .page>*:not(#loginNeed){display:none!important}
     <h2>2. 옵션</h2>
     <div class="opts">
       <label>공개용 제목 (건물명·호수 없이 동 단위로)<input type="text" id="oTitle" placeholder="매물 이름"></label>
-      <label>템플릿 (디자인 + 글 구성)<select id="oTpl"></select></label>
+      <select id="oTpl" hidden></select>
       <label>상권 설명<select id="oArea"><option value="unjeong">운정역 상권 설명 넣기</option><option value="">넣지 않음</option></select></label>
       <label>말투<select id="oTone"><option value="info">정보형 (차분하고 정확하게)</option><option value="friendly">친근형 (대화하듯 부드럽게)</option></select></label>
       <label>추가 강조 포인트 (선택)<input type="text" id="oPoint" placeholder="예) 역세권, 주차 편리, 즉시 입주"></label>
       <div><label class="chk"><input type="checkbox" id="oPrice" checked> 정확한 가격 표시</label></div>
     </div>
-    <p class="note" id="tplDesc" style="margin-top:10px"></p>
+    <div style="margin-top:14px"><b style="font-size:13px;color:#193860">템플릿 선택 (모양을 보고 고르세요)</b><div class="tpl-gallery" id="tplGallery"></div></div>
+    <p class="note" id="tplDesc" hidden></p>
     <p class="note" style="margin-top:10px">매물 주소가 와동동·운정 일대면 상권 설명이 자동으로 켜집니다. 다른 지역 매물에 운정역 상권 설명을 넣으면 오해를 줄 수 있어 기본은 꺼짐입니다.</p>
     <div id="photoBox" hidden><div class="note" style="margin-top:12px">이미지 배경 사진 선택 (사진이 없으면 색 배경으로 만들어집니다)</div><div class="photos" id="photos"></div>
       <div style="margin-top:8px"><label class="btn" style="cursor:pointer">내 사진 올리기<input type="file" id="ownPhoto" accept="image/*" hidden></label></div></div>
@@ -321,18 +323,18 @@ var AREAS = {
 };
 var TEMPLATES = {
   classic: { label: '클래식 · 하이탑 블로그형', desc: '프레임 박스 + 정석 구성 (인사 → 핵심 정보 → 상권 → 추천 → 상담)', cover: 'banner', text: 'standard', pals: {} },
-  hook: { label: '질문형 · 포토 포스터', desc: '사진을 크게 쓰고 질문으로 시작하는 짧은 글. 파트 5장', cover: 'poster', text: 'hook', bullet: 'dot',
+  hook: { label: '질문형 · 포토 포스터', desc: '사진을 크게 쓰고 질문으로 시작하는 짧은 글', cover: 'poster', text: 'hook', bullet: 'dot',
     pals: {
       hitop: { bg: '#0f1115', bg2: '#1b1f27', gold: '#ffcf33', goldL: '#ffe58a', panelA: '#1b1f27', panelB: '#14171c', ink: '#ffffff', inkSub: 'rgba(255,255,255,.8)', pillInk: '#0f1115', footA: '#1b1f27', footB: '#0f1115', footSub: '#ffe58a', footAccent: '#ffcf33', footLine: '#ffcf33', logoFill: '#0f1115', dark: true },
-      ktop: { bg: '#ffffff', bg2: '#f4f7fb', gold: '#2a7de1', goldL: '#7db6f5', panelA: '#ffffff', panelB: '#f4f7fb', ink: '#111827', inkSub: '#5b6472', pillInk: '#ffffff', footA: '#111827', footB: '#1f2937', footSub: '#bcd6f7', footAccent: '#ffd166', footLine: '#2a7de1', logoFill: '#ffffff', dark: false } } },
-  brief: { label: '한눈 요약 · 미니멀', desc: '핵심만 간단히, 깔끔한 흰 화면. 파트 4~5장', cover: 'split', text: 'brief', minimal: true, bullet: 'num',
+      ktop: { bg: '#0b1220', bg2: '#16233b', gold: '#4da3ff', goldL: '#a8d1ff', panelA: '#16233b', panelB: '#0f1a2e', ink: '#ffffff', inkSub: 'rgba(255,255,255,.8)', pillInk: '#0b1220', footA: '#16233b', footB: '#0b1220', footSub: '#a8d1ff', footAccent: '#ffd166', footLine: '#4da3ff', logoFill: '#0b1220', dark: true } } },
+  brief: { label: '한눈 요약 · 미니멀', desc: '핵심만 간단히, 깔끔한 흰 화면의 요약형', cover: 'split', text: 'brief', minimal: true, bullet: 'num',
     pals: {
       hitop: { bg: '#ffffff', bg2: '#faf8f3', gold: '#b8892b', goldL: '#d9b864', panelA: '#ffffff', panelB: '#fbf9f4', ink: '#0a1b42', inkSub: '#5b6678', pillInk: '#ffffff', footA: '#0a1b42', footB: '#13306e', footSub: '#e8d28f', footAccent: '#f2d98a', footLine: '#d9b864', logoFill: '#ffffff', dark: false },
       ktop: { bg: '#ffffff', bg2: '#f7f9fc', gold: '#1767d2', goldL: '#5b9af0', panelA: '#ffffff', panelB: '#f7f9fc', ink: '#1c344f', inkSub: '#52667b', pillInk: '#ffffff', footA: '#1c344f', footB: '#27496f', footSub: '#cfe0f7', footAccent: '#ffffff', footLine: '#1767d2', logoFill: '#ffffff', dark: false } } },
-  analysis: { label: '상권 분석형 · 컬러 블록', desc: '상권·교통 설명을 먼저, 컬러 헤더 카드. 파트 7장', cover: 'banner', text: 'analysis', bannerSolid: true,
+  analysis: { label: '상권 분석형 · 컬러 블록', desc: '상권·교통 설명을 먼저 보여 주는 컬러 헤더 카드', cover: 'banner', text: 'analysis', bannerSolid: true,
     pals: {
       hitop: { bg: '#e8f3f1', bg2: '#ffffff', gold: '#0f7a72', goldL: '#37b3a8', panelA: '#ffffff', panelB: '#f1f8f7', ink: '#10303a', inkSub: '#4a6670', pillInk: '#ffffff', footA: '#0c524d', footB: '#0f7a72', footSub: '#bff0ea', footAccent: '#ffe08a', footLine: '#37b3a8', logoFill: '#ffffff', dark: false },
-      ktop: { bg: '#e9f1fd', bg2: '#ffffff', gold: '#1f6fe0', goldL: '#5b9af0', panelA: '#ffffff', panelB: '#f3f7fe', ink: '#1c344f', inkSub: '#52667b', pillInk: '#ffffff', footA: '#193860', footB: '#2465ba', footSub: '#d6e8ff', footAccent: '#ffd166', footLine: '#8fbaf5', logoFill: '#ffffff', dark: false } } }
+      ktop: { bg: '#12306b', bg2: '#1f5fd0', gold: '#ffcf4d', goldL: '#ffe08a', panelA: '#2457b8', panelB: '#1b4698', ink: '#ffffff', inkSub: 'rgba(255,255,255,.82)', pillInk: '#12306b', bannerInk: '#12306b', footA: '#0d2557', footB: '#12306b', footSub: '#cfe0ff', footAccent: '#ffd166', footLine: '#ffcf4d', logoFill: '#0d2557', dark: true } } }
 };
 function pfileName(i, p) { return ('0' + (i + 1)).slice(-2) + '_' + String(p.title).replace(/[\\\/:*?"<>|\s·]+/g, '_'); }
 function buildParts(f, o) {
@@ -466,8 +468,8 @@ function drawBanner(x, w, u, y, text, tag, hMax) {
   var bp = PAL();
   if (bp.bannerSolid) { x.save(); rrect(x, bx, y, bw, bh, 12 * u); var bg0 = x.createLinearGradient(bx, 0, bx + bw, 0); bg0.addColorStop(0, bp.gold); bg0.addColorStop(1, bp.goldL); x.fillStyle = bg0; x.fill(); x.restore(); } else navyBox(x, bx, y, bw, bh, u, 0.94, 12 * u);
   x.textAlign = 'center';
-  if (tag) { x.fillStyle = bp.bannerSolid ? 'rgba(255,255,255,.92)' : bp.inkSub; x.font = font(600, 28 * u); x.fillText(tag, w / 2, top + 28 * u); }
-  x.fillStyle = bp.bannerSolid ? '#ffffff' : goldGrad(x, bx, bx + bw); x.font = font(800, size); lines.forEach(function (l, i) { x.fillText(l, w / 2, top + tagH + size * 0.95 + i * size * 1.18); });
+  if (tag) { x.fillStyle = bp.bannerSolid ? (bp.bannerInk || 'rgba(255,255,255,.92)') : bp.inkSub; x.font = font(600, 28 * u); x.fillText(tag, w / 2, top + 28 * u); }
+  x.fillStyle = bp.bannerSolid ? (bp.bannerInk || '#ffffff') : goldGrad(x, bx, bx + bw); x.font = font(800, size); lines.forEach(function (l, i) { x.fillText(l, w / 2, top + tagH + size * 0.95 + i * size * 1.18); });
   x.textAlign = 'left';
 }
 function drawCover(c, f, o, kind) { var L = (TEMPLATES[S.tpl] || TEMPLATES.classic).cover; if (L === 'poster') return drawCoverPoster(c, f, o, kind); if (L === 'split') return drawCoverSplit(c, f, o, kind); return drawCoverBanner(c, f, o, kind); }
@@ -606,7 +608,24 @@ function drawPart(i) {
   var p = S.parts[i], c = S.partCanvases[i], f = S.f, o = opts(); c.getContext('2d').clearRect(0, 0, c.width, c.height);
   if (p.kind === 'cover') drawCover(c, f, o, 'tall'); else if (p.kind === 'info') drawInfo(c, f, o); else if (p.kind === 'contact') drawContact(c, f, o); else drawTextCard(c, p, f, o, i + 1, S.parts.length);
 }
-function drawAllParts() { S.parts.forEach(function (_, i) { drawPart(i); }); paintThumbs(); }
+
+function thumbOf(c) { var t = document.createElement('canvas'); t.width = 240; t.height = 300; t.getContext('2d').drawImage(c, 0, 0, 240, 300); return t.toDataURL('image/jpeg', 0.72); }
+function renderTplGallery() {
+  var box = $('tplGallery'); if (!box || !S.f) return;
+  var f = S.f, o = opts(), old = S.tpl, ap = AREAS.unjeong.parts[0], sample = { key: 'sample', kind: 'text', tag: ap.tag, title: ap.title, lines: ap.lines.slice(0, 3), note: AREAS.unjeong.note };
+  box.innerHTML = '';
+  try {
+    Object.keys(TEMPLATES).forEach(function (k) {
+      S.tpl = k; var c1 = mk(1080, 1350), c2 = mk(1080, 1350), c3 = mk(1080, 1350);
+      drawCover(c1, f, o, 'tall'); drawInfo(c2, f, o); drawTextCard(c3, sample, f, o, 3, 6);
+      var card = document.createElement('button'); card.type = 'button'; card.className = 'tpl' + (k === old ? ' on' : ''); card.dataset.tpl = k;
+      var th = document.createElement('div'); th.className = 'tpl-th';
+      [c1, c2, c3].forEach(function (c) { var im = document.createElement('img'); im.alt = ''; im.src = thumbOf(c); th.appendChild(im); });
+      card.appendChild(th); card.insertAdjacentHTML('beforeend', '<b>' + esc(TEMPLATES[k].label) + '</b><small>' + esc(TEMPLATES[k].desc) + '</small>'); box.appendChild(card);
+    });
+  } finally { S.tpl = old; }
+}
+function drawAllParts() { S.parts.forEach(function (_, i) { drawPart(i); }); paintThumbs(); renderTplGallery(); }
 function paintThumbs() {
   ['threads', 'insta'].forEach(function (ch) {
     var box = $('thumbs-' + ch); if (!box) return;
@@ -723,6 +742,7 @@ function renderList() {
 }
 var redrawT = null;
 document.addEventListener('click', function (e) {
+  var tp = e.target.closest('.tpl'); if (tp) { var sel = $('oTpl'); if (sel.value !== tp.dataset.tpl) { sel.value = tp.dataset.tpl; sel.dispatchEvent(new Event('change', { bubbles: true })); } return; }
   var t = e.target.closest('[data-ch],[data-copy],[data-rich],[data-both]'); if (!t) return;
   if (t.dataset.ch) { S.channel = t.dataset.ch; document.querySelectorAll('.tab').forEach(function (b) { b.setAttribute('aria-selected', String(b.dataset.ch === S.channel)); }); document.querySelectorAll('[data-panel]').forEach(function (p) { p.hidden = p.dataset.panel !== S.channel; }); return; }
   if (t.dataset.copy) { copyText($(t.dataset.copy).value, t); return; }
