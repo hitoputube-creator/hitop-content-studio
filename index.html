@@ -65,7 +65,7 @@ body.lock .page>*:not(#loginNeed){display:none!important}
 <div class="page">
   <header class="topbar">
     <div class="brand"><span class="brand-mark" aria-hidden="true" id="brandMark">H</span><div><div class="brand-name" id="brandName">컨텐츠 제작실</div><div class="brand-sub">블로그 · 유튜브 · 스레드 · 인스타</div></div></div>
-    <nav class="top-actions" aria-label="사무소와 계정"><a href="?office=hitop" id="goHitop">하이탑</a><a href="?office=ktop" id="goKtop">케이탑</a><button type="button" class="auth-logout" id="btnLogout">로그아웃</button></nav>
+    <nav class="top-actions" aria-label="사무소와 계정"><a href="?office=hitop" id="goHitop">하이탑</a><a href="?office=ktop" id="goKtop">케이탑</a><a href="#" id="goRealty" style="background:#ffe08a;color:#3a2d00;border-color:#ffe08a;font-weight:700">매물관리 ↗</a><button type="button" class="auth-logout" id="btnLogout">로그아웃</button></nav>
   </header>
 
   <p class="eyebrow">CONTENT STUDIO</p>
@@ -85,7 +85,7 @@ body.lock .page>*:not(#loginNeed){display:none!important}
   </section>
 
   <section class="card" id="stepOpts" hidden>
-    <h2>2. 옵션</h2>
+    <h2>2. 옵션 <a class="btn" id="goDetail" target="_blank" rel="noopener" href="#" style="margin-left:auto" hidden>이 매물 상세 보기 ↗</a></h2>
     <div class="opts">
       <label>공개용 제목 (건물명·호수 없이 동 단위로)<input type="text" id="oTitle" placeholder="매물 이름"></label>
       <select id="oTpl" hidden></select>
@@ -752,7 +752,7 @@ async function regenerate() {
   paintPartList(); drawAllParts(); drawWide(); refreshTexts(true);
 }
 async function pickItem(it) {
-  S.sel = it; S.f = buildFacts(it); $('oTitle').value = S.f.pubDefault; S.bg = null;
+  S.sel = it; S.f = buildFacts(it); var gd = $('goDetail'); gd.href = REALTY_BASE + 'detail.html?id=' + encodeURIComponent(it.id) + '&office=' + officeId; gd.hidden = false; $('oTitle').value = S.f.pubDefault; S.bg = null;
   $('oArea').value = /와동|운정/.test((S.f.addr || '') + ' ' + (S.f.title || '')) ? 'unjeong' : '';
   document.querySelectorAll('.pick-row').forEach(function (r) { r.classList.toggle('on', r.dataset.id === String(it.id)); });
   ['stepOpts', 'stepParts', 'stepOut', 'stepAll'].forEach(function (id) { $(id).hidden = false; });
@@ -801,6 +801,7 @@ $('btnZip').addEventListener('click', async function () { var b = this, old = b.
   document.getElementById('brandName').textContent = O.short + ' 컨텐츠 제작실'; document.getElementById('brandMark').textContent = O.key === 'ktop' ? 'K' : 'H'; document.title = O.short + ' 컨텐츠 제작실';
   document.getElementById(O.key === 'ktop' ? 'goKtop' : 'goHitop').className = 'on';
   document.getElementById('loginLink').href = REALTY_BASE + 'login.html?office=' + O.key;
+  document.getElementById('goRealty').href = REALTY_BASE + 'properties.html?office=' + O.key;
   document.getElementById('btnLogout').onclick = async function () { try { await authClient.auth.signOut(); } finally { location.href = REALTY_BASE + 'login.html?office=' + O.key; } };
   if (!(await ensureAuth())) { document.getElementById('loginNeed').hidden = false; document.getElementById('stepPick').hidden = true; return; }
   document.body.classList.remove('lock');
