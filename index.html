@@ -105,6 +105,7 @@ body.lock .page>*:not(#loginNeed){display:none!important}
   <section class="card" id="stepParts" hidden>
     <h2>3. 파트별 구성과 이미지</h2>
     <p class="note" style="margin:0 0 12px">글을 파트(표지 · 매물 정보 · 상권 설명 · 추천 · 상담)로 나누고 파트마다 상호·연락처가 들어간 이미지를 만듭니다. 내용을 고치면 이미지가 바로 바뀌고, 인스타·스레드는 이 이미지를 번호 순서대로 올리면 됩니다.</p>
+    <label class="mini" style="max-width:460px">하단 띠 문구 (모든 이미지 오른쪽 아래 작은 글)<input type="text" id="gSlogan"></label>
     <div id="partList"></div>
   </section>
 
@@ -440,6 +441,8 @@ function wrap(x, text, maxW, maxLines) {
 }
 function fit(x, text, weight, size, maxW) { var s = size; x.font = font(weight, s); while (x.measureText(text).width > maxW && s > 12) { s -= 1; x.font = font(weight, s); } return s; }
 function priceLines(f, o) { return o.price && f.price ? f.price.split(' / ') : ['가격 협의']; }
+function OVR() { return S.ov || {}; }
+function ovv(k, d) { var v = OVR()[k]; return v == null ? d : v; }
 function PAL() { var T = TEMPLATES[S.tpl] || TEMPLATES.classic; return Object.assign({}, O.pal, (T.pals && T.pals[O.key]) || {}, { bannerSolid: !!T.bannerSolid, minimal: !!T.minimal, bullet: T.bullet || 'diamond' }); }
 function rrect(x, px, py, pw, ph, r) { x.beginPath(); x.moveTo(px + r, py); x.arcTo(px + pw, py, px + pw, py + ph, r); x.arcTo(px + pw, py + ph, px, py + ph, r); x.arcTo(px, py + ph, px, py, r); x.arcTo(px, py, px + pw, py, r); x.closePath(); }
 function goldGrad(x, x0, x1) { var p = PAL(), g = x.createLinearGradient(x0, 0, x1, 0); g.addColorStop(0, p.goldL); g.addColorStop(0.5, p.gold); g.addColorStop(1, p.goldL); return g; }
@@ -457,7 +460,7 @@ function drawFooter(x, w, h, u, fh) {
   var sub = '대표 ' + O.rep + '  |  등록번호 ' + O.reg, ss = fit(x, sub, 500, fh * 0.135, w * 0.56 - tx); x.fillStyle = p.footSub; x.font = font(500, ss); x.fillText(sub, tx, mid + fh * 0.06);
   var ad = fit(x, O.addr, 500, fh * 0.125, w * 0.56 - tx); x.fillStyle = 'rgba(255,255,255,.82)'; x.font = font(500, ad); x.fillText(O.addr, tx, mid + fh * 0.26);
   x.textAlign = 'right'; var ps = fit(x, O.phone, 800, fh * 0.4, w * 0.36); x.fillStyle = p.footAccent || goldGrad(x, w - pad - w * 0.36, w - pad); x.font = font(800, ps); x.fillText(O.phone, w - pad, mid - fh * 0.1);
-  x.fillStyle = 'rgba(255,255,255,.85)'; x.font = font(500, fh * 0.14); x.fillText(p.slogan, w - pad, mid + fh * 0.26);
+  x.fillStyle = 'rgba(255,255,255,.85)'; x.font = font(500, fh * 0.14); x.fillText(S.slogan != null ? S.slogan : p.slogan, w - pad, mid + fh * 0.26);
   x.textAlign = 'left'; x.textBaseline = 'alphabetic';
 }
 function drawBanner(x, w, u, y, text, tag, hMax) {
@@ -479,8 +482,8 @@ function drawCoverBanner(c, f, o, kind) {
   var ov = x.createLinearGradient(0, 0, 0, h); ov.addColorStop(0, 'rgba(5,14,40,.30)'); ov.addColorStop(0.5, 'rgba(5,14,40,.10)'); ov.addColorStop(1, 'rgba(5,14,40,.55)'); x.fillStyle = ov; x.fillRect(0, 0, w, h);
   var fh = Math.round(h * (wide ? 0.17 : 0.115)), place = placeOf(f, { addr: false });
   var subline = [place, f.typeLabel + ' ' + (f.deal || '')].filter(Boolean).join('  ·  ');
-  drawBanner(x, w, u, 26 * u, f.pubTitle || f.typeLabel, subline, wide ? 168 * u : 250 * u);
-  var pls = priceLines(f, o), ps = wide ? 60 * u : 78 * u, sub = [f.floor, f.area].filter(Boolean).join('  ·  '), ss = wide ? 28 * u : 34 * u, maxw = 0;
+  drawBanner(x, w, u, 26 * u, ovv('head', f.pubTitle || f.typeLabel), ovv('sub', subline), wide ? 168 * u : 250 * u);
+  var pls = ovv('price', priceLines(f, o)), ps = wide ? 60 * u : 78 * u, sub = ovv('meta', [f.floor, f.area].filter(Boolean).join('  ·  ')), ss = wide ? 28 * u : 34 * u, maxw = 0;
   pls.forEach(function (l) { var s = fit(x, l, 800, pls.length > 1 ? ps * 0.82 : ps, w - 150 * u); x.font = font(800, s); maxw = Math.max(maxw, x.measureText(l).width); });
   if (sub) { x.font = font(600, ss); maxw = Math.max(maxw, x.measureText(sub).width); }
   var cw = Math.min(w - 52 * u, maxw + 110 * u), chh = pls.length * ps * (pls.length > 1 ? 0.82 : 1) * 1.2 + (sub ? ss * 1.8 : 0) + 50 * u, cx = (w - cw) / 2, cy = h - fh - 30 * u - chh;
@@ -495,23 +498,23 @@ function drawCoverPoster(c, f, o, kind) {
   var w = c.width, h = c.height, x = c.getContext('2d'), wide = kind === 'wide', u = wide ? h / 720 : w / 1080, p = PAL(), fh = Math.round(h * (wide ? 0.17 : 0.115)), pad = 52 * u;
   if (S.bg) coverFit(x, S.bg, w, h); else bgNavy(x, w, h);
   var ov = x.createLinearGradient(0, 0, 0, h); ov.addColorStop(0, 'rgba(0,0,0,.40)'); ov.addColorStop(0.35, 'rgba(0,0,0,.05)'); ov.addColorStop(1, 'rgba(0,0,0,.86)'); x.fillStyle = ov; x.fillRect(0, 0, w, h);
-  drawChip(x, [f.deal || '매물', f.typeLabel].join(' · '), pad, pad, wide ? 26 * u : 32 * u, p.gold, p.pillInk);
-  var accent = p.dark ? p.gold : p.goldL, y = h - fh - 38 * u, pls = priceLines(f, o), ps = wide ? 56 * u : 78 * u, sub = [f.floor, f.area].filter(Boolean).join('  ·  '), ss = wide ? 26 * u : 34 * u, top = y;
+  drawChip(x, ovv('chip', [f.deal || '매물', f.typeLabel].join(' · ')), pad, pad, wide ? 26 * u : 32 * u, p.gold, p.pillInk);
+  var accent = p.dark ? p.gold : p.goldL, y = h - fh - 38 * u, pls = ovv('price', priceLines(f, o)), ps = wide ? 56 * u : 78 * u, sub = ovv('meta', [f.floor, f.area].filter(Boolean).join('  ·  ')), ss = wide ? 26 * u : 34 * u, top = y;
   x.textAlign = 'left';
   for (var i = pls.length - 1; i >= 0; i--) { var s = fit(x, pls[i], 800, pls.length > 1 ? ps * 0.82 : ps, w - pad * 2 - 30 * u); x.font = font(800, s); x.fillStyle = accent; x.fillText(pls[i], pad + 28 * u, y); y -= s * 1.2; }
   if (sub) { x.fillStyle = 'rgba(255,255,255,.92)'; x.font = font(600, ss); x.fillText(sub, pad + 28 * u, y); y -= ss * 1.7; }
-  var hs = wide ? 58 * u : 90 * u, head = f.pubTitle || f.typeLabel, lines; for (;;) { x.font = font(800, hs); lines = wrap(x, head, w - pad * 2 - 30 * u, 2); if ((!/…$/.test(lines[lines.length - 1]) && lines.every(function (l) { return x.measureText(l).width <= w - pad * 2 - 30 * u; })) || hs < 28 * u) break; hs -= 3 * u; }
+  var hs = wide ? 58 * u : 90 * u, head = ovv('head', f.pubTitle || f.typeLabel), lines; for (;;) { x.font = font(800, hs); lines = wrap(x, head, w - pad * 2 - 30 * u, 2); if ((!/…$/.test(lines[lines.length - 1]) && lines.every(function (l) { return x.measureText(l).width <= w - pad * 2 - 30 * u; })) || hs < 28 * u) break; hs -= 3 * u; }
   x.fillStyle = '#fff'; for (var k = lines.length - 1; k >= 0; k--) { x.fillText(lines[k], pad + 28 * u, y); y -= hs * 1.15; }
-  var place = placeOf(f, { addr: false }); if (place) { x.font = font(700, ss); x.fillStyle = accent; x.fillText(place, pad + 28 * u, y + hs * 0.2); y -= ss * 1.3; }
+  var place = ovv('sub', placeOf(f, { addr: false })); if (place) { x.font = font(700, ss); x.fillStyle = accent; x.fillText(place, pad + 28 * u, y + hs * 0.2); y -= ss * 1.3; }
   x.fillStyle = accent; x.fillRect(pad, y + ss * 0.2, 10 * u, top - y); drawFooter(x, w, h, u, fh);
 }
 function drawCoverSplit(c, f, o, kind) {
   var w = c.width, h = c.height, x = c.getContext('2d'), wide = kind === 'wide', u = wide ? h / 720 : w / 1080, p = PAL(), fh = Math.round(h * (wide ? 0.17 : 0.115)), photoH = Math.round(h * 0.5), pad = 56 * u;
   x.fillStyle = p.panelA; x.fillRect(0, 0, w, h);
   x.save(); x.beginPath(); x.rect(0, 0, w, photoH); x.clip(); if (S.bg) coverFit(x, S.bg, w, photoH); else { var g = x.createLinearGradient(0, 0, w, photoH); g.addColorStop(0, p.gold); g.addColorStop(1, p.goldL); x.fillStyle = g; x.fillRect(0, 0, w, photoH); } x.restore();
-  drawChip(x, [f.deal || '매물', f.typeLabel].join(' · '), pad, 40 * u, wide ? 24 * u : 30 * u, p.gold, p.pillInk);
+  drawChip(x, ovv('chip', [f.deal || '매물', f.typeLabel].join(' · ')), pad, 40 * u, wide ? 24 * u : 30 * u, p.gold, p.pillInk);
   x.fillStyle = goldGrad(x, 0, w); x.fillRect(0, photoH, w, 8 * u);
-  var pls = priceLines(f, o), ps = wide ? 50 * u : 70 * u, sub = [f.floor, f.area].filter(Boolean).join('  ·  '), ss = wide ? 24 * u : 32 * u, place = placeOf(f, { addr: false }), hs = wide ? 46 * u : 68 * u, head = f.pubTitle || f.typeLabel, lines;
+  var pls = ovv('price', priceLines(f, o)), ps = wide ? 50 * u : 70 * u, sub = ovv('meta', [f.floor, f.area].filter(Boolean).join('  ·  ')), ss = wide ? 24 * u : 32 * u, place = ovv('sub', placeOf(f, { addr: false })), hs = wide ? 46 * u : 68 * u, head = ovv('head', f.pubTitle || f.typeLabel), lines;
   for (;;) { x.font = font(800, hs); lines = wrap(x, head, w - pad * 2, 2); if ((!/…$/.test(lines[lines.length - 1]) && lines.every(function (l) { return x.measureText(l).width <= w - pad * 2; })) || hs < 26 * u) break; hs -= 3 * u; }
   var blockH = (place ? ss * 1.5 : 0) + lines.length * hs * 1.15 + 14 * u + pls.length * ps * (pls.length > 1 ? 0.82 : 1) * 1.2 + (sub ? ss * 1.6 : 0), avail = h - fh - photoH - 8 * u, y = photoH + 8 * u + Math.max(10 * u, (avail - blockH) / 2) + ss;
   x.textAlign = 'left'; if (place) { x.fillStyle = p.gold; x.font = font(700, ss); x.fillText(place, pad, y); y += ss * 1.5; }
@@ -523,8 +526,8 @@ function drawCoverSplit(c, f, o, kind) {
 function drawInfo(c, f, o) {
   var w = c.width, h = c.height, x = c.getContext('2d'), u = w / 1080, p = PAL(), fh = Math.round(h * 0.115);
   bgNavy(x, w, h);
-  drawBanner(x, w, u, 56 * u, f.typeLabel + ' 핵심 요약', placeOf(f, { addr: false }), 190 * u);
-  var rows = factLines(f, o), top = 56 * u + 190 * u + 36 * u, avail = h - fh - top - 60 * u, rh = Math.min(150 * u, avail / Math.max(rows.length, 1)), gap = 14 * u;
+  drawBanner(x, w, u, 56 * u, ovv('title', f.typeLabel + ' 핵심 요약'), ovv('tag', placeOf(f, { addr: false })), 190 * u);
+  var rows = ovv('rows', factLines(f, o)), top = 56 * u + 190 * u + 36 * u, avail = h - fh - top - 60 * u, rh = Math.min(150 * u, avail / Math.max(rows.length, 1)), gap = 14 * u;
   rows.forEach(function (r, i) {
     var ry = top + i * rh, bh = rh - gap; navyBox(x, 66 * u, ry, w - 132 * u, bh, u, 0.85, 12 * u);
     var pw = 230 * u, ph = bh * 0.6, py = ry + (bh - ph) / 2; rrect(x, 100 * u, py, pw, ph, ph / 2); x.fillStyle = goldGrad(x, 100 * u, 100 * u + pw); x.fill();
@@ -551,14 +554,14 @@ function drawContact(c, f, o) {
   var w = c.width, h = c.height, x = c.getContext('2d'), u = w / 1080, p = PAL();
   bgNavy(x, w, h); goldFrame(x, 22 * u, 22 * u, w - 44 * u, h - 44 * u, u, 14 * u);
   monoLogo(x, w / 2 - 80 * u, 110 * u, 160 * u, u); x.textAlign = 'center';
-  x.fillStyle = p.inkSub; x.font = font(600, 38 * u); x.fillText('상담 · 문의', w / 2, 340 * u);
+  x.fillStyle = p.inkSub; x.font = font(600, 38 * u); x.fillText(ovv('label', '상담 · 문의'), w / 2, 340 * u);
   x.fillStyle = p.ink; fit(x, O.short, 800, 98 * u, w - 160 * u); x.fillText(O.short, w / 2, 450 * u);
   x.fillStyle = goldGrad(x, 60 * u, w - 60 * u); fit(x, O.phone, 800, 120 * u, w - 120 * u); x.fillText(O.phone, w / 2, 590 * u);
-  x.fillStyle = p.dark ? p.goldL : p.gold; x.font = font(600, 32 * u); x.fillText(p.slogan, w / 2, 650 * u);
+  x.fillStyle = p.dark ? p.goldL : p.gold; x.font = font(600, 32 * u); x.fillText(S.slogan != null ? S.slogan : p.slogan, w / 2, 650 * u);
   var rows = [['대표', O.rep], ['소재지', O.addr], ['등록번호', O.reg], ['사업자번호', O.biz], ['팩스', O.fax], ['이메일', O.email]].filter(function (r) { return r[1]; }), rh = 72 * u, bx = 80 * u, bw = w - 160 * u, by = 716 * u, bh = rows.length * rh + 40 * u;
   navyBox(x, bx, by, bw, bh, u, 0.9, 20 * u); x.textAlign = 'left'; x.textBaseline = 'middle';
   rows.forEach(function (r, i) { var ry = by + 20 * u + i * rh + rh / 2; x.fillStyle = goldGrad(x, bx, bx + 200 * u); x.font = font(800, 30 * u); x.fillText(r[0], bx + 40 * u, ry); x.fillStyle = p.ink; fit(x, r[1], 700, 32 * u, bw - 300 * u); x.fillText(r[1], bx + 250 * u, ry); if (i < rows.length - 1) { x.save(); x.globalAlpha = 0.35; x.fillStyle = p.gold; x.fillRect(bx + 36 * u, ry + rh / 2, bw - 72 * u, 1.5 * u); x.restore(); } });
-  x.textBaseline = 'alphabetic'; x.textAlign = 'center'; x.fillStyle = p.inkSub; x.font = font(500, 28 * u); x.fillText('편하게 연락 주세요. 자세히 안내해 드립니다.', w / 2, h - 66 * u); x.textAlign = 'left';
+  x.textBaseline = 'alphabetic'; x.textAlign = 'center'; x.fillStyle = p.inkSub; x.font = font(500, 28 * u); x.fillText(ovv('msg', '편하게 연락 주세요. 자세히 안내해 드립니다.'), w / 2, h - 66 * u); x.textAlign = 'left';
 }
 function mk(wd, ht) { var c = document.createElement('canvas'); c.width = wd; c.height = ht; return c; }
 function download(blob, name) { var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1500); }
@@ -596,7 +599,7 @@ function makeZip(files) {
 function blobBytes(blob) { return new Promise(function (res) { var r = new FileReader(); r.onload = function () { res(new Uint8Array(r.result)); }; r.readAsArrayBuffer(blob); }); }
 function canvasBlob(c) { return new Promise(function (res) { c.toBlob(res, 'image/png'); }); }
 
-S.parts = []; S.partCanvases = []; S.dirty = {}; S.tpl = 'classic';
+S.parts = []; S.partCanvases = []; S.dirty = {}; S.tpl = 'classic'; S.ov = {}; S.slogan = null;
 (function () { var sel = document.getElementById('oTpl'), saved = null; try { saved = localStorage.getItem('cs_tpl'); } catch (e) {} Object.keys(TEMPLATES).forEach(function (k) { var op = document.createElement('option'); op.value = k; op.textContent = TEMPLATES[k].label; sel.appendChild(op); }); if (saved && TEMPLATES[saved]) { sel.value = saved; S.tpl = saved; } document.getElementById('tplDesc').textContent = TEMPLATES[S.tpl].desc; })();
 var CHANNELS = [['blog', '블로그'], ['youtube', '유튜브'], ['threads', '스레드'], ['insta', '인스타그램']];
 function opts() { return { tpl: $('oTpl').value, title: scrubPublic($('oTitle').value.trim()), tone: $('oTone').value, point: scrubPublic($('oPoint').value.trim()), area: $('oArea').value, price: $('oPrice').checked, addr: false }; }
@@ -606,7 +609,8 @@ function pfile(i, p) { return pfileName(i, p); }
 function mkParts() { S.parts = buildParts(S.f, opts()); S.partCanvases = S.parts.map(function () { return mk(1080, 1350); }); }
 function drawPart(i) {
   var p = S.parts[i], c = S.partCanvases[i], f = S.f, o = opts(); c.getContext('2d').clearRect(0, 0, c.width, c.height);
-  if (p.kind === 'cover') drawCover(c, f, o, 'tall'); else if (p.kind === 'info') drawInfo(c, f, o); else if (p.kind === 'contact') drawContact(c, f, o); else drawTextCard(c, p, f, o, i + 1, S.parts.length);
+  S.ov = p.ov || {};
+  try { if (p.kind === 'cover') drawCover(c, f, o, 'tall'); else if (p.kind === 'info') drawInfo(c, f, o); else if (p.kind === 'contact') drawContact(c, f, o); else drawTextCard(c, p, f, o, i + 1, S.parts.length); } finally { S.ov = {}; }
 }
 
 function thumbOf(c) { var t = document.createElement('canvas'); t.width = 240; t.height = 300; t.getContext('2d').drawImage(c, 0, 0, 240, 300); return t.toDataURL('image/jpeg', 0.72); }
@@ -632,14 +636,39 @@ function paintThumbs() {
     box.innerHTML = S.partCanvases.map(function (c, i) { return '<figure><img alt="" src="' + c.toDataURL('image/jpeg', 0.5) + '"><figcaption>' + (i + 1) + '. ' + esc(S.parts[i].title) + '</figcaption></figure>'; }).join('');
   });
 }
+function covDef() { var f = S.f, o = opts(), pl = placeOf(f, { addr: false }); return { head: f.pubTitle || f.typeLabel, subBanner: [pl, f.typeLabel + ' ' + (f.deal || '')].filter(Boolean).join('  ·  '), place: pl, chip: [f.deal || '매물', f.typeLabel].join(' · '), price: priceLines(f, o), meta: [f.floor, f.area].filter(Boolean).join('  ·  ') }; }
+function fld(label, attrs, val, rows) { return '<label class="mini">' + label + (rows ? '<textarea rows="' + rows + '" ' + attrs + '>' + esc(val) + '</textarea>' : '<input type="text" ' + attrs + ' value="' + esc(val) + '">') + '</label>'; }
+function editorFor(p, i) {
+  var ov = p.ov || {}, g = function (k, d) { return ov[k] == null ? d : ov[k]; }, a = function (k) { return 'data-pi="' + i + '" data-ov="' + k + '"'; }, h = '', f = S.f, o = opts();
+  if (p.kind === 'cover') {
+    var d = covDef(), L = (TEMPLATES[S.tpl] || {}).cover;
+    h += fld('제목', a('head'), g('head', d.head));
+    h += fld(L === 'banner' ? '제목 위 작은 글' : '위치 줄', a('sub'), g('sub', L === 'banner' ? d.subBanner : d.place));
+    h += fld('가격 (한 줄에 한 항목)', a('price'), g('price', d.price).join('\n'), 3);
+    h += fld('층 · 면적 줄', a('meta'), g('meta', d.meta));
+    if (L !== 'banner') h += fld('왼쪽 위 라벨', a('chip'), g('chip', d.chip));
+  } else if (p.kind === 'info') {
+    h += fld('제목', a('title'), g('title', f.typeLabel + ' 핵심 요약'));
+    h += fld('제목 위 작은 글', a('tag'), g('tag', placeOf(f, { addr: false })));
+    h += fld('항목 (한 줄에 "이름 : 값")', a('rows'), g('rows', factLines(f, o)).map(function (r) { return r[0] + ' : ' + r[1]; }).join('\n'), 8);
+  } else if (p.kind === 'contact') {
+    h += fld('위쪽 문구', a('label'), g('label', '상담 · 문의'));
+    h += fld('아래쪽 문구', a('msg'), g('msg', '편하게 연락 주세요. 자세히 안내해 드립니다.'));
+    h += '<p class="note" style="margin:0">상호·전화·대표·등록번호는 사무소 정보로 고정됩니다.</p>';
+  } else {
+    h += fld('제목 위 작은 글', 'data-pi="' + i + '" data-pf="tag"', p.tag || '');
+    h += fld('제목', 'data-pi="' + i + '" data-pf="title"', p.title);
+    h += fld('내용 (한 줄에 한 항목, 글에도 반영)', 'data-pi="' + i + '" data-pf="lines"', p.lines.join('\n'), 7);
+    if (p.note != null) h += fld('아래 작은 안내문', 'data-pi="' + i + '" data-pf="note"', p.note);
+  }
+  return h;
+}
 function paintPartList() {
   var box = $('partList'); box.innerHTML = '';
   S.parts.forEach(function (p, i) {
     var d = document.createElement('div'); d.className = 'part';
-    var left = '<div class="part-edit"><div class="part-head"><span class="chip">' + (i + 1) + ' / ' + S.parts.length + '</span><b>' + esc((p.tag ? p.tag + ' · ' : '') + p.title) + '</b></div>';
-    if (p.kind === 'text') left += '<label class="mini">제목<input type="text" data-pi="' + i + '" data-pf="title" value="' + esc(p.title) + '"></label><label class="mini">내용 (한 줄에 한 항목)<textarea rows="8" data-pi="' + i + '" data-pf="lines">' + esc(p.lines.join('\n')) + '</textarea></label>';
-    else left += '<p class="note">' + (p.kind === 'cover' ? '사진·가격·사무소 정보로 자동 구성됩니다.' : p.kind === 'info' ? '매물 정보 표로 자동 구성됩니다.' : '사무소 정보로 자동 구성됩니다.') + '</p>';
-    d.innerHTML = left + '</div><div class="part-img"></div>';
+    var left = '<div class="part-edit"><div class="part-head"><span class="chip">' + (i + 1) + ' / ' + S.parts.length + '</span><b>' + esc((p.tag ? p.tag + ' · ' : '') + p.title) + '</b><button type="button" class="btn" data-reset="' + i + '" style="margin-left:auto">원래대로</button></div>' + editorFor(p, i) + '</div>';
+    d.innerHTML = left + '<div class="part-img"></div>';
     var im = d.querySelector('.part-img'); im.appendChild(S.partCanvases[i]);
     var b = document.createElement('button'); b.type = 'button'; b.className = 'btn'; b.textContent = '이미지 저장'; b.onclick = function () { S.partCanvases[i].toBlob(function (bl) { download(bl, O.key + '_' + pfile(i, p) + '.png'); }, 'image/png'); };
     im.appendChild(b); box.appendChild(d);
@@ -648,7 +677,7 @@ function paintPartList() {
 
 /* 블로그 대표·유튜브 썸네일(가로) */
 function drawWide() {
-  var f = S.f, o = opts(), b = mk(1200, 675), y = mk(1280, 720); drawCover(b, f, o, 'wide'); drawCover(y, f, o, 'wide');
+  var f = S.f, o = opts(), b = mk(1200, 675), y = mk(1280, 720); S.ov = (S.parts[0] && S.parts[0].ov) || {}; try { drawCover(b, f, o, 'wide'); drawCover(y, f, o, 'wide'); } finally { S.ov = {}; }
   S.canvases = { blog: [{ c: b, label: '블로그 대표 이미지 (1200×675)', name: 'blog_cover' }], youtube: [{ c: y, label: '유튜브 썸네일 (1280×720)', name: 'youtube_thumbnail' }] };
   ['blog', 'youtube'].forEach(function (ch) {
     var box = $('imgs-' + ch); if (!box) return; box.innerHTML = '';
@@ -690,7 +719,7 @@ function refreshTexts(force) {
 }
 function checkPublic() {
   var el = $('pubWarn'); if (!el || !S.f) return; readFields();
-  var all = JSON.stringify(S.out || {}) + ' ' + S.parts.map(function (p) { return (p.title || '') + ' ' + (p.lines || []).join(' '); }).join(' ');
+  var all = JSON.stringify(S.out || {}) + ' ' + JSON.stringify(S.parts);
   var bad = [], t = String(S.f.title || '').trim(), pd = String(S.sel && S.sel.privateDetailAddress || '').trim();
   if (t.length >= 3 && t !== S.f.pubDefault && all.indexOf(t) >= 0) bad.push('원래 매물 제목(건물명)');
   if (pd.length >= 2 && all.indexOf(pd) >= 0) bad.push('비공개 상세주소');
@@ -718,7 +747,7 @@ async function makePackage() {
 
 async function regenerate() {
   if (!S.f) return;
-  S.dirty = {}; S.tpl = opts().tpl; try { localStorage.setItem('cs_tpl', S.tpl); } catch (e) {} $('tplDesc').textContent = (TEMPLATES[S.tpl] || {}).desc || ''; S.f.pubTitle = opts().title || S.f.pubDefault;
+  S.dirty = {}; S.slogan = null; $('gSlogan').value = O.pal.slogan; S.tpl = opts().tpl; try { localStorage.setItem('cs_tpl', S.tpl); } catch (e) {} $('tplDesc').textContent = (TEMPLATES[S.tpl] || {}).desc || ''; S.f.pubTitle = opts().title || S.f.pubDefault;
   mkParts(); try { await document.fonts.load('800 40px Pretendard'); await document.fonts.load('500 20px Pretendard'); } catch (e) {}
   paintPartList(); drawAllParts(); drawWide(); refreshTexts(true);
 }
@@ -742,6 +771,7 @@ function renderList() {
 }
 var redrawT = null;
 document.addEventListener('click', function (e) {
+  var rs = e.target.closest('[data-reset]'); if (rs) { var ri = +rs.dataset.reset, cur = S.parts[ri], fresh = buildParts(S.f, opts()).filter(function (x) { return x.key === cur.key; })[0]; if (fresh) { S.parts[ri] = fresh; drawPart(ri); if (fresh.kind === 'cover') drawWide(); paintPartList(); paintThumbs(); refreshTexts(false); } return; }
   var tp = e.target.closest('.tpl'); if (tp) { var sel = $('oTpl'); if (sel.value !== tp.dataset.tpl) { sel.value = tp.dataset.tpl; sel.dispatchEvent(new Event('change', { bubbles: true })); } return; }
   var t = e.target.closest('[data-ch],[data-copy],[data-rich],[data-both]'); if (!t) return;
   if (t.dataset.ch) { S.channel = t.dataset.ch; document.querySelectorAll('.tab').forEach(function (b) { b.setAttribute('aria-selected', String(b.dataset.ch === S.channel)); }); document.querySelectorAll('[data-panel]').forEach(function (p) { p.hidden = p.dataset.panel !== S.channel; }); return; }
@@ -753,13 +783,15 @@ document.addEventListener('input', function (e) {
   var t = e.target;
   if (t.dataset && t.dataset.pi !== undefined) {
     var i = +t.dataset.pi, p = S.parts[i]; if (!p) return;
-    if (t.dataset.pf === 'title') p.title = t.value; else p.lines = t.value.split('\n').map(function (l) { return l.trim(); }).filter(Boolean);
-    clearTimeout(redrawT); redrawT = setTimeout(function () { drawPart(i); paintThumbs(); refreshTexts(false); }, 300); return;
+    if (t.dataset.ov) { var k = t.dataset.ov, val = t.value; if (k === 'price') val = val.split('\n').map(function (l) { return l.trim(); }).filter(Boolean); else if (k === 'rows') val = val.split('\n').map(function (l) { var m = l.split(/\s*[:：]\s*/), lab = (m.shift() || '').trim(); return [lab, m.join(' : ').trim()]; }).filter(function (r) { return r[0]; }); p.ov = p.ov || {}; p.ov[k] = val; }
+    else if (t.dataset.pf === 'title') p.title = t.value; else if (t.dataset.pf === 'tag') p.tag = t.value; else if (t.dataset.pf === 'note') p.note = t.value; else p.lines = t.value.split('\n').map(function (l) { return l.trim(); }).filter(Boolean);
+    clearTimeout(redrawT); redrawT = setTimeout(function () { drawPart(i); if (p.kind === 'cover') drawWide(); paintThumbs(); refreshTexts(false); }, 300); return;
   }
   if (t.id && t.id.indexOf('f-') === 0) { S.dirty[t.id.slice(2)] = true; counters(); checkPublic(); }
 });
 ['oTpl', 'oTitle', 'oTone', 'oPoint', 'oArea', 'oPrice'].forEach(function (id) { $(id).addEventListener('change', regenerate); });
 $('q').addEventListener('input', renderList);
+var sloganT = null; $('gSlogan').addEventListener('input', function () { var v = this.value; clearTimeout(sloganT); sloganT = setTimeout(function () { S.slogan = v; drawAllParts(); drawWide(); }, 300); });
 $('btnRegen').addEventListener('click', function () { S.dirty = {}; refreshTexts(true); });
 $('ownPhoto').addEventListener('change', function () { var file = this.files && this.files[0]; if (!file) return; var url = URL.createObjectURL(file); loadImage(url).then(function (im) { S.bg = im; document.querySelectorAll('#photos img').forEach(function (x) { x.classList.remove('on'); }); drawAllParts(); drawWide(); }); this.value = ''; });
 $('btnAllCopy').addEventListener('click', function () { copyText(allText(), this); });
