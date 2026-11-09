@@ -15,7 +15,7 @@ a{color:inherit;text-decoration:none}button,input,select,textarea{font:inherit}
 .brand{display:flex;align-items:center;gap:12px}.brand-mark{display:grid;place-items:center;width:40px;height:40px;border:1px solid rgba(255,255,255,.35);border-radius:11px;background:rgba(255,255,255,.13);font-size:22px;font-weight:750}
 .brand-name{font-size:17.5px;font-weight:750;letter-spacing:-.025em;line-height:1.4;color:#fff}.brand-sub{font-size:11.5px;color:#dbe7f8;margin-top:2px}
 .top-actions{display:flex;gap:6px;flex-wrap:wrap}.top-actions a,.top-actions button{display:inline-flex;align-items:center;min-height:32px;padding:5px 10px;border:1px solid rgba(255,255,255,.25);border-radius:7px;background:rgba(255,255,255,.1);color:#eef5ff;font-size:12.5px;font-weight:550;cursor:pointer}
-.top-actions a.on{background:#fff;color:#1956a3;border-color:#fff}.top-actions .auth-logout{background:#fff;color:#294867;border-color:#cbd5e1}
+.top-actions a.on{background:#fff;color:#1956a3;border-color:#fff}.top-actions .auth-logout{background:#fff;color:#294867;border-color:#cbd5e1}.top-actions #goRealty{color:#3a2d00!important;background:#ffe08a!important;border-color:#e0b93a!important}
 .eyebrow{font-size:10px;font-weight:750;letter-spacing:.16em;color:#52667b;margin:28px 0 6px}
 h1{font-size:28px;font-weight:750;letter-spacing:-.04em;margin:0;color:#1c344f;line-height:1.3}
 .page-intro{font-size:13px;color:#52667b;margin:6px 0 22px}
@@ -57,6 +57,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid #9fc2ee;outline-offset
 .thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.thumbs figure{margin:0;font-size:11px;color:#617286;text-align:center;line-height:1.3}.thumbs img{width:100%;border-radius:6px;border:1px solid #dce5ef;display:block;margin-bottom:3px}
 @media(max-width:860px){.part{grid-template-columns:1fr}.part-img{max-width:320px}}
 body.lock .page>*:not(#loginNeed){display:none!important}
+.tpl-pickbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:14px;padding:12px 14px;border:1px solid #cddfdd;border-radius:10px;background:#f4fbfa}.tpl-pickbar span{font-size:13px;color:#295350}.tpl-pickbar .btn{margin-left:auto}
 [hidden]{display:none!important}
 .ico-list::before{content:"";display:inline-block;width:1.05em;height:1.05em;margin-right:.4em;background:currentColor;-webkit-mask:url("data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222.6%22%20stroke-linecap%3D%22round%22%3E%3Cpath%20d%3D%22M4%206.5h16M4%2012h16M4%2017.5h16%22%2F%3E%3C%2Fsvg%3E") center/contain no-repeat;mask:url("data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222.6%22%20stroke-linecap%3D%22round%22%3E%3Cpath%20d%3D%22M4%206.5h16M4%2012h16M4%2017.5h16%22%2F%3E%3C%2Fsvg%3E") center/contain no-repeat}
 </style>
@@ -109,7 +110,7 @@ html[data-office-theme='hitop'] .thumbs img{border:1px solid #deedec!important}<
 
   <p class="eyebrow">CONTENT STUDIO</p>
   <h1>컨텐츠 제작실</h1>
-  <p class="page-intro">매물 하나로 블로그·유튜브·스레드·인스타용 제목, 내용, 태그, 상호·연락처가 들어간 이미지를 한 번에 만들고 합쳐서 내려받습니다.</p>
+  <p class="page-intro">먼저 마음에 드는 템플릿을 고른 뒤, 매물 하나로 블로그·유튜브·스레드·인스타용 제목, 내용, 태그, 상호·연락처가 들어간 이미지를 한 번에 만들고 합쳐서 내려받습니다.</p>
 
   <section class="card" id="loginNeed" hidden>
     <h2>로그인이 필요합니다</h2>
@@ -117,14 +118,21 @@ html[data-office-theme='hitop'] .thumbs img{border:1px solid #deedec!important}<
     <a class="btn primary" id="loginLink" href="#">로그인하러 가기</a>
   </section>
 
+  <section class="card" id="stepTpl">
+    <h2>1. 템플릿 고르기</h2>
+    <p class="note" style="margin:0 0 4px">아래는 가상의 샘플 매물로 만든 미리보기입니다 (표지 · 매물 정보 · 상권 설명 카드). 모양을 보고 고르면 다음 단계에서 고른 매물이 이 템플릿으로 만들어집니다.</p>
+    <div class="tpl-gallery big" id="tplStudio"><div class="empty">템플릿을 그리는 중입니다.</div></div>
+    <div class="tpl-pickbar"><span>선택한 템플릿: <b id="tplPicked"></b></span><button type="button" class="btn primary" id="btnTplGo">이 템플릿으로 만들기 → 매물 고르기</button></div>
+  </section>
+
   <section class="card" id="stepPick">
-    <h2>1. 매물 고르기</h2>
+    <h2>2. 매물 고르기 <span class="note" style="font-weight:500">(고른 템플릿으로 만들어집니다)</span></h2>
     <input type="search" id="q" placeholder="매물 제목·주소·번호로 검색" autocomplete="off">
     <div class="pick-list" id="pickList"><div class="empty">매물을 불러오는 중입니다.</div></div>
   </section>
 
   <section class="card" id="stepOpts" hidden>
-    <h2><span id="optTitle">2. 옵션</span> <a class="btn" id="goDetail" target="_blank" rel="noopener" href="#" style="margin-left:auto" hidden>이 매물 상세 보기 ↗</a><a class="btn" id="repick" href="#" style="margin-left:6px" hidden>다른 매물 고르기</a></h2>
+    <h2><span id="optTitle">3. 옵션</span> <a class="btn" id="goDetail" target="_blank" rel="noopener" href="#" style="margin-left:auto" hidden>이 매물 상세 보기 ↗</a><a class="btn" id="repick" href="#" style="margin-left:6px" hidden>다른 매물 고르기</a></h2>
     <div class="opts">
       <label>공개용 제목 (건물명·호수 없이 동 단위로)<input type="text" id="oTitle" placeholder="매물 이름"></label>
       <select id="oTpl" hidden></select>
@@ -142,21 +150,21 @@ html[data-office-theme='hitop'] .thumbs img{border:1px solid #deedec!important}<
   </section>
 
   <section class="card" id="stepParts" hidden>
-    <h2>3. 파트별 구성과 이미지</h2>
+    <h2>4. 파트별 구성과 이미지</h2>
     <p class="note" style="margin:0 0 12px">글을 파트(표지 · 매물 정보 · 상권 설명 · 추천 · 상담)로 나누고 파트마다 상호·연락처가 들어간 이미지를 만듭니다. 내용을 고치면 이미지가 바로 바뀌고, 인스타·스레드는 이 이미지를 번호 순서대로 올리면 됩니다.</p>
     <label class="mini" style="max-width:460px">하단 띠 문구 (모든 이미지 오른쪽 아래 작은 글)<input type="text" id="gSlogan"></label>
     <div id="partList"></div>
   </section>
 
   <section class="card" id="stepOut" hidden>
-    <h2>4. 채널별 글 <button type="button" class="btn" id="btnRegen" style="margin-left:auto">글 다시 만들기</button></h2>
+    <h2>5. 채널별 글 <button type="button" class="btn" id="btnRegen" style="margin-left:auto">글 다시 만들기</button></h2>
     <p class="note" id="pubWarn" style="color:#b42318;font-weight:700;margin:0 0 10px" hidden></p>
     <div class="tabs" role="tablist" id="tabs"></div>
     <div id="panels"></div>
   </section>
 
   <section class="card" id="stepAll" hidden>
-    <h2>5. 전체 합쳐서 올리기</h2>
+    <h2>6. 전체 합쳐서 올리기</h2>
     <div class="all-actions">
       <button type="button" class="btn primary" id="btnZip">전체 패키지 내려받기 (글 + 이미지 ZIP)</button>
       <button type="button" class="btn" id="btnAllCopy">전체 글 한 번에 복사</button>
@@ -732,9 +740,9 @@ function drawPart(i) {
 }
 
 function thumbOf(c) { var t = document.createElement('canvas'); t.width = 240; t.height = 300; t.getContext('2d').drawImage(c, 0, 0, 240, 300); return t.toDataURL('image/jpeg', 0.72); }
-function renderTplGallery() {
-  var box = $('tplGallery'); if (!box || !S.f) return;
-  var f = S.f, o = opts(), old = S.tpl, ap = AREAS.unjeong.parts[0], sample = { key: 'sample', kind: 'text', tag: ap.tag, title: ap.title, lines: ap.lines.slice(0, 3), note: AREAS.unjeong.note };
+function renderTplGallery(boxId, fx) {
+  var box = $(boxId || 'tplGallery'), f = fx || S.f; if (!box || !f) return;
+  var o = opts(), old = S.tpl, ap = AREAS.unjeong.parts[0], sample = { key: 'sample', kind: 'text', tag: ap.tag, title: ap.title, lines: ap.lines.slice(0, 3), note: AREAS.unjeong.note };
   box.innerHTML = '';
   try {
     Object.keys(TEMPLATES).forEach(function (k) {
@@ -746,6 +754,19 @@ function renderTplGallery() {
       card.appendChild(th); card.insertAdjacentHTML('beforeend', '<b>' + esc(TEMPLATES[k].label) + '</b><small>' + esc(TEMPLATES[k].desc) + '</small>'); box.appendChild(card);
     });
   } finally { S.tpl = old; }
+}
+function sampleFacts() {
+  var f = buildFacts({ id: 'sample', type: 'shop', title: '운정 신도시 1층 상가', address: '경기 파주시 와동동', dealType: '월세', deposit: '3000', monthlyRent: '250', exclusiveAreaPy: '30.7', exclusiveAreaM2: '101.4', floorInfo: '1층', shop_recommendBiz: '카페, 미용실, 학원' });
+  f.pubTitle = '와동동 상가 월세'; f.photos = []; return f;
+}
+function markTpl() {
+  var k = $('oTpl').value; document.querySelectorAll('.tpl').forEach(function (b) { b.classList.toggle('on', b.dataset.tpl === k); });
+  var p = $('tplPicked'); if (p) p.textContent = (TEMPLATES[k] || {}).label || '';
+}
+async function renderStudioGallery() {
+  try { await document.fonts.load('800 40px Pretendard'); await document.fonts.load('500 20px Pretendard'); } catch (e) {}
+  try { S.tpl = $('oTpl').value; renderTplGallery('tplStudio', sampleFacts()); } catch (e) { $('tplStudio').innerHTML = '<div class="empty">템플릿 미리보기를 그리지 못했습니다.</div>'; }
+  markTpl();
 }
 function drawAllParts() { S.parts.forEach(function (_, i) { drawPart(i); }); paintThumbs(); renderTplGallery(); }
 function paintThumbs() {
@@ -890,7 +911,8 @@ function renderList() {
 var redrawT = null;
 document.addEventListener('click', function (e) {
   var rs = e.target.closest('[data-reset]'); if (rs) { var ri = +rs.dataset.reset, cur = S.parts[ri], fresh = buildParts(S.f, opts()).filter(function (x) { return x.key === cur.key; })[0]; if (fresh) { S.parts[ri] = fresh; drawPart(ri); if (fresh.kind === 'cover') drawWide(); paintPartList(); paintThumbs(); refreshTexts(false); } return; }
-  var tp = e.target.closest('.tpl'); if (tp) { var sel = $('oTpl'); if (sel.value !== tp.dataset.tpl) { sel.value = tp.dataset.tpl; sel.dispatchEvent(new Event('change', { bubbles: true })); } return; }
+  var tp = e.target.closest('.tpl'); if (tp) { var sel = $('oTpl'), tk = tp.dataset.tpl; if (sel.value !== tk) { sel.value = tk; if (S.f) sel.dispatchEvent(new Event('change', { bubbles: true })); else { S.tpl = tk; try { localStorage.setItem('cs_tpl', tk); } catch (e2) {} $('tplDesc').textContent = (TEMPLATES[tk] || {}).desc || ''; } } markTpl(); return; }
+  if (e.target.closest('#btnTplGo')) { if (S.f) { $('stepOpts').scrollIntoView({ behavior: 'smooth', block: 'start' }); return; } if (!$('loginNeed').hidden) { $('loginNeed').scrollIntoView({ behavior: 'smooth', block: 'start' }); return; } $('stepPick').hidden = false; $('stepPick').scrollIntoView({ behavior: 'smooth', block: 'start' }); $('q').focus({ preventScroll: true }); return; }
   var t = e.target.closest('[data-ch],[data-copy],[data-rich],[data-both]'); if (!t) return;
   if (t.dataset.ch) { S.channel = t.dataset.ch; document.querySelectorAll('.tab').forEach(function (b) { b.setAttribute('aria-selected', String(b.dataset.ch === S.channel)); }); document.querySelectorAll('[data-panel]').forEach(function (p) { p.hidden = p.dataset.panel !== S.channel; }); return; }
   if (t.dataset.copy) { copyText($(t.dataset.copy).value, t); return; }
@@ -921,14 +943,15 @@ $('btnZip').addEventListener('click', async function () { var b = this, old = b.
   document.getElementById('loginLink').href = REALTY_BASE + 'login.html?office=' + O.key;
   document.getElementById('goRealty').href = REALTY_BASE + 'properties.html?office=' + O.key;
   document.getElementById('btnLogout').onclick = async function () { try { await authClient.auth.signOut(); } finally { location.href = REALTY_BASE + 'login.html?office=' + O.key; } };
-  if (!(await ensureAuth())) { document.getElementById('loginNeed').hidden = false; document.getElementById('stepPick').hidden = true; return; }
+  renderStudioGallery();
+  if (!(await ensureAuth())) { document.getElementById('loginNeed').hidden = false; document.getElementById('stepPick').hidden = true; document.body.classList.remove('lock'); return; }
   document.body.classList.remove('lock');
   try {
     var all = await getListings();
     S.items = (all || []).filter(function (it) { return it && it.status !== '거래완료' && it.listingKind !== '명단'; });
     renderList();
     var id = new URLSearchParams(location.search).get('id');
-    if (id) { var one = S.items.filter(function (x) { return String(x.id) === id; })[0] || await getListingById(id); if (one) { pickItem(one); document.getElementById('stepPick').hidden = true; document.getElementById('optTitle').textContent = '옵션'; var rp = document.getElementById('repick'); rp.hidden = false; rp.onclick = function (e) { e.preventDefault(); document.getElementById('stepPick').hidden = false; document.getElementById('optTitle').textContent = '2. 옵션'; rp.hidden = true; document.getElementById('stepPick').scrollIntoView({ behavior: 'smooth', block: 'start' }); }; } }
+    if (id) { var one = S.items.filter(function (x) { return String(x.id) === id; })[0] || await getListingById(id); if (one) { pickItem(one); document.getElementById('stepPick').hidden = true; document.getElementById('stepTpl').hidden = true; document.getElementById('optTitle').textContent = '옵션'; var rp = document.getElementById('repick'); rp.hidden = false; rp.onclick = function (e) { e.preventDefault(); document.getElementById('stepPick').hidden = false; document.getElementById('stepTpl').hidden = false; document.getElementById('optTitle').textContent = '3. 옵션'; rp.hidden = true; document.getElementById('stepPick').scrollIntoView({ behavior: 'smooth', block: 'start' }); }; } }
   } catch (err) { $('pickList').innerHTML = '<div class="empty">매물을 불러오지 못했습니다: ' + esc(err && err.message || err) + '</div>'; }
 })();
 })();
