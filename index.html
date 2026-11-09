@@ -57,6 +57,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid #9fc2ee;outline-offset
 .thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.thumbs figure{margin:0;font-size:11px;color:#617286;text-align:center;line-height:1.3}.thumbs img{width:100%;border-radius:6px;border:1px solid #dce5ef;display:block;margin-bottom:3px}
 @media(max-width:860px){.part{grid-template-columns:1fr}.part-img{max-width:320px}}
 body.lock .page>*:not(#loginNeed){display:none!important}
+.single-grid{display:grid;grid-template-columns:minmax(300px,1fr) minmax(300px,1fr);gap:22px;align-items:start}.single-form{display:grid;gap:10px}.single-form .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.single-prev{position:sticky;top:12px}.single-prev canvas{width:100%;height:auto;display:block;border-radius:10px;border:1px solid #dce5ef;background:#e9f4f3}@media(max-width:820px){.single-grid{grid-template-columns:1fr}.single-prev{position:static}}
 .tpl-pickbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:14px;padding:12px 14px;border:1px solid #cddfdd;border-radius:10px;background:#f4fbfa}.tpl-pickbar span{font-size:13px;color:#295350}.tpl-pickbar .btn{margin-left:auto}
 [hidden]{display:none!important}
 .ico-list::before{content:"";display:inline-block;width:1.05em;height:1.05em;margin-right:.4em;background:currentColor;-webkit-mask:url("data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222.6%22%20stroke-linecap%3D%22round%22%3E%3Cpath%20d%3D%22M4%206.5h16M4%2012h16M4%2017.5h16%22%2F%3E%3C%2Fsvg%3E") center/contain no-repeat;mask:url("data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222.6%22%20stroke-linecap%3D%22round%22%3E%3Cpath%20d%3D%22M4%206.5h16M4%2012h16M4%2017.5h16%22%2F%3E%3C%2Fsvg%3E") center/contain no-repeat}
@@ -110,7 +111,7 @@ html[data-office-theme='hitop'] .thumbs img{border:1px solid #deedec!important}<
 
   <p class="eyebrow">CONTENT STUDIO</p>
   <h1>컨텐츠 제작실</h1>
-  <p class="page-intro">먼저 마음에 드는 템플릿을 고르세요. 매물관리 목록에서 매물 하나를 체크해 "컨텐츠 보내기"를 누르거나 아래에 내용을 직접 입력하면, 고른 템플릿으로 블로그·유튜브·스레드·인스타용 제목, 내용, 태그, 상호·연락처가 들어간 이미지를 한 번에 만들고 합쳐서 내려받습니다.</p>
+  <p class="page-intro">먼저 템플릿을 고른 뒤 아래에 내용을 직접 입력하면 이미지 한 장을 바로 만들 수 있습니다. 카드뉴스 전체(글 + 이미지)가 필요하면 매물관리 목록에서 매물 하나를 체크해 "컨텐츠 보내기"를 누르거나 아래에 내용을 직접 입력하면, 고른 템플릿으로 블로그·유튜브·스레드·인스타용 제목, 내용, 태그, 상호·연락처가 들어간 이미지를 한 번에 만들고 합쳐서 내려받습니다.</p>
 
   <section class="card" id="loginNeed" hidden>
     <h2>로그인이 필요합니다</h2>
@@ -126,8 +127,29 @@ html[data-office-theme='hitop'] .thumbs img{border:1px solid #deedec!important}<
     <p class="note">매물관리 목록에서 매물 하나를 체크하고 "🎬 컨텐츠 보내기"를 누르면 이 제작실이 그 매물로 열리고, 방금 고른 템플릿이 그대로 적용됩니다.</p>
   </section>
 
+  <section class="card" id="stepSingle">
+    <h2>2. 한 장 이미지 만들기 <span class="note" style="font-weight:500">(내용을 입력하면 오른쪽 미리보기가 바로 바뀝니다)</span></h2>
+    <div class="single-grid">
+      <div class="single-form">
+        <div class="two">
+          <label class="mini">템플릿<select id="soTpl"></select></label>
+          <label class="mini">크기<select id="soSize"><option value="square">정사각 1080×1080 (블로그 썸네일)</option><option value="tall">세로 1080×1350 (인스타·스레드)</option><option value="wide">가로 1280×720 (유튜브)</option></select></label>
+        </div>
+        <label class="mini">작은 라벨 (왼쪽 위)<input type="text" id="soChip" autocomplete="off"></label>
+        <label class="mini">큰 제목<input type="text" id="soHead" autocomplete="off"></label>
+        <label class="mini">강조 줄 (가격 등, 한 줄에 하나)<textarea rows="3" id="soPrice"></textarea></label>
+        <label class="mini">위치 줄<input type="text" id="soSub" autocomplete="off"></label>
+        <label class="mini">보조 줄 (층 · 면적 등)<input type="text" id="soMeta" autocomplete="off"></label>
+        <label class="mini">하단 띠 문구 (정사각 제외, 비우면 기본 문구)<input type="text" id="soSlogan" autocomplete="off"></label>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><label class="btn" style="cursor:pointer">사진 넣기<input type="file" id="soPhoto" accept="image/*" hidden></label><button type="button" class="btn" id="soPhotoClear">사진 빼기</button><button type="button" class="btn primary" id="soSave">이미지 저장 (PNG)</button></div>
+        <p class="note" style="margin:0">건물명·호수는 적지 마세요(공개됩니다). 금액은 "보증금 3,000만"처럼 그대로 적으면 됩니다.</p>
+      </div>
+      <div class="single-prev"><canvas id="soCanvas" width="1080" height="1080"></canvas></div>
+    </div>
+  </section>
+
   <section class="card" id="stepManual">
-    <h2>2. 내용 입력 <span class="note" style="font-weight:500">(직접 입력하거나, 위 버튼으로 매물관리에서 매물을 보내세요)</span></h2>
+    <details><summary style="cursor:pointer"><h2 style="display:inline-flex;margin:0">카드뉴스 전체 만들기 <span class="note" style="font-weight:500">(펼쳐서 매물 정보를 입력하면 표지·정보·상권·채널별 글까지 한 번에 만들어집니다)</span></h2></summary><div style="margin-top:12px">
     <div class="opts">
       <label>매물 종류<select id="mType"><option value="shop">상가</option><option value="office">사무실</option><option value="officetel">오피스텔</option><option value="apartment">아파트</option><option value="villa">빌라</option><option value="house">주택</option><option value="multifamily">다가구</option><option value="building">건물</option><option value="factory">공장·창고</option><option value="land">토지</option></select></label>
       <label>거래 형태<select id="mDeal"><option value="월세">월세</option><option value="매매">매매</option><option value="전세">전세</option><option value="매매·월세">매매·월세</option></select></label>
@@ -142,6 +164,7 @@ html[data-office-theme='hitop'] .thumbs img{border:1px solid #deedec!important}<
     </div>
     <p class="note">금액은 만원 단위 숫자로 적으세요 (3000 → 3,000만, 35000 → 3억 5,000만). "3억 5천"처럼 글자로 써도 됩니다. 건물명·호수는 적지 마세요. 사진은 만들어진 뒤 "내 사진 올리기"로 넣을 수 있습니다.</p>
     <div style="margin-top:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button type="button" class="btn primary" id="btnManual">이 내용으로 만들기</button><span class="note" id="mMsg" style="margin:0"></span></div>
+    </div></details>
   </section>
 
   <section class="card" id="stepPick" hidden style="display:none">
@@ -151,7 +174,7 @@ html[data-office-theme='hitop'] .thumbs img{border:1px solid #deedec!important}<
   </section>
 
   <section class="card" id="stepOpts" hidden>
-    <h2><span id="optTitle">3. 옵션</span> <a class="btn" id="goDetail" target="_blank" rel="noopener" href="#" style="margin-left:auto" hidden>이 매물 상세 보기 ↗</a><a class="btn" id="repick" href="#" style="margin-left:6px" hidden>다른 매물 고르기</a></h2>
+    <h2><span id="optTitle">카드뉴스 · 옵션</span> <a class="btn" id="goDetail" target="_blank" rel="noopener" href="#" style="margin-left:auto" hidden>이 매물 상세 보기 ↗</a><a class="btn" id="repick" href="#" style="margin-left:6px" hidden>다른 매물 고르기</a></h2>
     <div class="opts">
       <label>공개용 제목 (건물명·호수 없이 동 단위로)<input type="text" id="oTitle" placeholder="매물 이름"></label>
       <select id="oTpl" hidden></select>
@@ -169,21 +192,21 @@ html[data-office-theme='hitop'] .thumbs img{border:1px solid #deedec!important}<
   </section>
 
   <section class="card" id="stepParts" hidden>
-    <h2>4. 파트별 구성과 이미지</h2>
+    <h2>카드뉴스 · 파트별 구성과 이미지</h2>
     <p class="note" style="margin:0 0 12px">글을 파트(표지 · 매물 정보 · 상권 설명 · 추천 · 상담)로 나누고 파트마다 상호·연락처가 들어간 이미지를 만듭니다. 내용을 고치면 이미지가 바로 바뀌고, 인스타·스레드는 이 이미지를 번호 순서대로 올리면 됩니다.</p>
     <label class="mini" style="max-width:460px">하단 띠 문구 (모든 이미지 오른쪽 아래 작은 글)<input type="text" id="gSlogan"></label>
     <div id="partList"></div>
   </section>
 
   <section class="card" id="stepOut" hidden>
-    <h2>5. 채널별 글 <button type="button" class="btn" id="btnRegen" style="margin-left:auto">글 다시 만들기</button></h2>
+    <h2>카드뉴스 · 채널별 글 <button type="button" class="btn" id="btnRegen" style="margin-left:auto">글 다시 만들기</button></h2>
     <p class="note" id="pubWarn" style="color:#b42318;font-weight:700;margin:0 0 10px" hidden></p>
     <div class="tabs" role="tablist" id="tabs"></div>
     <div id="panels"></div>
   </section>
 
   <section class="card" id="stepAll" hidden>
-    <h2>6. 전체 합쳐서 올리기</h2>
+    <h2>카드뉴스 · 전체 합쳐서 올리기</h2>
     <div class="all-actions">
       <button type="button" class="btn primary" id="btnZip">전체 패키지 내려받기 (글 + 이미지 ZIP)</button>
       <button type="button" class="btn" id="btnAllCopy">전체 글 한 번에 복사</button>
@@ -809,8 +832,35 @@ function sampleFacts() {
   f.pubTitle = '와동동 상가 월세'; f.photos = []; return f;
 }
 function markTpl() {
-  var k = $('oTpl').value; document.querySelectorAll('.tpl').forEach(function (b) { b.classList.toggle('on', b.dataset.tpl === k); });
+  var k = $('oTpl').value; var stp = $('soTpl'); if (stp) { stp.value = k; scheduleSingle(); } document.querySelectorAll('.tpl').forEach(function (b) { b.classList.toggle('on', b.dataset.tpl === k); });
   var p = $('tplPicked'); if (p) p.textContent = (TEMPLATES[k] || {}).label || '';
+}
+var soT = null, SO_DEF = { chip: '월세 · 상가', head: '운정역 대로변 1층 상가', price: '보증금 3,000만\n월세 250만', sub: '파주 와동동', meta: '1층 · 30.7평' };
+function scheduleSingle() { clearTimeout(soT); soT = setTimeout(renderSingle, 180); }
+async function renderSingle() {
+  var c = $('soCanvas'); if (!c) return;
+  try { await document.fonts.load('800 40px Pretendard'); await document.fonts.load('500 20px Pretendard'); } catch (e) {}
+  var kind = $('soSize').value, d = { square: [1080, 1080], tall: [1080, 1350], wide: [1280, 720] }[kind] || [1080, 1080], g = function (id) { return $(id).value.trim(); };
+  var v = { chip: g('soChip'), head: g('soHead'), price: $('soPrice').value.split('\n').map(function (s) { return s.trim(); }).filter(Boolean), sub: g('soSub'), meta: g('soMeta') };
+  var pOv = S.ov, pBg = S.bg, pSl = S.slogan, pTpl = S.tpl, sl = g('soSlogan');
+  c.width = d[0]; c.height = d[1]; S.ov = v; S.bg = S.soBg || null; S.slogan = sl || null; S.tpl = $('oTpl').value;
+  try { var f = sampleFacts(); f.pubTitle = v.head; if (kind === 'square') drawCoverThumb(c, f, opts(), 'square'); else drawCover(c, f, opts(), kind); }
+  catch (e) { console.error(e); } finally { S.ov = pOv; S.bg = pBg; S.slogan = pSl; S.tpl = pTpl; }
+}
+function fillSingle(f) {
+  var o = opts(); $('soChip').value = [f.deal || '매물', f.typeLabel].join(' · '); $('soHead').value = f.pubTitle || f.typeLabel; $('soPrice').value = priceLines(f, o).join('\n');
+  $('soSub').value = placeOf(f, { addr: false }); $('soMeta').value = [f.floor, f.area].filter(Boolean).join(' · '); S.soBg = S.bg || null; renderSingle();
+}
+function initSingle() {
+  var st = $('soTpl'); Object.keys(TEMPLATES).forEach(function (k) { var op = document.createElement('option'); op.value = k; op.textContent = TEMPLATES[k].label; st.appendChild(op); });
+  $('soChip').value = SO_DEF.chip; $('soHead').value = SO_DEF.head; $('soPrice').value = SO_DEF.price; $('soSub').value = SO_DEF.sub; $('soMeta').value = SO_DEF.meta; st.value = $('oTpl').value;
+  ['soChip', 'soHead', 'soPrice', 'soSub', 'soMeta', 'soSlogan'].forEach(function (id) { $(id).addEventListener('input', scheduleSingle); });
+  $('soSize').addEventListener('change', renderSingle);
+  st.addEventListener('change', function () { var sel = $('oTpl'), k = st.value; if (sel.value !== k) { sel.value = k; if (S.f) sel.dispatchEvent(new Event('change', { bubbles: true })); else { S.tpl = k; try { localStorage.setItem('cs_tpl', k); } catch (e) {} $('tplDesc').textContent = (TEMPLATES[k] || {}).desc || ''; } } markTpl(); });
+  $('soPhoto').addEventListener('change', function () { var file = this.files && this.files[0]; if (!file) return; loadImage(URL.createObjectURL(file)).then(function (im) { S.soBg = im; renderSingle(); }); });
+  $('soPhotoClear').addEventListener('click', function () { S.soBg = null; $('soPhoto').value = ''; renderSingle(); });
+  $('soSave').addEventListener('click', function () { var kind = $('soSize').value; $('soCanvas').toBlob(function (bl) { download(bl, O.key + '_image_' + kind + '.png'); }, 'image/png'); });
+  renderSingle();
 }
 async function renderStudioGallery() {
   try { await document.fonts.load('800 40px Pretendard'); await document.fonts.load('500 20px Pretendard'); } catch (e) {}
@@ -947,7 +997,7 @@ async function pickItem(it) {
   var ph = $('photos'); ph.innerHTML = ''; $('photoBox').hidden = false;
   S.f.photos.slice(0, 8).forEach(function (u, i) { var im = document.createElement('img'); im.src = u; im.crossOrigin = 'anonymous'; im.alt = '매물 사진 ' + (i + 1); im.onclick = async function () { ph.querySelectorAll('img').forEach(function (x) { x.classList.remove('on'); }); im.classList.add('on'); S.bg = await loadImage(u); drawAllParts(); drawWide(); }; ph.appendChild(im); });
   if (S.f.photos[0]) { S.bg = await loadImage(S.f.photos[0]); var first = ph.querySelector('img'); if (first) first.classList.add('on'); }
-  buildPanels(); await regenerate();
+  buildPanels(); await regenerate(); try { fillSingle(S.f); } catch (e) {}
   $('stepOpts').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 function renderList() {
@@ -1004,12 +1054,12 @@ $('btnZip').addEventListener('click', async function () { var b = this, old = b.
   document.getElementById('loginLink').href = REALTY_BASE + 'login.html?office=' + O.key;
   document.getElementById('goRealty').href = REALTY_BASE + 'properties.html?office=' + O.key;
   document.getElementById('btnLogout').onclick = async function () { try { await authClient.auth.signOut(); } finally { location.href = REALTY_BASE + 'login.html?office=' + O.key; } };
-  renderStudioGallery();
+  initSingle(); renderStudioGallery();
   if (!(await ensureAuth())) { document.getElementById('loginNeed').hidden = false; document.getElementById('stepPick').hidden = true; document.body.classList.remove('lock'); return; }
   document.body.classList.remove('lock');
   try {
     var id = new URLSearchParams(location.search).get('id');
-    if (id) { var one = await getListingById(id); if (one) { pickItem(one); document.getElementById('stepTpl').hidden = true; document.getElementById('stepManual').hidden = true; document.getElementById('optTitle').textContent = '옵션'; var rp = document.getElementById('repick'); rp.hidden = false; rp.href = REALTY_BASE + 'properties.html?office=' + O.key; rp.target = '_blank'; rp.rel = 'noopener'; rp.textContent = '다른 매물 고르기 (매물관리)'; } }
+    if (id) { var one = await getListingById(id); if (one) { pickItem(one); document.getElementById('stepTpl').hidden = true; document.getElementById('stepManual').hidden = true; document.getElementById('stepSingle').scrollIntoView({ behavior: 'smooth', block: 'start' }); document.getElementById('optTitle').textContent = '카드뉴스 · 옵션'; var rp = document.getElementById('repick'); rp.hidden = false; rp.href = REALTY_BASE + 'properties.html?office=' + O.key; rp.target = '_blank'; rp.rel = 'noopener'; rp.textContent = '다른 매물 고르기 (매물관리)'; } }
   } catch (err) { $('stepTpl').hidden = false; document.querySelector('.tpl-pickbar').insertAdjacentHTML('afterend', '<p class="note" style="color:#b42318">매물을 불러오지 못했습니다: ' + esc(err && err.message || err) + '</p>'); }
 })();
 })();
