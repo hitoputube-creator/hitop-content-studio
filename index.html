@@ -139,7 +139,7 @@ html[data-office-theme='hitop'] .thumbs img{border:1px solid #deedec!important}<
         <label class="mini">큰 제목<textarea rows="2" id="soHead" placeholder="줄바꿈으로 제목 배치를 조절하세요"></textarea></label>
         <label class="mini">강조 줄 (가격 등, 한 줄에 하나)<textarea rows="3" id="soPrice"></textarea></label>
         <label class="mini">위치 줄<input type="text" id="soSub" autocomplete="off"></label>
-        <label class="mini">보조 줄 (층 · 면적 등)<input type="text" id="soMeta" autocomplete="off"></label>
+        <label class="mini">전용면적 (평·㎡)<input type="text" id="soMeta" autocomplete="off"></label>
         <label class="mini">하단 띠 문구 (비우면 기본 문구)<input type="text" id="soSlogan" autocomplete="off"></label>
         <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><label class="btn" style="cursor:pointer">사진 넣기<input type="file" id="soPhoto" accept="image/*" hidden></label><button type="button" class="btn" id="soPhotoClear">사진 빼기</button><button type="button" class="btn primary" id="soSave">이미지 저장 (PNG)</button></div>
         <p class="note" style="margin:0">사진은 클래식·포토 포스터·블루 포스터에 적용됩니다. 제목은 줄바꿈할 수 있습니다. 건물명·호수는 적지 마세요(공개됩니다). 금액은 "보증금 3,000만"처럼 그대로 적으면 됩니다.</p>
@@ -335,6 +335,12 @@ function priceOf(it, t, deal) {
 }
 
 /* ───────── 매물 → 사실 정보 (소유주 정보는 읽지 않음) ───────── */
+function listingUnitFloor(it) {
+  var keys=['unitFloor','actualFloor','floor','shop_floor','officetel_floor','floorInfo'];
+  for(var i=0;i<keys.length;i++){var raw=v(it[keys[i]]);if(/^(?:지하\s*)?\d+\s*층$/.test(raw))return raw.replace(/\s/g,'');if(/^\d+$/.test(raw))return raw+'층';}
+  var match=v(it.title).match(/(?:^|\s)((?:지하\s*)?\d+)\s*층/);return match?match[1].replace(/\s/g,'')+'층':'';
+}
+function coverMeta(f) { return [f.unitFloor,coverArea(f)].filter(Boolean).join(' / '); }
 function buildFacts(it) {
   var t = it.type || 'etc', f = { id: it.id, type: t, typeLabel: typeLabel(t) };
   f.title = v(it.title, it.publicAddress, it.displayAddress);
@@ -345,7 +351,7 @@ function buildFacts(it) {
   var deal = v(it.dealType, it.shop_dealType, it.officetel_dealType, it.factory_dealType);
   if (!deal && t.indexOf('land') === 0) deal = '매매';
   if (!deal && it.quick_price) { var qm = String(it.quick_price).trim().match(/^(월세|전세|매매|임대|단기임대)[_\s]+/); if (qm) deal = qm[1]; }
-  f.deal = deal; f.price = priceOf(it, t, deal);
+  f.deal = deal; f.price = priceOf(it, t, deal); f.unitFloor = listingUnitFloor(it);
   var py, m2;
   if (t.indexOf('land') === 0) { py = v(it.areaPy, it.landAreaPy, it.land_area_py); m2 = v(it.areaM2, it.landAreaM2, it.land_area_m2); }
   else if (t === 'factory' || t === 'warehouse') { py = v(it.totalFloorAreaPy, it.buildingAreaPy, it.factory_buildArea_py); m2 = v(it.totalFloorAreaM2, it.buildingAreaM2, it.factory_buildArea_m2); }
@@ -380,7 +386,7 @@ function tagList(f, o) {
 function hash(list, n) { return list.slice(0, n).map(function (x) { return '#' + x; }).join(' '); }
 
 function factLines(f, o) {
-  var rows = [['소재지', placeOf(f, o)], ['매물 종류', f.typeLabel], ['거래 형태', f.deal], ['가격', priceShown(f, o)], [f.areaLabel, f.area], ['해당 층', f.floor], ['입주 가능', f.avail], ['관리비', f.maint], ['권리금', f.premium], ['주차', f.parking], ['추천 업종', f.reco]];
+  var rows = [['소재지', placeOf(f, o)], ['매물 종류', f.typeLabel], ['거래 형태', f.deal], ['가격', priceShown(f, o)], [f.areaLabel, f.area], ['입주 가능', f.avail], ['관리비', f.maint], ['권리금', f.premium], ['주차', f.parking], ['추천 업종', f.reco]];
   return rows.filter(function (r) { return r[1]; });
 }
 function officeBlock() {
@@ -460,7 +466,7 @@ function buildTexts(f, o) {
   var textParts = S.parts.filter(function (p) { return p.kind === 'text'; }), areaParts = S.parts.filter(function (p) { return /^area-/.test(p.key); });
   var names = {}; S.parts.forEach(function (p, i) { names[p.key] = pfileName(i, p) + '.png'; });
   function img(k) { return names[k] ? '【이미지 삽입】 ' + names[k] : ''; }
-  var headBits = [f.floor, f.areaShort].filter(Boolean).join(' ');
+  var headBits = f.areaShort || '';
   var hello = friendly ? '안녕하세요 :) ' + O.short + '이에요.' : '안녕하세요, ' + O.short + '입니다.';
   var P = place || '파주', ty = f.typeLabel, dl = f.deal || '', areaLead = A ? A.label.replace(/\s*상권$/, '') : P + ' 일대';
   var hook = { standard: P + ' ' + ty + ' ' + (dl || '매물') + ' 매물을 ' + (areaName ? areaName + ' 설명과 함께 ' : '') + (friendly ? '소개해 드려요!' : '소개합니다.'),
@@ -486,7 +492,7 @@ function buildTexts(f, o) {
     else if (p.kind === 'info') {
       b = b.concat(['', H.info]);
       if (mode === 'hook') {
-        b.push('① 위치 : ' + P, '② 조건 : ' + price, '③ 규모 : ' + ([f.floor, f.area].filter(Boolean).join(' · ') || '문의'));
+        b.push('① 위치 : ' + P, '② 조건 : ' + price, '③ 규모 : ' + (coverArea(f) || '문의'));
         rows.filter(function (r) { return ['소재지', '가격', f.areaLabel, '해당 층', '매물 종류'].indexOf(r[0]) < 0; }).forEach(function (r) { b.push('· ' + r[0] + ' : ' + r[1]); });
       } else if (mode === 'brief') {
         rows.filter(function (r) { return ['소재지', '거래 형태', '가격', f.areaLabel, '해당 층', '추천 업종'].indexOf(r[0]) >= 0; }).forEach(function (r) { b.push('- ' + r[0] + ' : ' + r[1]); });
@@ -514,7 +520,7 @@ function buildTexts(f, o) {
   out.youtube = { title: yTitle, body: yBody.join('\n'), tags: tags.slice(0, 12).join(', ') };
 
   var tLines = [hello, hook, ''];
-  [['가격', price], [f.areaLabel, f.area], ['층', f.floor]].filter(function (r) { return r[1]; }).forEach(function (r) { tLines.push('· ' + r[0] + ' ' + r[1]); });
+  [['가격', price], [f.areaLabel, f.area]].filter(function (r) { return r[1]; }).forEach(function (r) { tLines.push('· ' + r[0] + ' ' + r[1]); });
   if (areaParts[0] && areaParts[0].lines[1]) tLines.push('· ' + areaParts[0].lines[1]);
   tLines = tLines.concat(['', O.short + ' ☎ ' + O.phone, '등록번호 ' + O.reg]);
   var tText = tLines.join('\n'); if (tText.length > 460) tText = tText.slice(0, 457) + '...';
@@ -603,51 +609,61 @@ function studioFooter(x,w,h,u,fh){
   studioText(x,O.phone,{x:w*.45,y:rowY,w:w*.55-pad,h:rowH},58*u,'#ffe1a0',800,1);
   studioText(x,S.slogan!=null?S.slogan:'매물 상담 · 방문 예약',{x:pad,y:y+fh*.72,w:w-pad*2,h:fh*.23},24*u,'#e3edf2',600,1);
 }
+function readablePrices(lines) {
+  var a=(Array.isArray(lines)?lines:String(lines||'').split('\n')).map(function(t){return String(t).trim();}).filter(Boolean),dep='',rent='';
+  a.forEach(function(t){if(/^보증금\s/.test(t))dep=t.replace(/^보증금\s+/,'');if(/^월세\s+[^/]+$/.test(t)&&!/^월세\s+보증금/.test(t))rent=t.replace(/^월세\s+/,'');});
+  if(dep&&rent)a=a.filter(function(t){return !/^보증금\s/.test(t);}).map(function(t){return /^월세\s/.test(t)?'월세 보증금 '+dep+' / 월 '+rent:t;});
+  return a;
+}
+function studioPriceRows(x,lines,b,u) {
+  var a=readablePrices(lines),gap=12*u,rh=(b.h-gap*Math.max(0,a.length-1))/Math.max(1,a.length);
+  a.forEach(function(t,i){
+    var yy=b.y+i*(rh+gap),mt=t.match(/^(매매|월세|임대|전세|보증금|분양가|분양)\s+(.+)$/),label=mt?mt[1]:'가격',value=mt?mt[2]:t;
+    var rent=value.match(/^(?:보증금\s*)?(.+?)\s*\/\s*(?:월세|월)\s*(.+)$/),isRent=label==='월세'||label==='임대',accent=isRent?'#14665e':'#925b13',paper=isRent?'#e4f2ec':'#fff0d3',pad=22*u,lw=Math.min(132*u,b.w*.19),vx=b.x+lw+pad,vw=b.w-lw-pad*2;
+    studioPanel(x,{x:b.x,y:yy,w:b.w,h:rh},paper,null,10*u);x.fillStyle=accent;x.fillRect(b.x,yy,7*u,rh);
+    studioText(x,label,{x:b.x+pad,y:yy+rh*.32,w:lw-pad,h:rh*.5},32*u,accent,800,1);
+    if(rent){
+      var half=(vw-30*u)/2,numSize=Math.min(76*u,rh*.52),capSize=Math.min(25*u,rh*.20);
+      studioText(x,'보증금',{x:vx,y:yy+rh*.10,w:half,h:rh*.22},capSize,'#365349',700,1);
+      studioText(x,'월세',{x:vx+half+30*u,y:yy+rh*.10,w:half,h:rh*.22},capSize,'#365349',700,1);
+      studioText(x,rent[1],{x:vx,y:yy+rh*.34,w:half,h:rh*.62},numSize,'#103f36',800,1);
+      studioText(x,rent[2],{x:vx+half+30*u,y:yy+rh*.34,w:half,h:rh*.62},numSize,'#103f36',800,1);
+      studioText(x,'/',{x:vx+half+3*u,y:yy+rh*.39,w:24*u,h:rh*.48},numSize*.65,accent,700,1);
+    }else studioText(x,value,{x:vx,y:yy+rh*.20,w:vw,h:rh*.72},Math.min(84*u,rh*.68),'#593806',800,1);
+  });
+}
 function drawStudioCover(c,f,o,kind){
   var x=c.getContext('2d'),w=c.width,h=c.height,u=w/1080,p=studioPalette(),k=S.tpl||'classic',wide=kind==='wide',fh=(wide?128:168)*u,H=h-fh,m=60*u;
-  var chip=ovv('chip',[f.deal||'매물',f.typeLabel].join(' · ')),head=ovv('head',coverTitle(f)),prices=ovv('price',coverPrices(f,o)); if(!Array.isArray(prices))prices=String(prices).split('\n');prices=prices.filter(Boolean);
-  var sub=ovv('sub',placeOf(f,{addr:false})),meta=ovv('meta',coverArea(f));
+  var chip=ovv('chip',[f.deal||'매물',f.typeLabel].join(' · ')),head=ovv('head',coverTitle(f)),prices=readablePrices(ovv('price',coverPrices(f,o))),sub=ovv('sub',placeOf(f,{addr:false})),meta=ovv('meta',coverMeta(f));
   x.clearRect(0,0,w,h);x.fillStyle=p.paper;x.fillRect(0,0,w,h);
   var text=function(t,xx,yy,ww,hh,sz,col,wt,n){return studioText(x,t,{x:xx,y:yy,w:ww,h:hh},sz*u,col||p.ink,wt||800,n);};
-  var label=function(xx,yy,ww,col){text(chip,xx,yy,ww,38*u,24,col||p.muted,700,1);};
-  var priceRows=function(b,bg,col,tiles){
-    if(!prices.length)return; var gap=16*u,n=prices.length,cols=tiles&&n>1?Math.min(2,n):1,rows=Math.ceil(n/cols),bh=(b.h-gap*(rows-1))/rows,bw=(b.w-gap*(cols-1))/cols;
-    prices.forEach(function(v,i){var bx=b.x+(i%cols)*(bw+gap),by=b.y+Math.floor(i/cols)*(bh+gap);studioPanel(x,{x:bx,y:by,w:bw,h:bh},bg,null,8*u);var mt=String(v).match(/^(매매|보증금|월세|전세|분양가|분양)\s+(.+)$/); if(mt&&bh>105*u){text(mt[1],bx+24*u,by+19*u,bw-48*u,30*u,22,col,500,1);text(mt[2],bx+24*u,by+Math.max(56*u,bh*.43),bw-48*u,bh-Math.max(56*u,bh*.43)-16*u,64,col,800,2);}else text(v,bx+24*u,by+bh*.22,bw-48*u,bh*.6,42,col,800,2);});
-  };
+  var label=function(col){text(chip,m,38*u,w-m*2,38*u,24,col||p.muted,700,1);};
+  var price=function(y,hh,xx,ww){studioPriceRows(x,prices,{x:xx==null?m:xx,y:H*y,w:ww==null?w-m*2:ww,h:H*hh},u);};
   if(k==='hook'){
-    studioPhoto(x,{x:0,y:0,w:w,h:H},p,true);var gr=x.createLinearGradient(0,0,w,H);gr.addColorStop(0,'rgba(5,20,29,.85)');gr.addColorStop(1,'rgba(5,20,29,.35)');x.fillStyle=gr;x.fillRect(0,0,w,H);
-    label(m,48*u,w-m*2,'#d8e5e8');text(head,m,H*.22,w*(wide?.72:.83),H*.36,wide?72:98,'#ffffff',800,3);
-    text(prices.join('  /  '),m,H*.67,w-m*2,H*.15,46,'#efd6a0',800,2);text([sub,meta].filter(Boolean).join(' · '),m,H*.87,w-m*2,H*.09,26,'#ffffff',500,1);
+    studioPhoto(x,{x:0,y:0,w:w,h:H},p,true);var gr=x.createLinearGradient(0,0,w,H);gr.addColorStop(0,'rgba(5,20,29,.87)');gr.addColorStop(1,'rgba(5,20,29,.43)');x.fillStyle=gr;x.fillRect(0,0,w,H);
+    label('#d8e5e8');text(head,m,H*.17,w-m*2,H*.31,wide?72:98,'#ffffff',800,2);price(.55,.33);
   }else if(k==='profit'){
-    x.fillStyle=p.navy;x.fillRect(0,0,w,H);label(m,45*u,w-m*2,'#d2b886');text(head,m,H*.14,w-m*2,H*.27,wide?68:86,'#ffffff',800,3);
-    priceRows({x:m,y:H*.47,w:w-m*2,h:H*.33},'#f3efe4',p.ink,true);text([sub,meta].filter(Boolean).join(' · '),m,H*.87,w-m*2,H*.08,27,'#c3d3db',500,1);
+    x.fillStyle=p.navy;x.fillRect(0,0,w,H);label('#e8cf9d');text(head,m,H*.14,w-m*2,H*.25,wide?68:86,'#ffffff',800,2);price(.43,.44);
   }else if(k==='check'){
-    label(m,45*u,w-m*2,p.teal);text(head,m,H*.14,w-m*2,H*.28,wide?68:84,p.ink,800,3);
-    var list=prices.concat([sub,meta].filter(Boolean)),top=H*.46,avail=H*.45,rh=Math.min(100*u,avail/Math.max(1,list.length));
-    list.forEach(function(t,i){var yy=top+i*rh;studioPanel(x,{x:m,y:yy,w:w-m*2,h:rh-12*u},'#ffffff',p.line,6*u);x.strokeStyle=p.teal;x.lineWidth=4*u;x.beginPath();x.moveTo(m+24*u,yy+rh*.43);x.lineTo(m+32*u,yy+rh*.53);x.lineTo(m+49*u,yy+rh*.32);x.stroke();text(t,m+72*u,yy+rh*.18,w-m*2-100*u,rh*.63,36,p.ink,600,2);});
+    label(p.teal);text(head,m,H*.14,w-m*2,H*.25,wide?68:84,p.ink,800,2);price(.43,.43);
   }else if(k==='analysis'){
-    var side=wide?w*.53:w*.62;x.fillStyle=p.teal;x.fillRect(0,0,side,H);label(m,48*u,side-m*1.5,'#b8e1d8');text(head,m,H*.21,side-m*1.5,H*.42,wide?64:80,'#ffffff',800,4);text(sub,m,H*.79,side-m*1.5,H*.1,27,'#d5e9e3',600,2);
-    var rb={x:side+28*u,y:H*.18,w:w-side-56*u,h:H*.55};priceRows(rb,'#e7eee8',p.teal,false);text(meta,side+28*u,H*.8,w-side-56*u,H*.12,26,p.muted,500,2);
+    var side=w*.64;x.fillStyle=p.teal;x.fillRect(0,0,w,H*.47);studioPhoto(x,{x:side,y:0,w:w-side,h:H*.47},p,false);
+    text(chip,m,38*u,side-m*1.5,38*u,24,'#d5eee6',700,1);text(head,m,H*.15,side-m*1.5,H*.27,wide?64:78,'#ffffff',800,2);price(.52,.36);
   }else if(k==='bold'){
-    var bh=H*(wide?.62:.58);x.fillStyle=p.blue;x.fillRect(0,0,w,bh);label(m,44*u,w-m*2,'#c4d5ff');text(head,m,bh*.26,w-m*2,bh*.65,wide?76:106,'#ffffff',800,3);
-    if(S.bg){studioPhoto(x,{x:w*.7,y:bh,w:w*.3,h:H-bh},p,false);}priceRows({x:m,y:bh+26*u,w:(S.bg?w*.65:w)-m*2,h:(H-bh)*.53},'#f0d26b',p.ink,true);text([sub,meta].filter(Boolean).join(' · '),m,H*.88,(S.bg?w*.67:w)-m*1.5,H*.09,26,p.ink,500,1);
+    x.fillStyle=p.blue;x.fillRect(0,0,w,H*.47);label('#d5e3ff');var hw=S.bg?w*.63-m:w-m*2;
+    if(S.bg)studioPhoto(x,{x:w*.69,y:H*.1,w:w*.31,h:H*.37},p,false);text(head,m,H*.17,hw,H*.27,wide?72:94,'#ffffff',800,2);price(.52,.36);
   }else if(k==='thumb'){
-    x.fillStyle=p.navy;x.fillRect(0,0,w,H);x.fillStyle=p.accent;x.fillRect(m,H*.17,58*u,6*u);label(m,44*u,w-m*2,'#cbb683');
-    text(head,m,H*.24,w-m*2,H*.35,wide?82:116,'#ffffff',800,3);text(prices.join('  /  '),m,H*.68,w-m*2,H*.16,50,'#eed6a1',800,2);text([sub,meta].filter(Boolean).join(' · '),m,H*.88,w-m*2,H*.08,26,'#c2d0d8',500,1);
+    x.fillStyle=p.navy;x.fillRect(0,0,w,H);label('#e2ca9d');x.fillStyle=p.accent;x.fillRect(m,H*.14,58*u,6*u);text(head,m,H*.23,w-m*2,H*.27,wide?82:108,'#ffffff',800,2);price(.56,.32);
   }else if(k==='brief'){
-    label(m,44*u,w-m*2,p.muted);text(head,m,H*.15,w-m*2,H*.27,wide?68:90,p.ink,800,3);x.fillStyle=p.line;x.fillRect(m,H*.45,w-m*2,2*u);
-    priceRows({x:m,y:H*.5,w:w-m*2,h:H*.25},'#eaf0ed',p.ink,true);text(sub,m,H*.81,w-m*2,H*.08,30,p.ink,700,1);text(meta,m,H*.9,w-m*2,H*.07,25,p.muted,500,1);
+    label(p.muted);text(head,m,H*.14,w-m*2,H*.25,wide?68:90,p.ink,800,2);x.fillStyle=p.line;x.fillRect(m,H*.41,w-m*2,2*u);price(.47,.41);
+  }else if(wide){
+    studioPhoto(x,{x:w*.62,y:0,w:w*.38,h:H},p,false);text(chip,m,32*u,w*.56-m,34*u,23,p.accent,700,1);text(head,m,H*.17,w*.56-m,H*.30,64,p.ink,800,2);price(.53,.34,m,w*.56-m);
   }else{
-    var drawClassicPrices=function(b){
-      if(!prices.length)return;var gap=10*u,rh=(b.h-gap*(prices.length-1))/prices.length;
-      prices.forEach(function(v,i){var yy=b.y+i*(rh+gap),mt=String(v).match(/^(매매|월세|전세|보증금|분양)\s+(.+)$/),lw=(wide?76:104)*u;
-        studioPanel(x,{x:b.x,y:yy,w:b.w,h:rh},'#f1e5ce',null,9*u);x.fillStyle=p.accent;x.fillRect(b.x,yy,5*u,rh);
-        if(mt){text(mt[1],b.x+20*u,yy+rh*.23,lw-10*u,rh*.6,wide?22:28,p.ink,700,1);text(mt[2],b.x+lw+20*u,yy+rh*.16,b.w-lw-42*u,rh*.72,wide?30:48,'#8c571b',800,1);}
-        else text(v,b.x+20*u,yy+rh*.18,b.w-40*u,rh*.68,wide?30:46,'#8c571b',800,1);
-      });
-    };
-    if(wide){studioPhoto(x,{x:w*.58,y:0,w:w*.42,h:H},p,false);label(m,40*u,w*.5-m,p.accent);text(head,m,H*.18,w*.52-m,H*.39,68,p.ink,800,2);drawClassicPrices({x:m,y:H*.62,w:w*.52-m,h:H*.24});studioPanel(x,{x:m,y:H*.89,w:w*.52-m,h:H*.09},'#e1ece6',null,8*u);text(meta,m+16*u,H*.902,w*.52-m-32*u,H*.07,32,p.teal,800,1);}
-    else{label(m,44*u,w-m*2,p.accent);text(head,m,H*.13,w-m*2,H*.24,90,p.ink,800,2);studioPhoto(x,{x:m,y:H*.42,w:w-m*2,h:H*.29},p,false);drawClassicPrices({x:m,y:H*.75,w:w-m*2,h:H*.145});studioPanel(x,{x:m,y:H*.912,w:w-m*2,h:H*.073},'#e1ece6',null,9*u);text(meta,m+24*u,H*.924,w-m*2-48*u,H*.058,48,p.teal,800,1);}
+    label(p.accent);text(head,m,H*.12,w-m*2,H*.22,90,p.ink,800,2);studioPhoto(x,{x:m,y:H*.37,w:w-m*2,h:H*.24},p,false);price(.65,.235);
+  }
+  if(meta){
+    var ms=26*u,mh=46*u; x.font=font(700,ms);var mw=Math.min(w-m*2,x.measureText(meta).width+34*u),mx=w-m-mw,my=k==='classic'&&!wide?H*.37-mh-10*u:28*u;
+    studioPanel(x,{x:mx,y:my,w:mw,h:mh},'#f0f5f2',null,7*u);text(meta,mx+17*u,my+8*u,mw-34*u,mh-12*u,26,'#214c42',700,1);
   }
   studioFooter(x,w,h,u,fh);
 }
@@ -661,7 +677,7 @@ function drawCoverBanner(c, f, o, kind) {
   var fh = Math.round(h * (wide ? 0.17 : 0.115)), place = placeOf(f, { addr: false });
   var subline = [place, f.typeLabel + ' ' + (f.deal || '')].filter(Boolean).join('  ·  ');
   drawBanner(x, w, u, 26 * u, ovv('head', f.pubTitle || f.typeLabel), ovv('sub', subline), wide ? 168 * u : 250 * u);
-  var pls = ovv('price', priceLines(f, o)), ps = wide ? 60 * u : 78 * u, sub = ovv('meta', [f.floor, f.area].filter(Boolean).join('  ·  ')), ss = wide ? 28 * u : 34 * u, maxw = 0;
+  var pls = ovv('price', priceLines(f, o)), ps = wide ? 60 * u : 78 * u, sub = ovv('meta', coverArea(f)), ss = wide ? 28 * u : 34 * u, maxw = 0;
   pls.forEach(function (l) { var s = fit(x, l, 800, pls.length > 1 ? ps * 0.82 : ps, w - 150 * u); x.font = font(800, s); maxw = Math.max(maxw, x.measureText(l).width); });
   if (sub) { x.font = font(600, ss); maxw = Math.max(maxw, x.measureText(sub).width); }
   var cw = Math.min(w - 52 * u, maxw + 110 * u), chh = pls.length * ps * (pls.length > 1 ? 0.82 : 1) * 1.2 + (sub ? ss * 1.8 : 0) + 50 * u, cx = (w - cw) / 2, cy = h - fh - 30 * u - chh;
@@ -677,7 +693,7 @@ function drawCoverPoster(c, f, o, kind) {
   if (S.bg) coverFit(x, S.bg, w, h); else bgNavy(x, w, h);
   var ov = x.createLinearGradient(0, 0, 0, h); ov.addColorStop(0, 'rgba(0,0,0,.40)'); ov.addColorStop(0.35, 'rgba(0,0,0,.05)'); ov.addColorStop(1, 'rgba(0,0,0,.86)'); x.fillStyle = ov; x.fillRect(0, 0, w, h);
   drawChip(x, ovv('chip', [f.deal || '매물', f.typeLabel].join(' · ')), pad, pad, wide ? 26 * u : 32 * u, p.gold, p.pillInk);
-  var accent = p.dark ? p.gold : p.goldL, y = h - fh - 38 * u, pls = ovv('price', priceLines(f, o)), ps = wide ? 56 * u : 78 * u, sub = ovv('meta', [f.floor, f.area].filter(Boolean).join('  ·  ')), ss = wide ? 26 * u : 34 * u, top = y;
+  var accent = p.dark ? p.gold : p.goldL, y = h - fh - 38 * u, pls = ovv('price', priceLines(f, o)), ps = wide ? 56 * u : 78 * u, sub = ovv('meta', coverArea(f)), ss = wide ? 26 * u : 34 * u, top = y;
   x.textAlign = 'left';
   for (var i = pls.length - 1; i >= 0; i--) { var s = fit(x, pls[i], 800, pls.length > 1 ? ps * 0.82 : ps, w - pad * 2 - 30 * u); x.font = font(800, s); x.fillStyle = accent; x.fillText(pls[i], pad + 28 * u, y); y -= s * 1.2; }
   if (sub) { x.fillStyle = 'rgba(255,255,255,.92)'; x.font = font(600, ss); x.fillText(sub, pad + 28 * u, y); y -= ss * 1.7; }
@@ -692,7 +708,7 @@ function drawCoverSplit(c, f, o, kind) {
   x.save(); x.beginPath(); x.rect(0, 0, w, photoH); x.clip(); if (S.bg) coverFit(x, S.bg, w, photoH); else { var g = x.createLinearGradient(0, 0, w, photoH); g.addColorStop(0, p.gold); g.addColorStop(1, p.goldL); x.fillStyle = g; x.fillRect(0, 0, w, photoH); } x.restore();
   drawChip(x, ovv('chip', [f.deal || '매물', f.typeLabel].join(' · ')), pad, 40 * u, wide ? 24 * u : 30 * u, p.gold, p.pillInk);
   x.fillStyle = goldGrad(x, 0, w); x.fillRect(0, photoH, w, 8 * u);
-  var pls = ovv('price', priceLines(f, o)), ps = wide ? 50 * u : 70 * u, sub = ovv('meta', [f.floor, f.area].filter(Boolean).join('  ·  ')), ss = wide ? 24 * u : 32 * u, place = ovv('sub', placeOf(f, { addr: false })), hs = wide ? 46 * u : 68 * u, head = ovv('head', f.pubTitle || f.typeLabel), lines;
+  var pls = ovv('price', priceLines(f, o)), ps = wide ? 50 * u : 70 * u, sub = ovv('meta', coverArea(f)), ss = wide ? 24 * u : 32 * u, place = ovv('sub', placeOf(f, { addr: false })), hs = wide ? 46 * u : 68 * u, head = ovv('head', f.pubTitle || f.typeLabel), lines;
   for (;;) { x.font = font(800, hs); lines = wrap(x, head, w - pad * 2, 2); if ((!/…$/.test(lines[lines.length - 1]) && lines.every(function (l) { return x.measureText(l).width <= w - pad * 2; })) || hs < 26 * u) break; hs -= 3 * u; }
   var blockH = (place ? ss * 1.5 : 0) + lines.length * hs * 1.15 + 14 * u + pls.length * ps * (pls.length > 1 ? 0.82 : 1) * 1.2 + (sub ? ss * 1.6 : 0), avail = h - fh - photoH - 8 * u, y = photoH + 8 * u + Math.max(10 * u, (avail - blockH) / 2) + ss;
   x.textAlign = 'left'; if (place) { x.fillStyle = p.gold; x.font = font(700, ss); x.fillText(place, pad, y); y += ss * 1.5; }
@@ -704,10 +720,11 @@ function drawCoverSplit(c, f, o, kind) {
 function drawInfo(c,f,o){
  var x=c.getContext('2d'),w=c.width,h=c.height,u=w/1080,p=PAL(),fh=130*u,m=66*u;
  bgNavy(x,w,h);drawBanner(x,w,u,54*u,ovv('title',f.typeLabel+' 핵심 요약'),ovv('tag',placeOf(f,{addr:false})),210*u);
- var rows=ovv('rows',factLines(f,o)),top=305*u,avail=h-fh-top-48*u,gap=14*u,rh=(avail-gap*Math.max(0,rows.length-1))/Math.max(1,rows.length);
- rows.forEach(function(r,i){var yy=top+i*(rh+gap),isP=r[0]==='가격';studioPanel(x,{x:m,y:yy,w:w-m*2,h:rh},p.dark?'#203b50':'#ffffff',p.dark?'#466174':'#d2dce3',8*u);
- studioText(x,r[0],{x:m+26*u,y:yy+rh*.25,w:180*u,h:rh*.52},27*u,p.inkSub,600,2);
- studioText(x,r[1],{x:m+235*u,y:yy+rh*.2,w:w-m*2-264*u,h:rh*.65},isP?44*u:38*u,p.ink,800,3);});drawFooter(x,w,h,u,fh);
+ var rows=ovv('rows',factLines(f,o)).filter(function(r){return !/^(해당 층|층|층수)$/.test(r[0]);}),top=305*u,avail=h-fh-top-48*u,gap=14*u,weights=rows.map(function(r){return r[0]==='가격'?Math.max(1.4,readablePrices(String(r[1]).split(/\s+\/\s+(?=(?:매매|보증금|월세|전세|분양가|분양)\s)/)).length*1.5):1;}),total=weights.reduce(function(a,b){return a+b;},0),unitH=(avail-gap*Math.max(0,rows.length-1))/Math.max(1,total),yy=top;
+ rows.forEach(function(r,i){var rh=unitH*weights[i];
+ if(r[0]==='가격')studioPriceRows(x,readablePrices(String(r[1]).split(/\s+\/\s+(?=(?:매매|보증금|월세|전세|분양가|분양)\s)/)),{x:m,y:yy,w:w-m*2,h:rh},u);
+ else{studioPanel(x,{x:m,y:yy,w:w-m*2,h:rh},p.dark?'#203b50':'#ffffff',p.dark?'#466174':'#d2dce3',8*u);studioText(x,r[0],{x:m+26*u,y:yy+rh*.25,w:180*u,h:rh*.52},27*u,p.inkSub,600,2);studioText(x,r[1],{x:m+235*u,y:yy+rh*.2,w:w-m*2-264*u,h:rh*.65},38*u,p.ink,800,3);}
+ yy+=rh+gap;});drawFooter(x,w,h,u,fh);
 }
 
 function lumOf(c) { var m = String(c || '').match(/^#([0-9a-f]{6})$/i); if (!m) return 0.2; var n = parseInt(m[1], 16); return (0.299 * (n >> 16) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255)) / 255; }
@@ -718,7 +735,7 @@ function drawCoverThumb(c, f, o, kind) {
   else { bgNavy(x, w, h); x.save(); x.globalAlpha = 0.12; x.fillStyle = p.gold; x.beginPath(); x.arc(w * (wide ? 0.82 : 0.9), h * 0.6, h * 0.34, 0, Math.PI * 2); x.fill(); x.restore(); }
   var tw = (wide ? w * 0.64 : w) - pad * 2, top = 44 * u, avail = (h - fh - 34 * u) - top;
   var chip = ovv('chip', [f.deal || '매물', f.typeLabel].join(' · ')), cs = (wide ? 24 : 30) * u, chH = cs * 1.9;
-  var head = ovv('head', f.pubTitle || f.typeLabel), pls = ovv('price', priceLines(f, o)), place = ovv('sub', placeOf(f, { addr: false })), meta = ovv('meta', [f.floor, f.area].filter(Boolean).join('  ·  '));
+  var head = ovv('head', f.pubTitle || f.typeLabel), pls = ovv('price', priceLines(f, o)), place = ovv('sub', placeOf(f, { addr: false })), meta = ovv('meta', coverArea(f));
   var sc = 1.7, L1, hs, ps, sizes, ss, total, nsub = (place ? 1 : 0) + (meta ? 1 : 0);
   for (;;) {
     hs = (wide ? 78 : 122) * u * sc; ps = (wide ? 70 : 108) * u * sc; ss = (wide ? 28 : 38) * u * sc;
@@ -749,7 +766,7 @@ function drawCoverBold(c, f, o, kind) {
   var chip = ovv('chip', [f.deal || '매물', f.typeLabel].join(' · ')), cs = wide ? 24 * u : 30 * u, chH = cs * 1.9;
   var hs = wide ? 60 * u : 104 * u, head = ovv('head', f.pubTitle || f.typeLabel), lines;
   for (;;) { x.font = font(800, hs); lines = wrap(x, head, tw, 2); if ((!/…$/.test(lines[lines.length - 1]) && lines.every(function (l) { return x.measureText(l).width <= tw; })) || hs < 28 * u) break; hs -= 3 * u; }
-  var ss = wide ? 26 * u : 36 * u, place = ovv('sub', placeOf(f, { addr: false })), meta = ovv('meta', [f.floor, f.area].filter(Boolean).join('  ·  '));
+  var ss = wide ? 26 * u : 36 * u, place = ovv('sub', placeOf(f, { addr: false })), meta = ovv('meta', coverArea(f));
   var contentH = chH + 26 * u + lines.length * hs * 1.15 + 10 * u + (place ? ss * 1.6 : 0) + (meta ? ss * 1.5 : 0), y = Math.max(34 * u, ((wide ? gh : gy) - contentH) / 2);
   x.textAlign = 'left'; drawChip(x, chip, pad, y, cs, p.dark ? p.gold : p.ink, p.dark ? p.pillInk : '#ffffff'); y += chH + 26 * u;
   lines.forEach(function (l, i) { x.font = font(800, hs); x.fillStyle = (i === lines.length - 1 && lines.length > 1) ? (p.hl || p.gold) : p.ink; x.fillText(l, pad, y + hs * 0.86); y += hs * 1.15; });
@@ -767,7 +784,7 @@ function drawInfoTiles(c, f, o) {
   drawBanner(x, w, u, 56 * u, ovv('title', f.typeLabel + ' 핵심 숫자'), ovv('tag', placeOf(f, { addr: false })), 190 * u);
   var rows = ovv('rows', factLines(f, o)), tiles = [];
   rows.forEach(function (r) {
-    if (r[0] === '가격') { String(r[1]).split(' / ').forEach(function (s) { var m = s.match(/^(매매|보증금|월세|전세|분양)\s+(.+)$/); tiles.push(m ? [m[1], m[2], true] : ['가격', s, true]); }); }
+    if (r[0] === '가격') { String(r[1]).split(/\s+\/\s+(?=(?:매매|보증금|월세|전세|분양가|분양)\s)/).forEach(function (s) { var m = s.match(/^(매매|보증금|월세|전세|분양)\s+(.+)$/); tiles.push(m ? [m[1], m[2], true] : ['가격', s, true]); }); }
     else if (['소재지', '매물 종류', '거래 형태'].indexOf(r[0]) < 0) tiles.push([r[0], r[1], false]);
   });
   tiles = tiles.slice(0, 6);
@@ -786,7 +803,7 @@ function drawInfoCheck(c, f, o) {
   var w = c.width, h = c.height, x = c.getContext('2d'), u = w / 1080, p = PAL(), fh = Math.round(h * 0.115);
   bgNavy(x, w, h);
   drawBanner(x, w, u, 56 * u, ovv('title', f.typeLabel + ' 체크리스트'), ovv('tag', placeOf(f, { addr: false })), 190 * u);
-  var rows0 = ovv('rows', factLines(f, o)), rows = []; rows0.forEach(function (r) { if (r[0] === '가격' && String(r[1]).indexOf(' / ') > 0) { String(r[1]).split(' / ').forEach(function (s) { var m = s.match(/^(매매|보증금|월세|전세|분양)\s+(.+)$/); rows.push(m ? [m[1] === '매매' ? '매매가' : m[1], m[2]] : ['가격', s]); }); } else rows.push(r); });
+  var rows0 = ovv('rows', factLines(f, o)), rows = []; rows0.forEach(function (r) { if (r[0] === '가격' && String(r[1]).indexOf(' / ') > 0) { String(r[1]).split(/\s+\/\s+(?=(?:매매|보증금|월세|전세|분양가|분양)\s)/).forEach(function (s) { var m = s.match(/^(매매|보증금|월세|전세|분양)\s+(.+)$/); rows.push(m ? [m[1] === '매매' ? '매매가' : m[1], m[2]] : ['가격', s]); }); } else rows.push(r); });
   var top = 56 * u + 190 * u + 30 * u, avail = h - fh - top - 40 * u, rh = Math.min(140 * u, avail / Math.max(rows.length, 1)), gap = 12 * u;
   rows.forEach(function (r, i) {
     var ry = top + i * rh, bh = rh - gap, cy = ry + bh / 2, cr = Math.min(bh * 0.3, 30 * u);
@@ -895,7 +912,7 @@ function markTpl() {
   var k = $('oTpl').value; var stp = $('soTpl'); if (stp) { stp.value = k; scheduleSingle(); } document.querySelectorAll('.tpl').forEach(function (b) { b.classList.toggle('on', b.dataset.tpl === k); });
   var p = $('tplPicked'); if (p) p.textContent = (TEMPLATES[k] || {}).label || '';
 }
-var soT = null, SO_DEF = { chip: '월세 · 상가', head: '운정역 대로변\n1층 상가', price: '보증금 3,000만\n월세 250만', sub: '파주 와동동', meta: '1층 · 30.7평' };
+var soT = null, SO_DEF = { chip: '월세 · 상가', head: '운정역 대로변\n1층 상가', price: '보증금 3,000만\n월세 250만', sub: '파주 와동동', meta: '전용 30.7평(101.4㎡)' };
 function scheduleSingle() { clearTimeout(soT); soT = setTimeout(renderSingle, 180); }
 async function renderSingle() {
   var c = $('soCanvas'); if (!c) return;
@@ -908,8 +925,8 @@ async function renderSingle() {
   catch (e) { console.error(e); } finally { S.ov = pOv; S.bg = pBg; S.slogan = pSl; S.tpl = pTpl; }
 }
 function fillSingle(f) {
-  var o = opts(); $('soChip').value = [f.deal || '매물', f.typeLabel].join(' · '); $('soHead').value = f.pubTitle || f.typeLabel; $('soPrice').value = priceLines(f, o).join('\n');
-  $('soSub').value = placeOf(f, { addr: false }); $('soMeta').value = [f.floor, f.area].filter(Boolean).join(' · '); S.soBg = S.bg || null; renderSingle();
+  var o = opts(); $('soChip').value = [f.deal || '매물', f.typeLabel].join(' · '); $('soHead').value = coverTitle(f); $('soPrice').value = coverPrices(f, o).join('\n');
+  $('soSub').value = placeOf(f, { addr: false }); $('soMeta').value = coverMeta(f); S.soBg = S.bg || null; renderSingle();
 }
 function initSingle() {
   var st = $('soTpl'); Object.keys(TEMPLATES).forEach(function (k) { var op = document.createElement('option'); op.value = k; op.textContent = TEMPLATES[k].label; st.appendChild(op); });
@@ -934,7 +951,7 @@ function paintThumbs() {
     box.innerHTML = S.partCanvases.map(function (c, i) { return '<figure><img alt="" src="' + c.toDataURL('image/jpeg', 0.5) + '"><figcaption>' + (i + 1) + '. ' + esc(S.parts[i].title) + '</figcaption></figure>'; }).join('');
   });
 }
-function covDef() { var f = S.f, o = opts(), pl = placeOf(f, { addr: false }); return { head: coverTitle(f), subBanner: [pl, f.typeLabel + ' ' + (f.deal || '')].filter(Boolean).join('  ·  '), place: pl, chip: [f.deal || '매물', f.typeLabel].join(' · '), price: coverPrices(f, o), meta: coverArea(f) }; }
+function covDef() { var f = S.f, o = opts(), pl = placeOf(f, { addr: false }); return { head: coverTitle(f), subBanner: [pl, f.typeLabel + ' ' + (f.deal || '')].filter(Boolean).join('  ·  '), place: pl, chip: [f.deal || '매물', f.typeLabel].join(' · '), price: coverPrices(f, o), meta: coverMeta(f) }; }
 function fld(label, attrs, val, rows) { return '<label class="mini">' + label + (rows ? '<textarea rows="' + rows + '" ' + attrs + '>' + esc(val) + '</textarea>' : '<input type="text" ' + attrs + ' value="' + esc(val) + '">') + '</label>'; }
 function editorFor(p, i) {
   var ov = p.ov || {}, g = function (k, d) { return ov[k] == null ? d : ov[k]; }, a = function (k) { return 'data-pi="' + i + '" data-ov="' + k + '"'; }, h = '', f = S.f, o = opts();
@@ -943,7 +960,7 @@ function editorFor(p, i) {
     h += fld('제목 (위치·매물 / 거래유형 두 줄)', a('head'), g('head', d.head), 2);
     h += fld(L === 'banner' ? '제목 위 작은 글' : '위치 줄', a('sub'), g('sub', L === 'banner' ? d.subBanner : d.place));
     h += fld('가격 (한 줄에 한 항목)', a('price'), g('price', d.price).join('\n'), 3);
-    h += fld('면적 줄 (전용 평·㎡)', a('meta'), g('meta', d.meta));
+    h += fld('이미지 위 오른쪽 (해당 층 / 전용면적)', a('meta'), g('meta', d.meta));
     if (L !== 'banner') h += fld('왼쪽 위 라벨', a('chip'), g('chip', d.chip));
   } else if (p.kind === 'info') {
     h += fld('제목', a('title'), g('title', f.typeLabel + ({ tiles: ' 핵심 숫자', check: ' 체크리스트' }[(TEMPLATES[S.tpl] || {}).info] || ' 핵심 요약')));
