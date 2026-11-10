@@ -597,13 +597,14 @@ function studioPhoto(x,b,p,dark){
   }x.restore();
 }
 function studioFooter(x,w,h,u,fh){
-  var p=studioPalette(),y=h-fh,pad=60*u; x.fillStyle=p.navy;x.fillRect(0,y,w,fh);x.fillStyle=p.accent;x.fillRect(pad,y,44*u,4*u);
-  studioText(x,O.short,{x:pad,y:y+fh*.23,w:w*.42,h:fh*.4},32*u,'#ffffff',800,1);
-  studioText(x,O.phone,{x:w*.58,y:y+fh*.23,w:w*.42-pad,h:fh*.4},37*u,'#ffffff',800,1);
-  studioText(x,S.slogan!=null?S.slogan:'매물 상담 · 방문 예약',{x:pad,y:y+fh*.65,w:w-pad*2,h:fh*.23},18*u,'#bac9d0',500,1);
+  var p=studioPalette(),y=h-fh,pad=60*u,rowY=y+fh*.17,rowH=fh*.49;
+  x.fillStyle=p.navy;x.fillRect(0,y,w,fh);x.fillStyle=p.accent;x.fillRect(0,y,w,5*u);
+  studioText(x,O.short,{x:pad,y:rowY,w:w*.43-pad,h:rowH},48*u,'#ffffff',800,1);
+  studioText(x,O.phone,{x:w*.45,y:rowY,w:w*.55-pad,h:rowH},58*u,'#ffe1a0',800,1);
+  studioText(x,S.slogan!=null?S.slogan:'매물 상담 · 방문 예약',{x:pad,y:y+fh*.72,w:w-pad*2,h:fh*.23},24*u,'#e3edf2',600,1);
 }
 function drawStudioCover(c,f,o,kind){
-  var x=c.getContext('2d'),w=c.width,h=c.height,u=w/1080,p=studioPalette(),k=S.tpl||'classic',wide=kind==='wide',fh=(wide?96:116)*u,H=h-fh,m=60*u;
+  var x=c.getContext('2d'),w=c.width,h=c.height,u=w/1080,p=studioPalette(),k=S.tpl||'classic',wide=kind==='wide',fh=(wide?128:168)*u,H=h-fh,m=60*u;
   var chip=ovv('chip',[f.deal||'매물',f.typeLabel].join(' · ')),head=ovv('head',coverTitle(f)),prices=ovv('price',coverPrices(f,o)); if(!Array.isArray(prices))prices=String(prices).split('\n');prices=prices.filter(Boolean);
   var sub=ovv('sub',placeOf(f,{addr:false})),meta=ovv('meta',coverArea(f));
   x.clearRect(0,0,w,h);x.fillStyle=p.paper;x.fillRect(0,0,w,h);
@@ -645,8 +646,8 @@ function drawStudioCover(c,f,o,kind){
         else text(v,b.x+20*u,yy+rh*.18,b.w-40*u,rh*.68,wide?30:46,'#8c571b',800,1);
       });
     };
-    if(wide){studioPhoto(x,{x:w*.58,y:0,w:w*.42,h:H},p,false);label(m,40*u,w*.5-m,p.accent);text(head,m,H*.18,w*.52-m,H*.39,68,p.ink,800,2);drawClassicPrices({x:m,y:H*.62,w:w*.52-m,h:H*.24});text(meta,m,H*.9,w*.52-m,H*.07,24,p.muted,600,1);}
-    else{label(m,44*u,w-m*2,p.accent);text(head,m,H*.13,w-m*2,H*.24,90,p.ink,800,2);studioPhoto(x,{x:m,y:H*.42,w:w-m*2,h:H*.29},p,false);drawClassicPrices({x:m,y:H*.75,w:w-m*2,h:H*.145});text(meta,m,H*.925,w-m*2,H*.055,30,p.muted,600,1);}
+    if(wide){studioPhoto(x,{x:w*.58,y:0,w:w*.42,h:H},p,false);label(m,40*u,w*.5-m,p.accent);text(head,m,H*.18,w*.52-m,H*.39,68,p.ink,800,2);drawClassicPrices({x:m,y:H*.62,w:w*.52-m,h:H*.24});studioPanel(x,{x:m,y:H*.89,w:w*.52-m,h:H*.09},'#e1ece6',null,8*u);text(meta,m+16*u,H*.902,w*.52-m-32*u,H*.07,32,p.teal,800,1);}
+    else{label(m,44*u,w-m*2,p.accent);text(head,m,H*.13,w-m*2,H*.24,90,p.ink,800,2);studioPhoto(x,{x:m,y:H*.42,w:w-m*2,h:H*.29},p,false);drawClassicPrices({x:m,y:H*.75,w:w-m*2,h:H*.145});studioPanel(x,{x:m,y:H*.912,w:w-m*2,h:H*.073},'#e1ece6',null,9*u);text(meta,m+24*u,H*.924,w-m*2-48*u,H*.058,48,p.teal,800,1);}
   }
   studioFooter(x,w,h,u,fh);
 }
