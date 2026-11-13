@@ -101,6 +101,73 @@ html[data-office-theme='hitop'] .part{border-top:1px solid #e9f4f3!important}
 html[data-office-theme='hitop'] .part-img canvas{border:1px solid #deedec!important}
 html[data-office-theme='hitop'] .thumbs img{border:1px solid #deedec!important}</style>
 <script>(function(){var q=new URLSearchParams(location.search).get('office'),s=null;try{s=sessionStorage.getItem('realty_selected_office')}catch(e){}var id=(q==='ktop'||q==='hitop')?q:((s==='ktop'||s==='hitop')?s:'hitop');document.documentElement.setAttribute('data-office-theme',id)})();</script>
+<style id="renewCss">
+/* 제작실 리뉴얼: 넓은 여백, 큰 카드 간격 (색은 사무소 테마 유지) */
+html{--ac:#1767d2;--ac-d:#193860;--ac-soft:#eef4fc;--ac-line:#dce5ef;--ac-ink:#294867}
+html[data-office-theme="hitop"]{--ac:#0e7f7a;--ac-d:#19605d;--ac-soft:#ecf7f6;--ac-line:#deedec;--ac-ink:#295350}
+.page{max-width:1120px;padding:0 32px 90px}
+.topbar{margin-top:24px;padding:22px 28px;border-radius:20px}
+.eyebrow{margin:48px 0 10px}
+h1{font-size:32px}
+.page-intro{font-size:14.5px;line-height:1.75;margin:10px 0 36px;max-width:680px}
+.card{margin:0 0 32px;padding:32px 34px;border-radius:20px}
+.card h2{font-size:18px;margin:0 0 16px}
+.note{line-height:1.7}
+.sec-title{margin:56px 0 22px;padding-top:6px}
+.sec-title b{display:block;font-size:20px;letter-spacing:-.03em;color:var(--ac-d)}
+.sec-title span{display:block;margin-top:4px;font-size:13px;color:#617286}
+.rq-lead{margin:-6px 0 26px;font-size:13.5px;color:#617286}
+.rq-block{margin:0 0 28px}
+.rq-label{font-size:13.5px;font-weight:700;color:var(--ac-d);margin:0 0 4px}
+.rq-hint{font-size:12px;color:#7a8a9b;margin:0 0 12px}
+.choice-row{display:flex;gap:10px;flex-wrap:wrap}
+.choice{position:relative;display:inline-flex;align-items:center;gap:9px;min-height:46px;padding:0 20px 0 16px;border:1.5px solid var(--ac-line);border-radius:999px;background:#fff;color:var(--ac-ink);font-size:14px;font-weight:600;cursor:pointer;transition:.15s}
+.choice:hover{border-color:var(--ac)}
+.choice input{width:18px;height:18px;margin:0;accent-color:var(--ac);cursor:pointer}
+.choice:has(input:checked){border-color:var(--ac);background:var(--ac-soft);color:var(--ac-d);box-shadow:0 0 0 3px rgba(14,127,122,.08)}
+html[data-office-theme="ktop"] .choice:has(input:checked){box-shadow:0 0 0 3px rgba(23,103,210,.1)}
+#rqTopic{min-height:150px;padding:14px 16px;font-size:14px;border-radius:12px}
+.rq-files{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.rq-list{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:8px}
+.rq-list li{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid var(--ac-line);border-radius:10px;background:#fafcfc;font-size:13px;color:var(--ac-ink)}
+.rq-list li span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rq-list li small{color:#7a8a9b;white-space:nowrap}
+.rq-list li button{border:0;background:none;color:#8a98a8;font-size:18px;line-height:1;cursor:pointer;padding:0 4px}
+.rq-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding-top:26px;border-top:1px solid var(--ac-line)}
+.rq-actions .btn{min-height:44px;padding:8px 20px;font-size:14px}
+.rq-msg{font-size:12.5px;color:var(--ac-d)}
+.rq-from{margin:0 0 22px;padding:12px 16px;border-radius:12px;background:var(--ac-soft);color:var(--ac-d);font-size:13px}
+.flow{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;counter-reset:fl}
+.flow li{position:relative;padding:20px 18px 20px;border:1px solid var(--ac-line);border-radius:16px;background:#fff;transition:.15s}
+.flow .no{display:grid;place-items:center;width:30px;height:30px;margin-bottom:14px;border-radius:50%;background:var(--ac);color:#fff;font-size:13px;font-weight:750}
+.flow .who{display:inline-block;margin-bottom:8px;padding:2px 10px;border-radius:999px;background:var(--ac-soft);color:var(--ac-d);font-size:12px;font-weight:700}
+.flow b{display:block;font-size:14.5px;color:#1c344f;line-height:1.45;margin-bottom:6px}
+.flow p{margin:0;font-size:12.5px;line-height:1.65;color:#617286}
+.flow li.skip{opacity:.45}
+.flow-wrap{background:var(--ac-soft)!important}
+.flow-wrap .flow li{background:#fff}
+@media(max-width:1000px){.flow{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:640px){
+  .page{padding:0 16px 70px}
+  .topbar{margin-top:14px;padding:16px;border-radius:16px;flex-direction:column;align-items:flex-start;gap:14px}
+  .eyebrow{margin:30px 0 8px}
+  h1{font-size:25px}
+  .page-intro{font-size:13.5px;margin:8px 0 26px}
+  .card{padding:22px 18px;margin-bottom:22px;border-radius:16px}
+  .card h2{font-size:17px}
+  .sec-title{margin:40px 0 16px}
+  .choice{min-height:48px;flex:1 1 auto}
+  .choice-row.channels .choice{flex:1 1 calc(50% - 10px)}
+  .flow{grid-template-columns:1fr;gap:12px}
+  .flow li{display:grid;grid-template-columns:34px 1fr;column-gap:14px;padding:16px}
+  .flow .no{margin:0;grid-row:1/4}
+  .flow .who,.flow b,.flow p{grid-column:2}.flow .who{justify-self:start}
+  .rq-actions .btn{flex:1 1 100%}
+  .single-form .two{grid-template-columns:1fr}
+  .tpl-pickbar .btn{margin-left:0;width:100%;white-space:normal}
+  input[type=text],input[type=search],select,textarea{font-size:16px;min-height:44px}
+}
+</style>
 </head>
 <body class="lock">
 <div class="page">
@@ -111,7 +178,7 @@ html[data-office-theme='hitop'] .thumbs img{border:1px solid #deedec!important}<
 
   <p class="eyebrow">CONTENT STUDIO</p>
   <h1>컨텐츠 제작실</h1>
-  <p class="page-intro">먼저 템플릿을 고른 뒤 아래에 내용을 직접 입력하면 이미지 한 장을 바로 만들 수 있습니다. 카드뉴스 전체(글 + 이미지)가 필요하면 매물관리 목록에서 매물 하나를 체크해 "컨텐츠 보내기"를 누르거나 아래에 내용을 직접 입력하면, 고른 템플릿으로 블로그·유튜브·스레드·인스타용 제목, 내용, 태그, 상호·연락처가 들어간 이미지를 한 번에 만들고 합쳐서 내려받습니다.</p>
+  <p class="page-intro">먼저 아래 의뢰서에 만들 내용을 적어 두세요. 그다음 작업 순서대로 진행하면 됩니다. 매물관리에서 매물을 체크해 "콘텐츠 보내기"를 누르면 아래 이미지 만들기로 바로 이어집니다.</p>
 
   <section class="card" id="loginNeed" hidden>
     <h2>로그인이 필요합니다</h2>
@@ -119,8 +186,68 @@ html[data-office-theme='hitop'] .thumbs img{border:1px solid #deedec!important}<
     <a class="btn primary" id="loginLink" href="#">로그인하러 가기</a>
   </section>
 
+  <section class="card" id="stepRequest">
+    <h2>콘텐츠 제작 의뢰</h2>
+    <p class="rq-lead">무엇을 만들지 고르고 적어 주세요. 다 쓰면 "의뢰서 복사"를 눌러 인스팅크트에 붙여 넣으면 됩니다.</p>
+    <div class="rq-from" id="rqFrom" hidden>매물관리에서 보낸 매물이 있습니다. 아래 "이미지 만들기"에서 이어서 작업하세요.</div>
+
+    <div class="rq-block">
+      <div class="rq-label">유형</div>
+      <p class="rq-hint">하나만 고르세요.</p>
+      <div class="choice-row" id="rqTypes">
+        <label class="choice"><input type="radio" name="rqType" value="매물소개" checked><span>매물소개</span></label>
+        <label class="choice"><input type="radio" name="rqType" value="부동산정보"><span>부동산정보</span></label>
+      </div>
+    </div>
+
+    <div class="rq-block">
+      <div class="rq-label">채널</div>
+      <p class="rq-hint">여러 개 골라도 됩니다.</p>
+      <div class="choice-row channels" id="rqChannels">
+        <label class="choice"><input type="checkbox" name="rqCh" value="블로그"><span>블로그</span></label>
+        <label class="choice"><input type="checkbox" name="rqCh" value="네이버카페"><span>네이버카페</span></label>
+        <label class="choice"><input type="checkbox" name="rqCh" value="유튜브쇼츠"><span>유튜브쇼츠</span></label>
+        <label class="choice"><input type="checkbox" name="rqCh" value="인스타동영상"><span>인스타동영상</span></label>
+        <label class="choice"><input type="checkbox" name="rqCh" value="스레드"><span>스레드</span></label>
+      </div>
+    </div>
+
+    <div class="rq-block">
+      <div class="rq-label">주제 · 자료</div>
+      <p class="rq-hint">주제나 참고할 내용, 매물 정보를 편하게 적어 주세요.</p>
+      <textarea id="rqTopic" rows="6" placeholder="예) 운정역 1층 상가 월세 소개. 보증금 3,000 / 월 250, 30평. 카페나 미용실에 좋다고 강조."></textarea>
+    </div>
+
+    <div class="rq-block">
+      <div class="rq-label">파일 첨부</div>
+      <p class="rq-hint">사진이나 문서를 고르면 파일 이름이 의뢰서에 적힙니다. 파일은 인스팅크트에 직접 올려 주세요.</p>
+      <div class="rq-files"><label class="btn" style="cursor:pointer;min-height:42px;padding:6px 18px">파일 고르기<input type="file" id="rqFile" multiple hidden></label><span class="note" id="rqFileCount" style="margin:0">선택한 파일 없음</span></div>
+      <ul class="rq-list" id="rqList"></ul>
+    </div>
+
+    <div class="rq-actions">
+      <button type="button" class="btn primary" id="rqCopy">의뢰서 복사</button>
+      <button type="button" class="btn" id="rqReset">처음부터 다시</button>
+      <span class="rq-msg" id="rqMsg" role="status"></span>
+    </div>
+  </section>
+
+  <section class="card flow-wrap" id="stepFlow">
+    <h2>작업 순서</h2>
+    <p class="rq-lead" style="margin-top:-4px">위에서 아래로 1단계부터 차례대로 하면 됩니다.</p>
+    <ol class="flow" id="flowList">
+      <li data-st="1"><span class="no">1</span><span class="who">인스팅크트</span><b>내용 원본 + 채널별 작업지시서</b><p>의뢰서를 붙여 넣어 글 원본과 채널별 지시서를 받습니다.</p></li>
+      <li data-st="2"><span class="no">2</span><span class="who">ChatGPT</span><b>헤더 이미지</b><p>지시서대로 대표 이미지를 만듭니다. 아래 이미지 만들기도 쓸 수 있어요.</p></li>
+      <li data-st="3"><span class="no">3</span><span class="who">인스팅크트</span><b>쇼츠 · 동영상</b><p>유튜브쇼츠·인스타동영상을 고른 경우에 만듭니다.</p></li>
+      <li data-st="4"><span class="no">4</span><span class="who">Cue</span><b>짧은 문구 다듬기</b><p>제목, 소개글 같은 짧은 문구를 다듬습니다.</p></li>
+      <li data-st="5"><span class="no">5</span><span class="who">업무일지</span><b>업로드 후 기록</b><p>올린 뒤 업무일지에 기록하면 끝입니다.</p></li>
+    </ol>
+  </section>
+
+  <div class="sec-title"><b>이미지 만들기</b><span>템플릿을 고르고 한 장짜리 이미지를 바로 만듭니다.</span></div>
+
   <section class="card" id="stepTpl">
-    <h2>1. 템플릿 고르기</h2>
+    <h2>템플릿 고르기</h2>
     <p class="note" style="margin:0 0 4px">아래는 가상의 샘플 매물로 만든 한 장 이미지 미리보기입니다. 모양을 보고 고르면, 매물관리에서 보낸 매물이나 직접 입력한 내용이 이 템플릿으로 만들어집니다.</p>
     <div class="tpl-gallery big" id="tplStudio"><div class="empty">템플릿을 그리는 중입니다.</div></div>
     <div class="tpl-pickbar"><span>선택한 템플릿: <b id="tplPicked"></b></span><button type="button" class="btn primary" id="btnTplGo">이 템플릿으로 만들기 → 매물관리에서 매물 고르기 ↗</button></div>
@@ -128,7 +255,7 @@ html[data-office-theme='hitop'] .thumbs img{border:1px solid #deedec!important}<
   </section>
 
   <section class="card" id="stepSingle">
-    <h2>2. 한 장 이미지 만들기 <span class="note" style="font-weight:500">(내용을 입력하면 오른쪽 미리보기가 바로 바뀝니다)</span></h2>
+    <h2>한 장 이미지 만들기 <span class="note" style="font-weight:500">(내용을 입력하면 오른쪽 미리보기가 바로 바뀝니다)</span></h2>
     <div class="single-grid">
       <div class="single-form">
         <div class="two">
@@ -1139,6 +1266,50 @@ $('btnZip').addEventListener('click', async function () { var b = this, old = b.
     if (id) { var one = await getListingById(id); if (one) { pickItem(one); document.getElementById('stepTpl').hidden = true; document.getElementById('stepManual').hidden = true; document.getElementById('stepSingle').scrollIntoView({ behavior: 'smooth', block: 'start' }); document.getElementById('optTitle').textContent = '카드뉴스 · 옵션'; var rp = document.getElementById('repick'); rp.hidden = false; rp.href = REALTY_BASE + 'properties.html?office=' + O.key; rp.target = '_blank'; rp.rel = 'noopener'; rp.textContent = '다른 매물 고르기 (매물관리)'; } }
   } catch (err) { $('stepTpl').hidden = false; document.querySelector('.tpl-pickbar').insertAdjacentHTML('afterend', '<p class="note" style="color:#b42318">매물을 불러오지 못했습니다: ' + esc(err && err.message || err) + '</p>'); }
 })();
+})();
+</script>
+<script>
+(function(){
+  var KEY='cs_request_draft_v1', $=function(i){return document.getElementById(i)};
+  var files=[];
+  var officeName=(document.documentElement.getAttribute('data-office-theme')==='ktop')?'케이탑부동산':'하이탑부동산';
+  function checked(n){return Array.prototype.map.call(document.querySelectorAll('input[name="'+n+'"]:checked'),function(e){return e.value})}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify({t:checked('rqType')[0]||'',c:checked('rqCh'),x:$('rqTopic').value}))}catch(e){}}
+  function load(){try{var d=JSON.parse(localStorage.getItem(KEY)||'null');if(!d)return;
+    document.querySelectorAll('input[name="rqType"]').forEach(function(e){e.checked=(e.value===d.t)});
+    document.querySelectorAll('input[name="rqCh"]').forEach(function(e){e.checked=(d.c||[]).indexOf(e.value)>=0});
+    $('rqTopic').value=d.x||''}catch(e){}}
+  function flow(){var video=checked('rqCh').some(function(v){return v==='유튜브쇼츠'||v==='인스타동영상'});
+    var li=document.querySelector('#flowList li[data-st="3"]');if(li)li.classList.toggle('skip',!video&&checked('rqCh').length>0)}
+  function size(n){return n>1048576?(n/1048576).toFixed(1)+'MB':Math.max(1,Math.round(n/1024))+'KB'}
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  function drawFiles(){
+    $('rqFileCount').textContent=files.length?files.length+'개 선택':'선택한 파일 없음';
+    $('rqList').innerHTML=files.map(function(f,i){return '<li><span>'+esc(f.name)+'</span><small>'+size(f.size)+'</small><button type="button" data-rm="'+i+'" aria-label="파일 빼기">×</button></li>'}).join('')}
+  function say(m){var e=$('rqMsg');e.textContent=m;clearTimeout(say.t);say.t=setTimeout(function(){e.textContent=''},4000)}
+  function build(){
+    var ch=checked('rqCh');
+    return ['[콘텐츠 제작 의뢰]','사무소: '+officeName,'유형: '+(checked('rqType')[0]||'-'),'채널: '+(ch.length?ch.join(', '):'-'),'','주제·자료:',($('rqTopic').value.trim()||'-'),'','첨부파일: '+(files.length?files.map(function(f){return f.name}).join(', ')+' (파일은 직접 올려 주세요)':'없음')].join('\n')}
+  function copy(txt){
+    if(navigator.clipboard&&navigator.clipboard.writeText)return navigator.clipboard.writeText(txt);
+    return new Promise(function(ok,no){try{var a=document.createElement('textarea');a.value=txt;a.style.cssText='position:fixed;opacity:0';document.body.appendChild(a);a.select();document.execCommand('copy')?ok():no();a.remove()}catch(e){no(e)}})}
+  document.addEventListener('change',function(e){
+    if(e.target.name==='rqType'||e.target.name==='rqCh'){save();flow()}
+    if(e.target.id==='rqFile'){Array.prototype.forEach.call(e.target.files,function(f){files.push(f)});e.target.value='';drawFiles()}
+  });
+  document.addEventListener('input',function(e){if(e.target.id==='rqTopic')save()});
+  document.addEventListener('click',function(e){
+    var rm=e.target.closest&&e.target.closest('[data-rm]');
+    if(rm){files.splice(+rm.getAttribute('data-rm'),1);drawFiles();return}
+    if(e.target.closest&&e.target.closest('#rqCopy')){
+      if(!checked('rqCh').length&&!$('rqTopic').value.trim()){say('채널이나 주제를 먼저 적어 주세요.');return}
+      copy(build()).then(function(){say('복사했습니다. 인스팅크트에 붙여 넣으세요.')},function(){say('복사하지 못했습니다. 다시 눌러 주세요.')});return}
+    if(e.target.closest&&e.target.closest('#rqReset')){
+      document.querySelectorAll('input[name="rqCh"]').forEach(function(x){x.checked=false});
+      document.querySelector('input[name="rqType"]').checked=true;$('rqTopic').value='';files=[];drawFiles();save();flow();say('비웠습니다.')}
+  });
+  load();flow();drawFiles();
+  try{if(new URLSearchParams(location.search).get('id')){$('rqFrom').hidden=false;document.querySelector('input[name="rqType"][value="매물소개"]').checked=true}}catch(e){}
 })();
 </script>
 </body>
