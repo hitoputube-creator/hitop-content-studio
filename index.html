@@ -392,7 +392,7 @@ html[data-office-theme="ktop"] .hitop-only{display:none!important}
   </section>
   </div>
   <div class="mpane hitop-only" id="pane-ai" data-pane="ai" hidden><iframe class="mframe" id="frameAi" title="AI 글쓰기" data-src="https://hitoputube-creator.github.io/hitop-ai-workcenter/content-studio/index.html?v=20261121-cat4" loading="lazy"></iframe></div>
-  <div class="mpane" id="pane-shorts" data-pane="shorts" hidden><iframe class="mframe" id="frameShorts" title="쇼츠 만들기" data-src="https://hitoputube-creator.github.io/hitop-ai-workcenter/shorts-studio/index.html?v=20261121-title2" loading="lazy"></iframe></div>
+  <div class="mpane" id="pane-shorts" data-pane="shorts" hidden><iframe class="mframe" id="frameShorts" title="쇼츠 만들기" data-src="https://hitoputube-creator.github.io/hitop-ai-workcenter/shorts-studio/index.html?v=20261121-fit1" loading="lazy"></iframe></div>
 
 </div>
 <script>
@@ -414,7 +414,7 @@ html[data-office-theme="ktop"] .hitop-only{display:none!important}
     }catch(e){}
   }
   function size(fr){
-    try{var d=fr.contentDocument; if(!d||!d.documentElement) return; var h=Math.max(d.documentElement.scrollHeight,d.body?d.body.scrollHeight:0); fr.style.height=Math.max(360,h+4)+'px';}catch(e){}
+    try{var d=fr.contentDocument; if(!d||!d.documentElement) return; var b=d.body; var h=b?Math.ceil(b.getBoundingClientRect().bottom+(parseFloat(getComputedStyle(b).marginBottom)||0)):d.documentElement.scrollHeight; fr.style.height=Math.max(360,h+4)+'px';}catch(e){}
   }
   [['frameAi','ai'],['frameShorts','shorts']].forEach(function(p){
     var fr=document.getElementById(p[0]); if(!fr) return;
