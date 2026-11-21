@@ -58,7 +58,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid #9fc2ee;outline-offset
 @media(max-width:860px){.part{grid-template-columns:1fr}.part-img{max-width:320px}}
 body.lock .page>*:not(#loginNeed){display:none!important}
 .single-grid{display:grid;grid-template-columns:minmax(300px,1fr) minmax(300px,1fr);gap:22px;align-items:start}.single-form{display:grid;gap:10px}.single-form .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.single-prev{position:sticky;top:12px}.single-prev canvas{width:100%;height:auto;display:block;border-radius:10px;border:1px solid #dce5ef;background:#e9f4f3}@media(max-width:820px){.single-grid{grid-template-columns:1fr}.single-prev{position:static}}
-.tpl-pickbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:14px;padding:12px 14px;border:1px solid #cddfdd;border-radius:10px;background:#f4fbfa}.tpl-pickbar span{font-size:13px;color:#295350}.tpl-pickbar .btn{margin-left:auto}
+.tpl-pickbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:12px;padding:10px 12px;border:1px solid #cddfdd;border-radius:10px;background:#f4fbfa}.tpl-pickbar span{font-size:13px;color:#295350}.tpl-pickbar .btn{margin-left:auto}.tpl-pickbar .tpl-actions{display:flex;gap:8px;flex-wrap:wrap;margin-left:auto}.tpl-pickbar .tpl-actions .btn{margin-left:0}.tpl-gallery-wrap{margin-top:12px}.tpl-gallery-wrap summary{display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;color:var(--ac-d);font-size:13px;font-weight:700;list-style:none}.tpl-gallery-wrap summary::-webkit-details-marker{display:none}.tpl-gallery-wrap summary::after{content:"보기";padding:2px 8px;border:1px solid var(--ac-line);border-radius:999px;color:#617286;font-size:11px;font-weight:600}.tpl-gallery-wrap[open] summary{margin-bottom:10px}.tpl-gallery-wrap[open] summary::after{content:"접기"}.tpl-gallery-wrap .tpl-gallery{max-height:520px;overflow:auto;padding:2px}.single-grid{gap:16px}.single-form{gap:8px}.single-form .mini{margin-bottom:0}.single-form .single-main{display:grid;grid-template-columns:1fr 1fr;gap:8px}.single-form .single-main .wide{grid-column:1/-1}.single-prev{max-width:480px}.single-prev canvas{max-height:540px;object-fit:contain}.single-status{min-height:18px;margin:0!important;color:#617286}.single-status.error{color:#b42318;font-weight:700}@media(max-width:820px){.single-form .single-main{grid-template-columns:1fr}.single-form .single-main .wide{grid-column:auto}.single-prev{max-width:none}}
 [hidden]{display:none!important}
 .ico-list::before{content:"";display:inline-block;width:1.05em;height:1.05em;margin-right:.4em;background:currentColor;-webkit-mask:url("data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222.6%22%20stroke-linecap%3D%22round%22%3E%3Cpath%20d%3D%22M4%206.5h16M4%2012h16M4%2017.5h16%22%2F%3E%3C%2Fsvg%3E") center/contain no-repeat;mask:url("data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222.6%22%20stroke-linecap%3D%22round%22%3E%3Cpath%20d%3D%22M4%206.5h16M4%2012h16M4%2017.5h16%22%2F%3E%3C%2Fsvg%3E") center/contain no-repeat}
 </style>
@@ -133,6 +133,7 @@ html[data-office-theme="ktop"] .choice:has(input:checked){box-shadow:0 0 0 3px r
 .rq-list li span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .rq-list li small{color:#7a8a9b;white-space:nowrap}
 .rq-list li button{border:0;background:none;color:#8a98a8;font-size:18px;line-height:1;cursor:pointer;padding:0 4px}
+.rq-list li.rq-file-warning{background:#fff8e8;border-color:#ead29b}.rq-list li.rq-file-warning small{color:#9a6700;font-weight:700}
 .rq-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding-top:26px;border-top:1px solid var(--ac-line)}
 .rq-actions .btn{min-height:44px;padding:8px 20px;font-size:14px}
 .rq-msg{font-size:12.5px;color:var(--ac-d)}
@@ -188,6 +189,7 @@ html[data-office-theme="ktop"] .hitop-only{display:none!important}
 @media(max-width:640px){.mtab{flex:1 1 calc(50% - 6px);font-size:13.5px}.mframe{border-radius:16px}}
 </style>
 <link rel="stylesheet" href="list-style.css?v=20261119-list-style1">
+<style id="cs-workflow-20261121">#stepSingle>.tpl-actions{display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 16px}#stepSingle>.tpl-actions .btn{border-radius:6px}#soSave:disabled{opacity:.55;cursor:not-allowed}#mTabs{border-radius:9px;padding:4px;gap:4px;margin-bottom:18px}#mTabs .mtab{min-height:36px;border-radius:6px}#mTabs .mtab:focus-visible{outline:2px solid var(--ac);outline-offset:2px}</style>
 </head>
 <body class="lock">
 <div class="page">
@@ -198,14 +200,14 @@ html[data-office-theme="ktop"] .hitop-only{display:none!important}
 
   <p class="eyebrow">CONTENT STUDIO</p>
   <h1>컨텐츠 제작실</h1>
-  <p class="page-intro">글, 이미지, 쇼츠 영상을 한곳에서 만듭니다. 위 탭을 눌러 필요한 작업으로 이동하세요. 매물관리에서 매물을 체크해 "컨텐츠 보내기"를 누르면 이미지 만들기로 바로 이어집니다.</p>
+  <p class="page-intro">필요한 작업을 골라 시작하세요. 매물관리에서 매물을 체크하고 ‘컨텐츠 보내기’를 누르면 해당 매물로 이미지 편집기가 열립니다.</p>
 
   <div class="mtabs" id="mTabs" role="tablist" aria-label="제작 메뉴">
-    <button type="button" class="mtab" role="tab" data-tab="request">① 제작 의뢰</button>
-    <button type="button" class="mtab" role="tab" data-tab="image">② 이미지 만들기</button>
-    <button type="button" class="mtab hitop-only" role="tab" data-tab="ai">③ AI 글쓰기</button>
-    <button type="button" class="mtab" role="tab" data-tab="shorts">④ 쇼츠 만들기</button>
-    <button type="button" class="mtab hitop-only" role="tab" data-tab="kanban">⑤ 칸반보드</button>
+    <button type="button" class="mtab" role="tab" data-tab="request">제작 의뢰</button>
+    <button type="button" class="mtab hitop-only" role="tab" data-tab="ai">AI 글쓰기</button>
+    <button type="button" class="mtab" role="tab" data-tab="image">이미지</button>
+    <button type="button" class="mtab" role="tab" data-tab="shorts">쇼츠</button>
+    <button type="button" class="mtab hitop-only" role="tab" data-tab="kanban">제작 현황</button>
   </div>
 
   <section class="card" id="loginNeed" hidden>
@@ -217,8 +219,9 @@ html[data-office-theme="ktop"] .hitop-only{display:none!important}
   <div class="mpane" id="pane-request" data-pane="request">
   <section class="card" id="stepRequest">
     <h2>콘텐츠 제작 의뢰</h2>
-    <p class="rq-lead">무엇을 만들지 고르고 적어 주세요. 다 쓰면 "의뢰서 복사"를 눌러 인스팅크트에 붙여 넣으면 됩니다.</p>
+    <p class="rq-lead">무엇을 만들지 고르고 적어 주세요. 의뢰서를 복사하거나 AI 글쓰기에서 초안을 이어서 만들 수 있습니다. 입력 내용은 이 사무소에만 임시저장됩니다.</p>
     <div class="rq-from" id="rqFrom" hidden>매물관리에서 보낸 매물이 있습니다. 아래 "이미지 만들기"에서 이어서 작업하세요.</div>
+    <div class="rq-from" id="rqLegacyNotice" hidden>이 브라우저에 사무소 구분 없는 이전 임시저장 내용이 있습니다. 어느 사무소에서 작성했는지 확인할 수 없으므로 자동으로 불러오지 않았습니다. <button type="button" class="btn link" id="rqImportLegacy">현재 사무소로 가져오기</button></div>
 
     <div class="rq-block">
       <div class="rq-label">유형</div>
@@ -249,24 +252,26 @@ html[data-office-theme="ktop"] .hitop-only{display:none!important}
 
     <div class="rq-block">
       <div class="rq-label">파일 첨부</div>
-      <p class="rq-hint">사진이나 문서를 고르면 파일 이름이 의뢰서에 적힙니다. 파일은 인스팅크트에 직접 올려 주세요.</p>
+      <p class="rq-hint">사진이나 문서를 고르면 파일 이름이 의뢰서에 적힙니다. 파일은 인스팅크트나 AI 글쓰기에서 직접 다시 올려 주세요. 브라우저 보안상 새로 열었을 때 파일 자체는 복원되지 않으며, 이전 파일명은 다시 선택이 필요하다고 표시됩니다.</p>
       <div class="rq-files"><label class="btn" style="cursor:pointer;min-height:42px;padding:6px 18px">파일 고르기<input type="file" id="rqFile" multiple hidden></label><span class="note" id="rqFileCount" style="margin:0">선택한 파일 없음</span></div>
       <ul class="rq-list" id="rqList"></ul>
     </div>
 
     <div class="rq-actions">
       <button type="button" class="btn primary" id="rqCopy">의뢰서 복사</button>
+      <button type="button" class="btn" id="rqToAi">AI 글쓰기에서 이어서</button>
       <button type="button" class="btn" id="rqReset">처음부터 다시</button>
+      <span class="note" id="rqAiChannelHint" style="margin:0">AI 글쓰기는 한 번에 한 채널만 지원하여, 선택한 첫 채널로 채웁니다.</span>
       <span class="rq-msg" id="rqMsg" role="status"></span>
     </div>
   </section>
 
   <section class="card flow-wrap" id="stepFlow">
     <h2>작업 순서</h2>
-    <p class="rq-lead" style="margin-top:-4px">위에서 아래로 1단계부터 차례대로 하면 됩니다.</p>
+    <p class="rq-lead" style="margin-top:-4px">외부 도구를 쓸 때의 권장 순서입니다. 필요한 작업만 진행하세요.</p>
     <ol class="flow" id="flowList">
-      <li data-st="1"><span class="no">1</span><span class="who">인스팅크트</span><b>내용 원본 + 채널별 작업지시서</b><p>의뢰서를 붙여 넣어 글 원본과 채널별 지시서를 받습니다. ③ AI 글쓰기 탭에서도 글 초안을 만들 수 있어요.</p></li>
-      <li data-st="2"><span class="no">2</span><span class="who">ChatGPT</span><b>헤더 이미지</b><p>지시서대로 대표 이미지를 만듭니다. ② 이미지 만들기 탭도 쓸 수 있어요.</p><button type="button" class="go-tab" data-go="image">이미지 만들기 열기 →</button></li>
+      <li data-st="1"><span class="no">1</span><span class="who">인스팅크트</span><b>내용 원본 + 채널별 작업지시서</b><p>의뢰서를 붙여 넣어 글 원본과 채널별 지시서를 받습니다. <span class="hitop-only">AI 글쓰기에서도 초안을 만들 수 있어요.</span></p></li>
+      <li data-st="2"><span class="no">2</span><span class="who">ChatGPT</span><b>헤더 이미지</b><p>지시서대로 대표 이미지를 만듭니다. 이미지 탭에서도 직접 만들 수 있어요.</p><button type="button" class="go-tab" data-go="image">이미지 만들기 열기 →</button></li>
       <li data-st="3"><span class="no">3</span><span class="who">인스팅크트</span><b>쇼츠 · 동영상</b><p>유튜브쇼츠·인스타동영상을 고른 경우에 만듭니다.</p><button type="button" class="go-tab" data-go="shorts">쇼츠 만들기 열기 →</button></li>
       <li data-st="4"><span class="no">4</span><span class="who">Cue</span><b>짧은 문구 다듬기</b><p>제목, 소개글 같은 짧은 문구를 다듬습니다.</p></li>
       <li data-st="5"><span class="no">5</span><span class="who">업무일지</span><b>업로드 후 기록</b><p>올린 뒤 업무일지에 기록하면 끝입니다.</p></li>
@@ -279,28 +284,35 @@ html[data-office-theme="ktop"] .hitop-only{display:none!important}
 
   <section class="card" id="stepTpl">
     <h2>템플릿 고르기</h2>
-    <p class="note" style="margin:0 0 4px">아래는 가상의 샘플 매물로 만든 한 장 이미지 미리보기입니다. 모양을 보고 고르면, 매물관리에서 보낸 매물이나 직접 입력한 내용이 이 템플릿으로 만들어집니다.</p>
-    <div class="tpl-gallery big" id="tplStudio"><div class="empty">템플릿을 그리는 중입니다.</div></div>
-    <div class="tpl-pickbar"><span>선택한 템플릿: <b id="tplPicked"></b></span><button type="button" class="btn primary" id="btnTplGo">이 템플릿으로 만들기 → 매물관리에서 매물 고르기 ↗</button></div>
+    <p class="note" style="margin:0">샘플은 이 갤러리에서만 보여 드립니다. 템플릿을 고른 뒤에는 매물을 불러오거나 빈 화면에서 직접 입력해 주세요.</p>
+    <details class="tpl-gallery-wrap">
+      <summary>샘플로 템플릿 모양 보기</summary>
+      <div class="tpl-gallery big" id="tplStudio"><div class="empty">템플릿을 그리는 중입니다.</div></div>
+    </details>
+    <div class="tpl-pickbar"><span>선택한 템플릿: <b id="tplPicked"></b></span></div>
     <p class="note">매물관리 목록에서 매물 하나를 체크하고 "🎬 컨텐츠 보내기"를 누르면 이 제작실이 그 매물로 열리고, 방금 고른 템플릿이 그대로 적용됩니다.</p>
   </section>
 
   <section class="card" id="stepSingle">
     <h2>한 장 이미지 만들기 <span class="note" style="font-weight:500">(내용을 입력하면 오른쪽 미리보기가 바로 바뀝니다)</span></h2>
+    <div class="tpl-actions"><button type="button" class="btn" id="btnTplBlank">빈 화면에서 직접 입력</button><button type="button" class="btn primary" id="btnTplGo">매물 불러오기 ↗</button></div>
     <div class="single-grid">
       <div class="single-form">
         <div class="two">
           <label class="mini">템플릿<select id="soTpl"></select></label>
           <label class="mini">크기<select id="soSize"><option value="square">정사각 1080×1080 (블로그 썸네일)</option><option value="tall">세로 1080×1350 (인스타·스레드)</option><option value="wide">가로 1280×720 (유튜브)</option></select></label>
         </div>
-        <label class="mini">작은 라벨 (왼쪽 위)<input type="text" id="soChip" autocomplete="off"></label>
-        <label class="mini">큰 제목<textarea rows="2" id="soHead" placeholder="줄바꿈으로 제목 배치를 조절하세요"></textarea></label>
-        <label class="mini">강조 줄 (가격 등, 한 줄에 하나)<textarea rows="3" id="soPrice"></textarea></label>
-        <label class="mini">위치 줄<input type="text" id="soSub" autocomplete="off"></label>
-        <label class="mini">전용면적 (평·㎡)<input type="text" id="soMeta" autocomplete="off"></label>
-        <label class="mini">하단 띠 문구 (비우면 기본 문구)<input type="text" id="soSlogan" autocomplete="off"></label>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><label class="btn" style="cursor:pointer">사진 넣기<input type="file" id="soPhoto" accept="image/*" hidden></label><button type="button" class="btn" id="soPhotoClear">사진 빼기</button><button type="button" class="btn primary" id="soSave">이미지 저장 (PNG)</button></div>
-        <p class="note" style="margin:0">사진은 클래식·포토 포스터·블루 포스터에 적용됩니다. 제목은 줄바꿈할 수 있습니다. 건물명·호수는 적지 마세요(공개됩니다). 금액은 "보증금 3,000만"처럼 그대로 적으면 됩니다.</p>
+        <div class="single-main">
+          <label class="mini">작은 라벨 (왼쪽 위)<input type="text" id="soChip" autocomplete="off"></label>
+          <label class="mini">위치 줄<input type="text" id="soSub" autocomplete="off"></label>
+          <label class="mini wide">큰 제목<textarea rows="2" id="soHead" placeholder="직접 입력한 내용만 저장됩니다. 줄바꿈으로 배치를 조절하세요."></textarea></label>
+          <label class="mini wide">강조 줄 (가격 등, 한 줄에 하나)<textarea rows="2" id="soPrice"></textarea></label>
+          <label class="mini">전용면적 (평·㎡)<input type="text" id="soMeta" autocomplete="off"></label>
+          <label class="mini">하단 띠 문구 (비우면 기본 문구)<input type="text" id="soSlogan" autocomplete="off"></label>
+        </div>
+        <div id="soPhotoTools" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><label class="btn" style="cursor:pointer">사진 넣기<input type="file" id="soPhoto" accept="image/*" hidden></label><button type="button" class="btn" id="soPhotoClear">사진 빼기</button></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><button type="button" class="btn primary" id="soSave">이미지 저장 (PNG)</button><span class="note single-status" id="soStatus" role="status"></span><span class="note" id="soPhotoDraftMsg"></span></div>
+        <p class="note" style="margin:0">사진이 쓰이는 템플릿에서만 사진 도구가 보입니다. 제목은 줄바꿈할 수 있습니다. 건물명·호수는 적지 마세요(공개됩니다). 금액은 "보증금 3,000만"처럼 그대로 적으면 됩니다.</p>
       </div>
       <div class="single-prev"><canvas id="soCanvas" width="1080" height="1080"></canvas></div>
     </div>
@@ -345,7 +357,7 @@ html[data-office-theme="ktop"] .hitop-only{display:none!important}
     <p class="note" id="tplDesc" hidden></p>
     <p class="note" style="margin-top:10px">매물 주소가 와동동·운정 일대면 상권 설명이 자동으로 켜집니다. 다른 지역 매물에 운정역 상권 설명을 넣으면 오해를 줄 수 있어 기본은 꺼짐입니다.</p>
     <div id="photoBox" hidden><div class="note" style="margin-top:12px">이미지 배경 사진 선택 (사진이 없으면 색 배경으로 만들어집니다)</div><div class="photos" id="photos"></div>
-      <div style="margin-top:8px"><label class="btn" style="cursor:pointer">내 사진 올리기<input type="file" id="ownPhoto" accept="image/*" hidden></label></div></div>
+      <div style="margin-top:8px"><label class="btn" style="cursor:pointer">내 사진 올리기<input type="file" id="ownPhoto" accept="image/*" hidden></label><span class="note" id="photoDraftMsg" style="margin-left:8px"></span></div></div>
     <p class="note">소유주 이름·연락처, 비공개 주소는 사용하지 않습니다. 공개 글과 이미지에는 건물명·호수·번지 없이 "동 단위 위치와 층수"만 들어갑니다. 건물명이나 호수를 직접 적으면 공개되니 주의하세요. 옵션을 바꾸면 글과 이미지가 새로 만들어지며, 직접 고친 글은 사라집니다.</p>
   </section>
 
@@ -1081,11 +1093,46 @@ function makeZip(files) {
 function blobBytes(blob) { return new Promise(function (res) { var r = new FileReader(); r.onload = function () { res(new Uint8Array(r.result)); }; r.readAsArrayBuffer(blob); }); }
 function canvasBlob(c) { return new Promise(function (res) { c.toBlob(res, 'image/png'); }); }
 
-S.parts = []; S.partCanvases = []; S.dirty = {}; S.tpl = 'classic'; S.ov = {}; S.slogan = null;
+S.parts = []; S.partCanvases = []; S.dirty = {}; S.tpl = 'classic'; S.ov = {}; S.slogan = null; S.singleSource = 'blank'; S.singleTouched = false; S.soBg = null;
 (function () { var sel = document.getElementById('oTpl'), saved = null; try { saved = localStorage.getItem('cs_tpl'); } catch (e) {} Object.keys(TEMPLATES).forEach(function (k) { var op = document.createElement('option'); op.value = k; op.textContent = TEMPLATES[k].label; sel.appendChild(op); }); var qt = new URLSearchParams(location.search).get('tpl'); if (qt && TEMPLATES[qt]) saved = qt; if (saved && TEMPLATES[saved]) { sel.value = saved; S.tpl = saved; } document.getElementById('tplDesc').textContent = TEMPLATES[S.tpl].desc; })();
 var CHANNELS = [['blog', '블로그'], ['youtube', '유튜브'], ['threads', '스레드'], ['insta', '인스타그램']];
 function opts() { return { tpl: $('oTpl').value, title: scrubPublic($('oTitle').value.trim()), tone: $('oTone').value, point: scrubPublic($('oPoint').value.trim()), area: $('oArea').value, price: $('oPrice').checked, addr: false }; }
 function pfile(i, p) { return pfileName(i, p); }
+
+/* 이미지 제작 초안: 사무소 + 매물(또는 직접 입력) 단위로만 브라우저에 보관 */
+var IMAGE_DRAFT_PREFIX = 'cs_image_draft_v1:';
+var imageDraftTimer = null; window.addEventListener('pagehide', function() { if (imageDraftTimer) { clearTimeout(imageDraftTimer); imageDraftTimer=null; saveImageDraft(); } });
+function imageDraftScope() { return O.key + ':' + (S.f && S.f.id && S.f.id !== 'manual' ? 'listing:' + S.f.id : 'manual'); }
+function imageDraftKey() { return IMAGE_DRAFT_PREFIX + imageDraftScope(); }
+function imageDraftGet() { try { return JSON.parse(localStorage.getItem(imageDraftKey()) || 'null'); } catch (e) { return null; } }
+function imageDraftPut(d) { try { localStorage.setItem(imageDraftKey(), JSON.stringify(d)); } catch (e) {} }
+function imageDraftValue(id) { var el = $(id); return el ? el.value : ''; }
+function imageDraftManual() { var out = {}; ['mType','mDeal','mPlace','mTitle','mSale','mDep','mRent','mPy','mFloor','mBiz'].forEach(function (id) { out[id] = imageDraftValue(id); }); return out; }
+function saveImageDraft() {
+  var manual = imageDraftManual(), hasManual = Object.keys(manual).some(function (k) { return manual[k] !== ''; });
+  if (!S.f && !hasManual && !S.singleTouched) return;
+  if (S.out) readFields();
+  var parts = (S.parts || []).map(function (p) { return { key:p.key, title:p.title, tag:p.tag, lines:p.lines ? p.lines.slice() : null, note:p.note, ov:p.ov || null }; });
+  imageDraftPut({ version:1, savedAt:Date.now(), options:{ title:imageDraftValue('oTitle'), tpl:imageDraftValue('oTpl'), tone:imageDraftValue('oTone'), point:imageDraftValue('oPoint'), area:imageDraftValue('oArea'), price:!!($('oPrice') && $('oPrice').checked), slogan:imageDraftValue('gSlogan') }, parts:parts, out:S.out || null, manual:manual, photo:S.draftPhoto || null, single:{ tpl:imageDraftValue('soTpl'), size:imageDraftValue('soSize'), chip:imageDraftValue('soChip'), head:imageDraftValue('soHead'), price:imageDraftValue('soPrice'), sub:imageDraftValue('soSub'), meta:imageDraftValue('soMeta'), slogan:imageDraftValue('soSlogan'), photo:S.soDraftPhoto || null } });
+}
+function scheduleImageDraft() { clearTimeout(imageDraftTimer); imageDraftTimer = setTimeout(function(){ imageDraftTimer=null; saveImageDraft(); }, 260); }
+function applyImageDraftOptions(d) {
+  if (!d || !d.options) return;
+  var o = d.options; if (o.tpl && TEMPLATES[o.tpl]) $('oTpl').value = o.tpl; if (o.title != null) $('oTitle').value = o.title; if (o.tone) $('oTone').value = o.tone; if (o.point != null) $('oPoint').value = o.point; if (o.area != null) $('oArea').value = o.area; if ($('oPrice')) $('oPrice').checked = o.price !== false; if (o.slogan != null) $('gSlogan').value = o.slogan;
+}
+function applyImageDraftContent(d) {
+  if (!d) return;
+  var byKey = {}; (d.parts || []).forEach(function (p) { byKey[p.key] = p; });
+  (S.parts || []).forEach(function (p) { var q = byKey[p.key]; if (!q) return; if (q.title != null) p.title = q.title; if (q.tag != null) p.tag = q.tag; if (q.lines) p.lines = q.lines.slice(); if (q.note != null) p.note = q.note; if (q.ov) p.ov = q.ov; });
+  if (d.out) { S.out = d.out; Object.keys(d.out).forEach(function (ch) { Object.keys(d.out[ch] || {}).forEach(function (k) { var el = $('f-' + ch + '-' + k); if (el) { el.value = d.out[ch][k]; S.dirty[ch + '-' + k] = true; } }); }); }
+  if (d.single) { var si = d.single; ['tpl','size','chip','head','price','sub','meta','slogan'].forEach(function (k) { var el = $('so' + k.charAt(0).toUpperCase() + k.slice(1)); if (el && si[k] != null) el.value = si[k]; }); S.singleSource = S.f ? 'listing' : 'blank'; S.singleTouched = !!$('soHead').value.trim(); if (si.tpl && TEMPLATES[si.tpl]) { $('oTpl').value = si.tpl; S.tpl = si.tpl; markTpl(); } S.soDraftPhoto = si.photo || null; S.soBg = S.soDraftPhoto ? null : S.bg; if (S.soDraftPhoto && S.soDraftPhoto.kind === 'custom') { var sm = $('soPhotoDraftMsg'); if (sm) sm.textContent = '이전 내 사진은 보안상 다시 첨부해 주세요.'; } }
+  if (d.options && d.options.slogan != null) { S.slogan = d.options.slogan; $('gSlogan').value = d.options.slogan; }
+  if (S.f) { paintPartList(); drawAllParts(); drawWide(); counters(); checkPublic(); }
+  renderSingle();
+}
+function restoreImageManualDraft() { var d = imageDraftGet(); if (!d) return; Object.keys(d.manual || {}).forEach(function (id) { var el = $(id); if (el) el.value = d.manual[id]; }); applyImageDraftOptions(d); if (d.single) applyImageDraftContent({ single:d.single }); }
+document.addEventListener('input', function (e) { if (e.target.closest && e.target.closest('#pane-image')) scheduleImageDraft(); });
+document.addEventListener('change', function (e) { if (e.target.closest && e.target.closest('#pane-image')) scheduleImageDraft(); });
 
 /* 파트 이미지 */
 function mkParts() { S.parts = buildParts(S.f, opts()); S.partCanvases = S.parts.map(function () { return mk(1080, 1350); }); }
@@ -1116,36 +1163,50 @@ function sampleFacts() {
   var f = buildFacts({ id: 'sample', type: 'shop', title: '운정 신도시 1층 상가', address: '경기 파주시 와동동', dealType: '월세', deposit: '3,000만', monthlyRent: '250만', exclusiveAreaPy: '30.7', exclusiveAreaM2: '101.4', floorInfo: '1층', shop_recommendBiz: '카페, 미용실, 학원' });
   f.pubTitle = '와동동 상가 월세'; f.photos = []; return f;
 }
+function templateNeedsPhoto(k) { return ['classic', 'hook', 'bold'].indexOf(k || $('oTpl').value) >= 0; }
+function applyPhotoControls() {
+  var use = templateNeedsPhoto($('oTpl').value), single = $('soPhotoTools'), card = $('photoBox');
+  if (single) single.hidden = !use;
+  if (card) card.hidden = !use || !S.f;
+}
 function markTpl() {
   var k = $('oTpl').value; var stp = $('soTpl'); if (stp) { stp.value = k; scheduleSingle(); } document.querySelectorAll('.tpl').forEach(function (b) { b.classList.toggle('on', b.dataset.tpl === k); });
-  var p = $('tplPicked'); if (p) p.textContent = (TEMPLATES[k] || {}).label || '';
+  var p = $('tplPicked'); if (p) p.textContent = (TEMPLATES[k] || {}).label || ''; applyPhotoControls();
 }
-var soT = null, SO_DEF = { chip: '월세 · 상가', head: '운정역 대로변\n1층 상가', price: '보증금 3,000만\n월세 250만', sub: '파주 와동동', meta: '전용 30.7평(101.4㎡)' };
+var soT = null, SO_DEF = { chip: '', head: '', price: '', sub: '', meta: '' };
+function blankFacts() { var f = buildFacts({ id: 'manual-image', type: '', title: '', address: '', dealType: '' }); f.typeLabel = ''; f.pubTitle = ''; f.pubDefault = ''; f.price = ''; f.area = ''; f.areaLabel = ''; return f; }
+function clearSingle() {
+  ['soChip', 'soHead', 'soPrice', 'soSub', 'soMeta', 'soSlogan'].forEach(function (id) { $(id).value = ''; });
+  $('soPhoto').value = ''; S.soBg = null; S.soDraftPhoto = null; $('soPhotoDraftMsg').textContent = ''; S.singleSource = 'blank'; S.singleTouched = false; $('soStatus').textContent = ''; $('soStatus').className = 'note single-status'; renderSingle();
+}
+function singleCanSave() { return !!$('soHead').value.trim() && (S.singleSource === 'listing' || S.singleTouched); }
+function singleMessage(msg, bad) { var el = $('soStatus'); el.textContent = msg || ''; el.className = 'note single-status' + (bad ? ' error' : ''); }
 function scheduleSingle() { clearTimeout(soT); soT = setTimeout(renderSingle, 180); }
 async function renderSingle() {
-  var c = $('soCanvas'); if (!c) return;
+  var c = $('soCanvas'); if (!c) return; $('soSave').disabled = !singleCanSave(); if (!$('soSave').disabled && $('soStatus').textContent === '제목을 입력하거나 매물을 불러와 주세요.') singleMessage(''); if ($('soSave').disabled) singleMessage('제목을 입력하거나 매물을 불러와 주세요.');
   try { await document.fonts.load('800 40px Pretendard'); await document.fonts.load('500 20px Pretendard'); } catch (e) {}
   var kind = $('soSize').value, d = { square: [1080, 1080], tall: [1080, 1350], wide: [1280, 720] }[kind] || [1080, 1080], g = function (id) { return $(id).value.trim(); };
+  if(!singleCanSave()){c.width=d[0];c.height=d[1];var empty=c.getContext('2d');empty.fillStyle='#f6f8fb';empty.fillRect(0,0,c.width,c.height);empty.fillStyle='#52667b';empty.textAlign='center';empty.font='500 30px sans-serif';empty.fillText('제목을 입력하면 미리보기가 표시됩니다',c.width/2,c.height/2);return false;}
   var v = { chip: g('soChip'), head: g('soHead'), price: $('soPrice').value.split('\n').map(function (s) { return s.trim(); }).filter(Boolean), sub: g('soSub'), meta: g('soMeta') };
   var pOv = S.ov, pBg = S.bg, pSl = S.slogan, pTpl = S.tpl, sl = g('soSlogan');
   c.width = d[0]; c.height = d[1]; S.ov = v; S.bg = S.soBg || null; S.slogan = sl || null; S.tpl = $('oTpl').value;
-  try { var f = sampleFacts(); f.pubTitle = v.head; drawCover(c, f, opts(), kind); }
-  catch (e) { console.error(e); } finally { S.ov = pOv; S.bg = pBg; S.slogan = pSl; S.tpl = pTpl; }
+  try { var f = S.singleSource === 'listing' && S.f ? Object.assign({}, S.f) : blankFacts(); f.pubTitle = v.head; drawCover(c, f, opts(), kind); }
+  catch (e) { c.getContext('2d').clearRect(0, 0, c.width, c.height); console.error(e); } finally { S.ov = pOv; S.bg = pBg; S.slogan = pSl; S.tpl = pTpl; }
 }
 function fillSingle(f) {
-  var o = opts(); $('soChip').value = [f.deal || '매물', f.typeLabel].join(' · '); $('soHead').value = coverTitle(f); $('soPrice').value = coverPrices(f, o).join('\n');
-  $('soSub').value = placeOf(f, { addr: false }); $('soMeta').value = coverMeta(f); S.soBg = S.bg || null; renderSingle();
+  var o = opts(); S.singleSource = 'listing'; S.singleTouched = true; $('soChip').value = [f.deal || '매물', f.typeLabel].join(' · '); $('soHead').value = coverTitle(f); $('soPrice').value = coverPrices(f, o).join('\n');
+  $('soSub').value = placeOf(f, { addr: false }); $('soMeta').value = coverMeta(f); S.soBg = S.bg || null; singleMessage('매물 내용으로 만든 이미지입니다.'); renderSingle();
 }
 function initSingle() {
   var st = $('soTpl'); Object.keys(TEMPLATES).forEach(function (k) { var op = document.createElement('option'); op.value = k; op.textContent = TEMPLATES[k].label; st.appendChild(op); });
-  $('soChip').value = SO_DEF.chip; $('soHead').value = SO_DEF.head; $('soPrice').value = SO_DEF.price; $('soSub').value = SO_DEF.sub; $('soMeta').value = SO_DEF.meta; st.value = $('oTpl').value;
-  ['soChip', 'soHead', 'soPrice', 'soSub', 'soMeta', 'soSlogan'].forEach(function (id) { $(id).addEventListener('input', scheduleSingle); });
+  st.value = $('oTpl').value;
+  ['soChip', 'soHead', 'soPrice', 'soSub', 'soMeta', 'soSlogan'].forEach(function (id) { $(id).addEventListener('input', function () { S.singleTouched = true; singleMessage(''); scheduleSingle(); }); });
   $('soSize').addEventListener('change', renderSingle);
   st.addEventListener('change', function () { var sel = $('oTpl'), k = st.value; if (sel.value !== k) { sel.value = k; if (S.f) sel.dispatchEvent(new Event('change', { bubbles: true })); else { S.tpl = k; try { localStorage.setItem('cs_tpl', k); } catch (e) {} $('tplDesc').textContent = (TEMPLATES[k] || {}).desc || ''; } } markTpl(); });
-  $('soPhoto').addEventListener('change', function () { var file = this.files && this.files[0]; if (!file) return; loadImage(URL.createObjectURL(file)).then(function (im) { S.soBg = im; renderSingle(); }); });
-  $('soPhotoClear').addEventListener('click', function () { S.soBg = null; $('soPhoto').value = ''; renderSingle(); });
-  $('soSave').addEventListener('click', function () { var kind = $('soSize').value; $('soCanvas').toBlob(function (bl) { download(bl, O.key + '_image_' + kind + '.png'); }, 'image/png'); });
-  renderSingle();
+  $('soPhoto').addEventListener('change', function () { var file = this.files && this.files[0]; if (!file) return; S.singleTouched = true; loadImage(URL.createObjectURL(file)).then(function (im) { S.soBg = im; S.soDraftPhoto = { kind:'custom', name:file.name || '내 사진' }; $('soPhotoDraftMsg').textContent = '이 사진은 새로고침 후 다시 첨부해 주세요.'; renderSingle(); scheduleImageDraft(); }); });
+  $('soPhotoClear').addEventListener('click', function () { S.soBg = null; S.soDraftPhoto = null; $('soPhoto').value = ''; $('soPhotoDraftMsg').textContent = ''; renderSingle(); scheduleImageDraft(); });
+  $('soSave').addEventListener('click', async function () { if (!singleCanSave()) { singleMessage('샘플은 저장할 수 없습니다. 제목을 직접 입력하거나 매물을 불러와 주세요.', true); return; } await renderSingle(); var kind = $('soSize').value; $('soCanvas').toBlob(function (bl) { if (bl) { download(bl, O.key + '_image_' + kind + '.png'); singleMessage('PNG를 저장했습니다.'); } }, 'image/png'); });
+  clearSingle(); applyPhotoControls();
 }
 async function renderStudioGallery() {
   try { await document.fonts.load('800 40px Pretendard'); await document.fonts.load('500 20px Pretendard'); } catch (e) {}
@@ -1272,17 +1333,21 @@ async function regenerate() {
   if (!S.f) return;
   S.dirty = {}; S.slogan = null; $('gSlogan').value = O.pal.slogan; S.tpl = opts().tpl; try { localStorage.setItem('cs_tpl', S.tpl); } catch (e) {} $('tplDesc').textContent = (TEMPLATES[S.tpl] || {}).desc || ''; S.f.pubTitle = opts().title || S.f.pubDefault;
   mkParts(); try { await document.fonts.load('800 40px Pretendard'); await document.fonts.load('500 20px Pretendard'); } catch (e) {}
-  paintPartList(); drawAllParts(); drawWide(); refreshTexts(true);
+  paintPartList(); drawAllParts(); drawWide(); refreshTexts(true); markTpl(); applyPhotoControls();
 }
 async function pickItem(it) {
-  S.sel = it; S.f = buildFacts(it); var gd = $('goDetail'); gd.href = REALTY_BASE + 'detail.html?id=' + encodeURIComponent(it.id) + '&office=' + officeId; gd.hidden = false; $('oTitle').value = S.f.pubDefault; S.bg = null;
-  $('oArea').value = /와동|운정/.test((S.f.addr || '') + ' ' + (S.f.title || '')) ? 'unjeong' : '';
+  if (imageDraftTimer) {clearTimeout(imageDraftTimer); imageDraftTimer=null; saveImageDraft();} S.soBg=null; S.soDraftPhoto=null; $('soPhotoDraftMsg').textContent=''; $('photoDraftMsg').textContent=''; S.sel = it; S.f = buildFacts(it); if(it.id){var pageUrl=new URL(location.href);if(it.id==='manual')pageUrl.searchParams.delete('id');else pageUrl.searchParams.set('id',it.id);history.replaceState(null,'',pageUrl.toString());} var draft = imageDraftGet(); var gd = $('goDetail'); gd.href = REALTY_BASE + 'detail.html?id=' + encodeURIComponent(it.id) + '&office=' + officeId; gd.hidden = false; $('oTitle').value = S.f.pubDefault; S.bg = null; S.draftPhoto = null;
+  $('oArea').value = /와동|운정/.test((S.f.addr || '') + ' ' + (S.f.title || '')) ? 'unjeong' : ''; applyImageDraftOptions(draft); if (!draft || !draft.options || draft.options.title == null) $('oTitle').value = S.f.pubDefault;
   document.querySelectorAll('.pick-row').forEach(function (r) { r.classList.toggle('on', r.dataset.id === String(it.id)); });
   ['stepOpts', 'stepParts', 'stepOut', 'stepAll'].forEach(function (id) { $(id).hidden = false; });
   var ph = $('photos'); ph.innerHTML = ''; $('photoBox').hidden = false;
-  S.f.photos.slice(0, 8).forEach(function (u, i) { var im = document.createElement('img'); im.src = u; im.crossOrigin = 'anonymous'; im.alt = '매물 사진 ' + (i + 1); im.onclick = async function () { ph.querySelectorAll('img').forEach(function (x) { x.classList.remove('on'); }); im.classList.add('on'); S.bg = await loadImage(u); drawAllParts(); drawWide(); }; ph.appendChild(im); });
-  if (S.f.photos[0]) { S.bg = await loadImage(S.f.photos[0]); var first = ph.querySelector('img'); if (first) first.classList.add('on'); }
-  buildPanels(); await regenerate(); try { fillSingle(S.f); } catch (e) {}
+  var savedPhoto = draft && draft.photo, selectedUrl = savedPhoto && savedPhoto.kind === 'listing' ? savedPhoto.url : '';
+  async function useListingPhoto(u, im) { ph.querySelectorAll('img').forEach(function (x) { x.classList.remove('on'); }); if (im) im.classList.add('on'); S.bg = await loadImage(u); S.draftPhoto = { kind:'listing', url:u }; var pm = $('photoDraftMsg'); if (pm) pm.textContent = ''; drawAllParts(); drawWide(); scheduleImageDraft(); }
+  S.f.photos.slice(0, 8).forEach(function (u, i) { var im = document.createElement('img'); im.src = u; im.dataset.url = u; im.crossOrigin = 'anonymous'; im.alt = '매물 사진 ' + (i + 1); im.onclick = function () { useListingPhoto(u, im); }; ph.appendChild(im); });
+  var initialUrl = selectedUrl && S.f.photos.indexOf(selectedUrl) >= 0 ? selectedUrl : (!savedPhoto || savedPhoto.kind !== 'custom' ? S.f.photos[0] : '');
+  if (initialUrl) { var initial = Array.prototype.filter.call(ph.querySelectorAll('img'), function (im) { return im.dataset.url === initialUrl; })[0] || ph.querySelector('img'); await useListingPhoto(initialUrl, initial); }
+  else if (savedPhoto && savedPhoto.kind === 'custom') { S.draftPhoto = savedPhoto; var restoredMsg = $('photoDraftMsg'); if (restoredMsg) restoredMsg.textContent = '이전 내 사진은 보안상 다시 첨부해 주세요.'; }
+  buildPanels(); await regenerate(); applyImageDraftContent(draft); try { if (!draft || !draft.single) fillSingle(S.f); } catch (e) {}
   $('stepOpts').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 function renderList() {
@@ -1296,7 +1361,8 @@ var redrawT = null;
 document.addEventListener('click', function (e) {
   var rs = e.target.closest('[data-reset]'); if (rs) { var ri = +rs.dataset.reset, cur = S.parts[ri], fresh = buildParts(S.f, opts()).filter(function (x) { return x.key === cur.key; })[0]; if (fresh) { S.parts[ri] = fresh; drawPart(ri); if (fresh.kind === 'cover') drawWide(); paintPartList(); paintThumbs(); refreshTexts(false); } return; }
   var tp = e.target.closest('.tpl'); if (tp) { var sel = $('oTpl'), tk = tp.dataset.tpl; if (sel.value !== tk) { sel.value = tk; if (S.f) sel.dispatchEvent(new Event('change', { bubbles: true })); else { S.tpl = tk; try { localStorage.setItem('cs_tpl', tk); } catch (e2) {} $('tplDesc').textContent = (TEMPLATES[tk] || {}).desc || ''; } } markTpl(); return; }
-  if (e.target.closest('#btnTplGo')) { if (S.f) { $('stepOpts').scrollIntoView({ behavior: 'smooth', block: 'start' }); return; } window.open(REALTY_BASE + 'properties.html?office=' + O.key, '_blank', 'noopener'); return; }
+  if (e.target.closest('#btnTplBlank')) { if (S.singleTouched && $('soHead').value.trim() && !confirm('현재 한 장 이미지의 입력 내용을 비우고 다시 시작할까요?')) return; clearSingle(); scheduleImageDraft(); $('stepSingle').scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
+  if (e.target.closest('#btnTplGo')) { window.open(REALTY_BASE + 'properties.html?office=' + O.key, '_blank', 'noopener'); return; }
   var t = e.target.closest('[data-ch],[data-copy],[data-rich],[data-both]'); if (!t) return;
   if (t.dataset.ch) { S.channel = t.dataset.ch; document.querySelectorAll('.tab').forEach(function (b) { b.setAttribute('aria-selected', String(b.dataset.ch === S.channel)); }); document.querySelectorAll('[data-panel]').forEach(function (p) { p.hidden = p.dataset.panel !== S.channel; }); return; }
   if (t.dataset.copy) { copyText($(t.dataset.copy).value, t); return; }
@@ -1322,6 +1388,7 @@ $('btnManual').addEventListener('click', async function () {
   if (!g('mSale') && !g('mDep') && !g('mRent')) { msg.style.color = '#b42318'; msg.textContent = '가격(매매가·보증금·월세 중 하나 이상)을 입력해 주세요.'; return; }
   msg.textContent = ''; btn.disabled = true; btn.textContent = '만드는 중...';
   try {
+    saveImageDraft();
     var it = { id: 'manual', type: $('mType').value, title: title || place, address: place, dealType: $('mDeal').value, salePrice: g('mSale'), deposit: g('mDep'), monthlyRent: g('mRent'), exclusiveAreaPy: g('mPy'), areaPy: g('mPy'), floorInfo: g('mFloor'), shop_recommendBiz: g('mBiz') };
     await pickItem(it); $('goDetail').hidden = true;
     if (title) { $('oTitle').value = title; await regenerate(); }
@@ -1329,7 +1396,7 @@ $('btnManual').addEventListener('click', async function () {
   btn.disabled = false; btn.textContent = '이 내용으로 만들기';
 });
 $('btnRegen').addEventListener('click', function () { S.dirty = {}; refreshTexts(true); });
-$('ownPhoto').addEventListener('change', function () { var file = this.files && this.files[0]; if (!file) return; var url = URL.createObjectURL(file); loadImage(url).then(function (im) { S.bg = im; document.querySelectorAll('#photos img').forEach(function (x) { x.classList.remove('on'); }); drawAllParts(); drawWide(); }); this.value = ''; });
+$('ownPhoto').addEventListener('change', function () { var file = this.files && this.files[0]; if (!file) return; var url = URL.createObjectURL(file); loadImage(url).then(function (im) { S.bg = im; S.draftPhoto = { kind:'custom', name:file.name || '내 사진' }; document.querySelectorAll('#photos img').forEach(function (x) { x.classList.remove('on'); }); $('photoDraftMsg').textContent = '이 사진은 새로고침 후 다시 첨부해 주세요.'; drawAllParts(); drawWide(); scheduleImageDraft(); }); this.value = ''; });
 $('btnAllCopy').addEventListener('click', function () { copyText(allText(), this); });
 $('btnZip').addEventListener('click', async function () { var b = this, old = b.textContent; b.disabled = true; b.textContent = '만드는 중...'; try { var z = await makePackage(); download(z, O.key + '_content_' + (S.f.id || 'listing') + '.zip'); $('allMsg').textContent = 'ZIP을 내려받았습니다.'; } catch (err) { $('allMsg').textContent = '패키지 생성 실패: ' + (err && err.message || err); } b.disabled = false; b.textContent = old; });
 
@@ -1339,7 +1406,8 @@ $('btnZip').addEventListener('click', async function () { var b = this, old = b.
   document.getElementById('loginLink').href = REALTY_BASE + 'login.html?office=' + O.key;
   document.getElementById('goRealty').href = REALTY_BASE + 'properties.html?office=' + O.key;
   document.getElementById('btnLogout').onclick = async function () { try { await authClient.auth.signOut(); } finally { location.href = REALTY_BASE + 'login.html?office=' + O.key; } };
-  initSingle(); renderStudioGallery();
+  var imagePane = document.getElementById('pane-image'), singleStep = document.getElementById('stepSingle'), tplStep = document.getElementById('stepTpl'); if (imagePane && singleStep && tplStep) imagePane.insertBefore(singleStep, tplStep);
+  initSingle(); if (!new URLSearchParams(location.search).get('id')) restoreImageManualDraft(); renderStudioGallery();
   if (!(await ensureAuth())) { document.getElementById('loginNeed').hidden = false; document.getElementById('stepPick').hidden = true; document.body.classList.remove('lock'); return; }
   document.body.classList.remove('lock');
   try {
@@ -1351,46 +1419,28 @@ $('btnZip').addEventListener('click', async function () { var b = this, old = b.
 </script>
 <script>
 (function(){
-  var KEY='cs_request_draft_v1', $=function(i){return document.getElementById(i)};
-  var files=[];
+  var LEGACY_KEY='cs_request_draft_v1', KEY='cs_request_draft_v2:'+((document.documentElement.getAttribute('data-office-theme')==='ktop')?'ktop':'hitop'), $=function(i){return document.getElementById(i)};
+  var files=[], savedFileNames=[];
   var officeName=(document.documentElement.getAttribute('data-office-theme')==='ktop')?'케이탑부동산':'하이탑부동산';
   function checked(n){return Array.prototype.map.call(document.querySelectorAll('input[name="'+n+'"]:checked'),function(e){return e.value})}
-  function save(){try{localStorage.setItem(KEY,JSON.stringify({t:checked('rqType')[0]||'',c:checked('rqCh'),x:$('rqTopic').value}))}catch(e){}}
-  function load(){try{var d=JSON.parse(localStorage.getItem(KEY)||'null');if(!d)return;
-    document.querySelectorAll('input[name="rqType"]').forEach(function(e){e.checked=(e.value===d.t)});
-    document.querySelectorAll('input[name="rqCh"]').forEach(function(e){e.checked=(d.c||[]).indexOf(e.value)>=0});
-    $('rqTopic').value=d.x||''}catch(e){}}
-  function flow(){var video=checked('rqCh').some(function(v){return v==='유튜브쇼츠'||v==='인스타동영상'});
-    var li=document.querySelector('#flowList li[data-st="3"]');if(li)li.classList.toggle('skip',!video&&checked('rqCh').length>0)}
+  function cleanNames(list){return (Array.isArray(list)?list:[]).map(function(x){return String(x||'').trim()}).filter(Boolean)}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify({t:checked('rqType')[0]||'',c:checked('rqCh'),x:$('rqTopic').value,fileNames:files.map(function(f){return f.name}).concat(savedFileNames)}))}catch(e){}}
+  function applyDraft(d){if(!d)return;document.querySelectorAll('input[name="rqType"]').forEach(function(e){e.checked=(e.value===d.t)});document.querySelectorAll('input[name="rqCh"]').forEach(function(e){e.checked=(d.c||[]).indexOf(e.value)>=0});$('rqTopic').value=d.x||'';savedFileNames=cleanNames(d.fileNames);files=[];drawFiles()}
+  function load(){try{var d=JSON.parse(localStorage.getItem(KEY)||'null');if(d)applyDraft(d)}catch(e){}}
+  function legacy(){try{return JSON.parse(localStorage.getItem(LEGACY_KEY)||'null')}catch(e){return null}}
+  function flow(){var video=checked('rqCh').some(function(v){return v==='유튜브쇼츠'||v==='인스타동영상'});var li=document.querySelector('#flowList li[data-st="3"]');if(li)li.classList.toggle('skip',!video&&checked('rqCh').length>0)}
   function size(n){return n>1048576?(n/1048576).toFixed(1)+'MB':Math.max(1,Math.round(n/1024))+'KB'}
   function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
-  function drawFiles(){
-    $('rqFileCount').textContent=files.length?files.length+'개 선택':'선택한 파일 없음';
-    $('rqList').innerHTML=files.map(function(f,i){return '<li><span>'+esc(f.name)+'</span><small>'+size(f.size)+'</small><button type="button" data-rm="'+i+'" aria-label="파일 빼기">×</button></li>'}).join('')}
-  function say(m){var e=$('rqMsg');e.textContent=m;clearTimeout(say.t);say.t=setTimeout(function(){e.textContent=''},4000)}
-  function build(){
-    var ch=checked('rqCh');
-    return ['[콘텐츠 제작 의뢰]','사무소: '+officeName,'유형: '+(checked('rqType')[0]||'-'),'채널: '+(ch.length?ch.join(', '):'-'),'','주제·자료:',($('rqTopic').value.trim()||'-'),'','첨부파일: '+(files.length?files.map(function(f){return f.name}).join(', ')+' (파일은 직접 올려 주세요)':'없음')].join('\n')}
-  function copy(txt){
-    if(navigator.clipboard&&navigator.clipboard.writeText)return navigator.clipboard.writeText(txt);
-    return new Promise(function(ok,no){try{var a=document.createElement('textarea');a.value=txt;a.style.cssText='position:fixed;opacity:0';document.body.appendChild(a);a.select();document.execCommand('copy')?ok():no();a.remove()}catch(e){no(e)}})}
-  document.addEventListener('change',function(e){
-    if(e.target.name==='rqType'||e.target.name==='rqCh'){save();flow()}
-    if(e.target.id==='rqFile'){Array.prototype.forEach.call(e.target.files,function(f){files.push(f)});e.target.value='';drawFiles()}
-  });
+  function drawFiles(){var restored=savedFileNames.map(function(n,i){return '<li class="rq-file-warning"><span>'+esc(n)+'</span><small>다시 선택 필요</small><button type="button" data-rm-saved="'+i+'" aria-label="이전 파일명 지우기">×</button></li>'});var active=files.map(function(f,i){return '<li><span>'+esc(f.name)+'</span><small>'+size(f.size)+'</small><button type="button" data-rm="'+i+'" aria-label="파일 빼기">×</button></li>'});$('rqFileCount').textContent=files.length?files.length+'개 선택':(savedFileNames.length?savedFileNames.length+'개 파일 다시 선택 필요':'선택한 파일 없음');$('rqList').innerHTML=restored.concat(active).join('')}
+  function say(m){var e=$('rqMsg');e.textContent=m;clearTimeout(say.t);say.t=setTimeout(function(){e.textContent=''},5000)}
+  function build(){var ch=checked('rqCh'), names=files.map(function(f){return f.name}).concat(savedFileNames);return ['[콘텐츠 제작 의뢰]','사무소: '+officeName,'유형: '+(checked('rqType')[0]||'-'),'채널: '+(ch.length?ch.join(', '):'-'),'','주제·자료:',($('rqTopic').value.trim()||'-'),'','첨부파일: '+(names.length?names.join(', ')+' (파일은 직접 다시 올려 주세요)':'없음')].join('\n')}
+  function copy(txt){if(navigator.clipboard&&navigator.clipboard.writeText)return navigator.clipboard.writeText(txt);return new Promise(function(ok,no){try{var a=document.createElement('textarea');a.value=txt;a.style.cssText='position:fixed;opacity:0';document.body.appendChild(a);a.select();document.execCommand('copy')?ok():no();a.remove()}catch(e){no(e)}})}
+  function aiChannel(ch){var map={'블로그':'블로그','네이버카페':'카페','유튜브쇼츠':'유튜브','인스타동영상':'인스타','스레드':'스레드'};for(var i=0;i<ch.length;i++)if(map[ch[i]])return map[ch[i]];return '블로그'}
+  function handoff(){var ch=checked('rqCh'), names=files.map(function(f){return f.name}).concat(savedFileNames), mode=(checked('rqType')[0]==='매물소개')?'매물소개':'외부자료';var material=['[제작 의뢰에서 전달]','사무소: '+officeName,'유형: '+(checked('rqType')[0]||'-'),'요청 채널: '+(ch.length?ch.join(', '):'-'),'','주제·자료:',($('rqTopic').value.trim()||'-')].concat(names.length?['','첨부파일명: '+names.join(', ')+' (파일은 이 화면에서 직접 다시 올려 주세요)']:[]).join('\n');var fr=$('frameAi');if(!fr){say('AI 글쓰기 화면을 찾지 못했습니다.');return}try{var d0=fr.contentDocument, current=d0&&d0.querySelector('#materialInputArea textarea'), result=d0&&d0.querySelector('#resultArea'), hasMaterial=!!(current&&current.value.trim()), hasResult=!!(result&&result.textContent.trim()&&!/재료를 고르고 채널을 선택한 뒤 생성 실행/.test(result.textContent));if((hasMaterial||hasResult)&&!window.confirm('AI 글쓰기의 현재 입력 또는 실행 결과가 바뀔 수 있습니다. 이 의뢰 내용을 덮어쓸까요? 생성은 실행되지 않습니다.'))return}catch(e){}var done=false;function fill(){if(done)return;try{var d=fr.contentDocument;if(!d||!d.body)return;var modeBtn=Array.prototype.find.call(d.querySelectorAll('.mode-btn'),function(b){return b.textContent.trim()===mode});if(!modeBtn)return;done=true;modeBtn.click();var area=d.querySelector('#materialInputArea textarea');if(!area)return;var setter=Object.getOwnPropertyDescriptor(d.defaultView.HTMLTextAreaElement.prototype,'value').set;setter.call(area,material);area.dispatchEvent(new d.defaultView.Event('input',{bubbles:true}));var channel=aiChannel(ch), channelBtn=Array.prototype.find.call(d.querySelectorAll('.channel-btn'),function(b){return b.title===channel});if(channelBtn)channelBtn.click();say('AI 글쓰기에 자료와 채널을 채웠습니다. 생성은 실행하지 않았습니다.');}catch(e){say('AI 글쓰기로 내용을 전달하지 못했습니다.');}}fr.addEventListener('load',fill,{once:true});document.querySelector('#mTabs .mtab[data-tab="ai"]').click();setTimeout(fill,300)}
+  document.addEventListener('change',function(e){if(e.target.name==='rqType'||e.target.name==='rqCh'){save();flow()}if(e.target.id==='rqFile'){Array.prototype.forEach.call(e.target.files,function(f){files.push(f)});savedFileNames=savedFileNames.filter(function(n){return !files.some(function(f){return f.name===n})});e.target.value='';drawFiles();save()}});
   document.addEventListener('input',function(e){if(e.target.id==='rqTopic')save()});
-  document.addEventListener('click',function(e){
-    var rm=e.target.closest&&e.target.closest('[data-rm]');
-    if(rm){files.splice(+rm.getAttribute('data-rm'),1);drawFiles();return}
-    if(e.target.closest&&e.target.closest('#rqCopy')){
-      if(!checked('rqCh').length&&!$('rqTopic').value.trim()){say('채널이나 주제를 먼저 적어 주세요.');return}
-      copy(build()).then(function(){say('복사했습니다. 인스팅크트에 붙여 넣으세요.')},function(){say('복사하지 못했습니다. 다시 눌러 주세요.')});return}
-    if(e.target.closest&&e.target.closest('#rqReset')){
-      document.querySelectorAll('input[name="rqCh"]').forEach(function(x){x.checked=false});
-      document.querySelector('input[name="rqType"]').checked=true;$('rqTopic').value='';files=[];drawFiles();save();flow();say('비웠습니다.')}
-  });
-  load();flow();drawFiles();
-  try{if(new URLSearchParams(location.search).get('id')){$('rqFrom').hidden=false;document.querySelector('input[name="rqType"][value="매물소개"]').checked=true}}catch(e){}
+  document.addEventListener('click',function(e){var oldRm=e.target.closest&&e.target.closest('[data-rm-saved]');if(oldRm){savedFileNames.splice(+oldRm.getAttribute('data-rm-saved'),1);drawFiles();save();return}var rm=e.target.closest&&e.target.closest('[data-rm]');if(rm){files.splice(+rm.getAttribute('data-rm'),1);drawFiles();save();return}if(e.target.closest&&e.target.closest('#rqImportLegacy')){var d=legacy();if(!d){say('가져올 이전 임시저장 내용이 없습니다.');return}applyDraft(d);save();$('rqLegacyNotice').hidden=true;flow();say('이전 내용을 현재 사무소 임시저장으로 가져왔습니다.');return}if(e.target.closest&&e.target.closest('#rqCopy')){if(!checked('rqCh').length&&!$('rqTopic').value.trim()){say('채널이나 주제를 먼저 적어 주세요.');return}copy(build()).then(function(){say('복사했습니다. 인스팅크트에 붙여 넣으세요.')},function(){say('복사하지 못했습니다. 다시 눌러 주세요.')});return}if(e.target.closest&&e.target.closest('#rqToAi')){if(!checked('rqCh').length&&!$('rqTopic').value.trim()){say('채널이나 주제를 먼저 적어 주세요.');return}handoff();return}if(e.target.closest&&e.target.closest('#rqReset')){document.querySelectorAll('input[name="rqCh"]').forEach(function(x){x.checked=false});document.querySelector('input[name="rqType"]').checked=true;$('rqTopic').value='';files=[];savedFileNames=[];drawFiles();save();flow();say('현재 사무소의 임시저장 내용을 비웠습니다.')}});
+  load();var old=legacy();if(old&&!localStorage.getItem(KEY))$('rqLegacyNotice').hidden=false;flow();drawFiles();
 })();
 </script>
 </body>
